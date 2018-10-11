@@ -75,7 +75,7 @@ const CONTINUE_TEXT: TextStyle = {
 const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
 const FOOTER_CONTENT: ViewStyle = {
   paddingVertical: spacing[4], 
-  paddingHorizontal: spacing[4],
+  paddingHorizontal: spacing[4], 
 }
 
 export interface FirstExampleScreenProps extends NavigationScreenProps<{}> {}
