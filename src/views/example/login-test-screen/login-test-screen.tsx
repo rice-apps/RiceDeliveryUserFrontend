@@ -7,6 +7,8 @@ import { Wallpaper } from "../../shared/wallpaper"
 import { Header } from "../../shared/header"
 import { color, spacing } from "../../../theme"
 
+import { OrderComponent } from "../../../app/component/order-component"
+
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -68,6 +70,11 @@ export class LoginTestScreen extends React.Component<LoginTestScreenProps, {}> {
                 onPress={this.login}
               />
             </View>
+
+            <OrderComponent name="Amy" college="Brown" phoneNumber="12345678" orderTime={221} items={[]}>
+
+            </OrderComponent>
+            
           </Screen>
         </SafeAreaView>
       </View>

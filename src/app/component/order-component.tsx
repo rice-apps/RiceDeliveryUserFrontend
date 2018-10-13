@@ -1,7 +1,6 @@
 // @ts-ignore: until they update @type/react-navigation
 import * as React from "react"
 import { inject, observer } from "mobx-react"
-import { getNavigation, NavigationScreenProp, NavigationState } from "react-navigation"
 import { View, Text } from "react-native";
 
 interface orderProps {
