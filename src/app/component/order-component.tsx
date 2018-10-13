@@ -1,7 +1,8 @@
+// @ts-ignore: until they update @type/react-navigation
 import * as React from "react"
 import { inject, observer } from "mobx-react"
-// @ts-ignore: until they update @type/react-navigation
 import { getNavigation, NavigationScreenProp, NavigationState } from "react-navigation"
+import { View, Text } from "react-native";
 
 interface orderProps {
   name: string,
@@ -19,10 +20,18 @@ interface item {
 
 @observer
 export class OrderComponent extends React.Component<orderProps, {}> {
+  constructor(props: any) {
+    super(props);
+    this.state = {}
+  }
+
   render() {
     return(
-
-
+      <View>
+        <Text>
+          Hello
+        </Text>
+      </View>
     );
   }
 }

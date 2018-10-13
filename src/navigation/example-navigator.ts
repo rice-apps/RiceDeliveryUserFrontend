@@ -4,6 +4,7 @@ import { SecondExampleScreen } from "../views/example/second-example-screen"
 import { LoginTestScreen } from "../views/example/login-test-screen"
 
 export const ExampleNavigator = createStackNavigator({
+  
   firstExample: { screen: FirstExampleScreen },
   secondExample: { screen: SecondExampleScreen },
   loginTest: { screen: LoginTestScreen },
