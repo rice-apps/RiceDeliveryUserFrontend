@@ -19,12 +19,11 @@ interface item {
   other?: any
 }
 
-
-// interface batchProps {
-//     batches: batch[]
-// }
-
 interface batchProps {
+  batches: batch
+}
+interface batch {
+  status: string
   orders: orderProps[]
 }
 
@@ -35,18 +34,36 @@ export class BatchComponent extends React.Component<batchProps, {}> {
   render() {
     return (
           <View style={{flex: 1, flexDirection: "column"}}>
-              <Text style={{paddingBottom: 10, width: "100%", height: 100, backgroundColor: "white"}}> 
-              {this.props.orders[0].name}
-              {this.props.orders[0].college}
-              {this.props.orders[0].phoneNumber}
-              {this.props.orders[0].orderTime}
-              </Text>
-              <Text style={{width: "100%", height: 100, backgroundColor: "white"}}> 
-              {this.props.orders[1].name}
-              {this.props.orders[1].college}
-              {this.props.orders[1].phoneNumber}
-              {this.props.orders[1].orderTime}
-              </Text>
+
+            {this.props.batches.orders.map(
+              (value, index) => (
+                <Text key={index} style={{width: "100%", height: 100, backgroundColor: "white"}}> 
+                {"Order number:  " + (index + 1)} {"\n"}
+                {"Name:  " + value.name} {"\n"}
+                {"College:  " + value.college} {"\n"}
+                {"Phone Number:  " + value.phoneNumber} {"\n"}
+                {"Order Time:  " + value.orderTime} {"\n"}
+                </Text>
+              ),
+            )
+            }
+
+            {/* Will's code: */}
+              {/* {
+              names.map((user, index) => (
+                <View  key ={index}>
+                  <Text>Member name: {user.name}</Text>)
+
+                  <Text onPress={() => this.toggleVip(user)} key={index}>
+                  Vip: {user.vip ? 'Yes': 'No'}
+                  </Text>
+                  
+                  <Text onPress = {() => this.delete(user)}> Delete </Text>
+
+                </View>
+              ))
+              } */}
+
           </ View>
         )
     }

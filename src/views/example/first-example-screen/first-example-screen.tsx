@@ -36,6 +36,7 @@ const HEADER_TITLE: TextStyle = {
 const TITLE_WRAPPER: TextStyle = { 
   ...TEXT,
   textAlign: "center",
+  paddingBottom: 20,
 }
 const TITLE: TextStyle = { 
   ...TEXT, 
@@ -43,7 +44,6 @@ const TITLE: TextStyle = {
   fontSize: 28,
   lineHeight: 38,
   textAlign: "center",
-  paddingBottom: 20,
 }
 const BOWSER: ImageStyle = {
   alignSelf: "center",
@@ -74,6 +74,11 @@ const FOOTER_CONTENT: ViewStyle = {
   paddingHorizontal: spacing[4], 
 }
 
+
+
+// Some sample test data
+
+// Items
 const apple = {
   itemName: "Apple",
   quantity: 4,
@@ -87,24 +92,35 @@ const bananas = {
   quantity: 4,
 }
 
+// Orders
 const johnnyOrder = {
   name: "Johnny",
   college: "Jones",
   phoneNumber: "hit me up",
-  orderTime: 142,
+  orderTime: 14200,
   items: [apple, orange, bananas],
 }
 const amyOrder = {
   name: "Amy",
-  college: "Idk",
+  college: "Brown",
   phoneNumber: "hehe",
-  orderTime: 233,
+  orderTime: 233111,
+  items: [apple, orange, bananas],
+}
+const justinOrder = {
+  name: "Justin",
+  college: "Martel",
+  phoneNumber: "idk",
+  orderTime: 7345125,
   items: [apple, orange, bananas],
 }
 
+// Batch
 const batch = {
-  orders: [johnnyOrder, amyOrder],
+  orders: [johnnyOrder, amyOrder, justinOrder],
+  status: "On the way",
 }
+
 
 export interface FirstExampleScreenProps extends NavigationScreenProps<{}> {}
 
@@ -128,11 +144,7 @@ export class FirstExampleScreen extends React.Component<FirstExampleScreenProps,
               <Text style={TITLE} text="Current Batches" />
             </Text>
 
-            <Text style={CONTENT}>
-            This is fun
-            </Text>
-
-            <BatchComponent orders={[johnnyOrder, amyOrder]} ></BatchComponent>
+            <BatchComponent batches={batch} ></BatchComponent>
 
           </Screen>
           
