@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from "react-navigation"
+import { createBottomTabNavigator, createMaterialTopTabNavigator } from "react-navigation"
 import { CurrentBatchesScreen } from "../views/vendorScreens/current-batches-screen"
 import { PendingOrdersScreen } from "../views/vendorScreens/pending-orders-screen"
 import { TransactionHistoryScreen } from "../views/vendorScreens/transaction-history-screen"
