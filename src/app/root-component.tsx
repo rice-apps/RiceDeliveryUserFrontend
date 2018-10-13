@@ -11,8 +11,8 @@ import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
 import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
-YellowBox.ignoreWarnings(['Module RCTImageLoader requires',
-]);
+YellowBox.ignoreWarnings(['Module RCTImageLoader requires',]);
+YellowBox.ignoreWarnings(['Class RCTCxxModule']);
 interface RootComponentState {
   rootStore?: RootStore
 }
