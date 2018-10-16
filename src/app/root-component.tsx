@@ -9,7 +9,7 @@ import { BackButtonHandler } from "../navigation/back-button-handler"
 import { contains } from "ramda"
 import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
-import { YellowBox } from 'react-native'
+import { YellowBox, View, StatusBar, Platform } from 'react-native'
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 YellowBox.ignoreWarnings(['Module RCTImageLoader requires',]);
 YellowBox.ignoreWarnings(['Class RCTCxxModule']);
@@ -65,7 +65,11 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
 
     return (
       <Provider rootStore={rootStore} navigationStore={rootStore.navigationStore} {...otherStores}>
+
         <BackButtonHandler canExit={this.canExit}>
+          <View style={{ height: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight }}>
+            <StatusBar />
+          </View>
           <Header />
           <RootNavigator />        
         </BackButtonHandler>

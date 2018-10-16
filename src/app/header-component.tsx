@@ -1,17 +1,17 @@
 import * as React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
-import { color } from '../theme';
-/* 
+import { color } from '../theme'
+/*
   Persistent header in the app.
 */
 export class Header extends React.Component<any, any>  {
   render() {
     return (
-      <View style={styles.viewStyle}>
+      <View style={styles.topContainer}>
         <Text style={styles.vendorHeader}>
           Vendor Name
         </Text>
-        <Text>
+        <Text style={styles.logo}>
           Logo
         </Text>
       </View>
@@ -20,10 +20,18 @@ export class Header extends React.Component<any, any>  {
 }
 
 const styles = StyleSheet.create({
-  viewStyle: {
-    backgroundColor: color.palette.black,
+  topContainer: {
+    flex: 0.08,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+
   },
   vendorHeader: {
-    color: color.palette.white
+    color: color.palette.black,
+  }, 
+  logo: {
+    color: color.palette.black,
+    paddingLeft: 2
   }
 })
