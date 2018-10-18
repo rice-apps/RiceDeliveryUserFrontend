@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import { color } from '../theme'
+import Icon from 'react-native-vector-icons/Ionicons'
 /*
   Persistent header in the app.
 */
@@ -14,6 +15,7 @@ export class Header extends React.Component<any, any>  {
         <Text style={styles.logo}>
           Logo
         </Text>
+        <Icon style={styles.icon} name="md-settings" size={30} color="black" />
       </View>
     )
   }
@@ -33,5 +35,7 @@ const styles = StyleSheet.create({
   logo: {
     color: color.palette.black,
     paddingLeft: 2
+  },
+  icon: {
   }
 })
