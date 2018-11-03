@@ -11,6 +11,8 @@ import { logoIgnite, heart } from "./"
 import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
+import { inject, observer } from "mobx-react"
+import { RootStore } from "../../../app/root-store";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -74,12 +76,24 @@ const HEART: ImageStyle = {
   resizeMode: "contain",
 }
 
-export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {}
 
+export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {
+  rootStore?: RootStore
+}
+
+/**
+ * inject finds root store in mobx state tree
+ * observer lets us read things from the store
+ */
+@inject("rootStore")
+@observer 
 export class SecondExampleScreen extends React.Component<SecondExampleScreenProps, {}> {
+  state = this.props.rootStore
+
   goBack = () => this.props.navigation.goBack(null)
 
   demoReactotron = async () => {
+    console.log(this.state)
     console.tron.log("Your Friendly tron log message")
     console.tron.logImportant("I am important")
     console.tron.display({

@@ -4,12 +4,58 @@ import { Environment } from "./environment"
 import * as storage from "../lib/storage"
 import { Reactotron } from "../services/reactotron"
 import { Api } from "../services/api"
+import { create } from 'apisauce'
 
 /**
  * The key we'll be saving our state as within async storage.
  */
 const ROOT_STATE_STORAGE_KEY = "root"
 
+const api = create({
+  baseURL: "http://localhost:3000/graphql",
+  headers: {'Accept': 'application/json'}
+});
+
+const queryGetVendor = async () => {
+  let res = await api
+  .post(
+    '',
+    {
+      query: `
+        query vendors{
+          vendor{
+            _id
+            name
+            phone
+            locationOptions{
+              name
+            }
+            menu{
+              id
+              name
+              description
+              inventory
+              prices{
+                size
+                price
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+      },
+    }
+  )
+  return res.data.data.vendor;
+  // .then(
+  //   (res: any) => {
+  //     // return this.setState({ author: res.data.data.author[0] });
+  //     console.log("QUERY RETURNS res.data.data.vendor: " + JSON.stringify(res.data.data.vendor) )
+  //     return res.data.data.vendor
+  //   }
+  // );
+}
 /**
  * Setup the root state.
  */
@@ -22,6 +68,12 @@ export async function setupRootStore() {
   try {
     // load data from storage
     data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
+    var vendorArr = await queryGetVendor();
+    data["vendorStore"] = {"vendor": vendorArr};
+    
+
+
+    
     rootStore = RootStoreModel.create(data, env)
   } catch(e) {
     // if there's any problems loading, then let's at least fallback to an empty state
