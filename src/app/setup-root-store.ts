@@ -17,7 +17,8 @@ const api = create({
 });
 
 const queryGetVendor = async () => {
-  let res = await api
+  let res: any
+  res = await api
   .post(
     '',
     {

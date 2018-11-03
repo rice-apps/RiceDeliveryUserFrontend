@@ -20,7 +20,7 @@ export const RootStoreModel = types.model("RootStore").props({
   }]
           
   }
-  )
+  ),
   vendorStore: types.optional(VendorStoreModel, {vendor : []})
 })
 // .create({
