@@ -11,8 +11,9 @@ import { logoIgnite, heart } from "./"
 import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
-import Users  from "../../../app/stores/user-store" //importing it from userStore, the store I created
-import { observer } from 'mobx-react'
+//import UserStoreModel from "../../../app/root-store   /importing it from userStore, the store I created
+import { observer, inject } from 'mobx-react'
+import { RootStore, RootStoreModel } from "../../../app/root-store";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -76,17 +77,20 @@ const HEART: ImageStyle = {
   resizeMode: "contain",
 }
 
-export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {}
+export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {
+  rootStore?: RootStore
+}
 
-
+@inject("rootStore")
+@observer
 export class SecondExampleScreen extends React.Component<SecondExampleScreenProps, {}> {
 
-  state = Users.users
+  state = this.props.rootStore
+  
 
   goBack = () => this.props.navigation.goBack(null)
 
   demoReactotron = async () => {
-    console.log(Users)
     console.log(this.state)
     console.tron.log("Your Friendly tron log message")
     console.tron.logImportant("I am important")

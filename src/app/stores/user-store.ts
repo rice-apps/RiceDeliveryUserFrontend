@@ -11,27 +11,29 @@ import { types, destroy } from "mobx-state-tree";
     access: types.string
 })
 
- const Users = types
-.model('Users', {
+export const UserStoreModel = types
+.model('UserStoreModel', {
     users : types.array(User)
 })
-.create({
-     users : [{
-         netid: "Lyla.Nicolas",
-        firstName: "Will",
-        lastName: "James",
-        phone: "780-594-8541",
-        stripeId: "0123",
-        defaultLocation: "5bca4c408f2c68f7ba37422e",
-        access: "Employee"
-    }]
- })
 
- export default Users
+// .create({
+//      users : [{
+//          netid: "Lyla.Nicolas",
+//         firstName: "Will",
+//         lastName: "James",
+//         phone: "780-594-8541",
+//         stripeId: "0123",
+//         defaultLocation: "5bca4c408f2c68f7ba37422e",
+//         access: "Employee"
+//     }]
+//  })
+ //export type NavigationStore = typeof NavigationStoreModel.Type
+
+ export type UserStore = typeof UserStoreModel.Type
 
 
 
- 
+
 // .actions(self => ({
 //     toggleVip(){
 //         self.vip = !self.vip
