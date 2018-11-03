@@ -11,9 +11,8 @@ import { logoIgnite, heart } from "./"
 import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
-//import UserStoreModel from "../../../app/root-store   /importing it from userStore, the store I created
-import { observer, inject } from 'mobx-react'
-import { RootStore, RootStoreModel } from "../../../app/root-store";
+import { inject, observer } from "mobx-react"
+import { RootStore } from "../../../app/root-store";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -81,12 +80,14 @@ export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
 }
 
+/**
+ * inject finds root store in mobx state tree
+ * observer lets us read things from the store
+ */
 @inject("rootStore")
-@observer
+@observer 
 export class SecondExampleScreen extends React.Component<SecondExampleScreenProps, {}> {
-
   state = this.props.rootStore
-  
 
   goBack = () => this.props.navigation.goBack(null)
 

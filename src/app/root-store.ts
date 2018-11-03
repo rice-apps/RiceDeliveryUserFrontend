@@ -1,7 +1,7 @@
 import { types } from "mobx-state-tree"
 import { NavigationStoreModel } from "../navigation/navigation-store"
 import { UserStoreModel }  from "./stores/user-store"
-
+import { VendorStoreModel }  from "./stores/vendorStore"
 
 /**
  * An RootStore model.
@@ -21,6 +21,7 @@ export const RootStoreModel = types.model("RootStore").props({
           
   }
   )
+  vendorStore: types.optional(VendorStoreModel, {vendor : []})
 })
 // .create({
 //      userStore : [{
