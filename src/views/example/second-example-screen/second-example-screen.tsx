@@ -76,7 +76,6 @@ const HEART: ImageStyle = {
   resizeMode: "contain",
 }
 
-
 export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
 }

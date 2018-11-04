@@ -5,7 +5,7 @@ const Location = types.model('Location', {name: types.string})
 
 const SizePrice = types.model('SizePrice', {size: types.string, price: types.number})
 
-const MenuItem = types
+export const MenuItem = types
 .model('MenuItem', {
     id: types.string,
     name: types.string,
