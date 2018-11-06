@@ -2,7 +2,6 @@ import * as React from "react"
 import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, StatusBar, TextInput } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { create } from 'apisauce'
-import gql from 'graphql-tag'
 import { Text } from "../../shared/text"
 import { Button } from "../../shared/button"
 import { Screen } from "../../shared/screen"
