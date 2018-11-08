@@ -1,4 +1,15 @@
 import { types, destroy } from "mobx-state-tree";
+import { client } from '../main';
+import gql from "graphql-tag";
+
+// // Queries
+const GET_USERS = gql`
+    {
+        user {
+            firstName
+        }
+    }
+`
 
  const User = types
 .model('User', {
@@ -10,11 +21,30 @@ import { types, destroy } from "mobx-state-tree";
     defaultLocation: types.string,
     access: types.string
 })
+.actions(
+    (self) => ({
+        updateFirstName(firstName) {
+            self.firstName = firstName;
+        }
+    })
+)
 
 export const UserStoreModel = types
 .model('UserStoreModel', {
     users : types.array(User)
 })
+.actions(
+    (self) => ({
+        async getUsers() {
+            // Fetch from backend
+            let users = await client.query({
+                query: GET_USERS
+            });
+            console.log(users);
+            return users;
+        }
+    })
+)
 
 // .create({
 //      users : [{

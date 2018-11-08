@@ -92,6 +92,8 @@ export class MenuScreen extends React.Component<MenuScreenProps, {}> {
   goBack = () => this.props.navigation.goBack(null)
 
   demoReactotron = async () => {
+    let userStore = this.state.userStore;
+    userStore.getUsers();
     console.log(this.state)
     console.tron.log("Your Friendly tron log message")
     console.tron.logImportant("I am important")
