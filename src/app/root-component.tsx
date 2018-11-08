@@ -9,9 +9,18 @@ import { contains } from "ramda"
 import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
 
+// Apollo Import
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+
 interface RootComponentState {
   rootStore?: RootStore
 }
+
+// Here is where we are initializing our Apollo Client
+const client = new ApolloClient({
+  uri: "http://localhost:3000/graphql"
+});
 
 /**
  * This is the root component of our app.
@@ -59,12 +68,19 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
     const otherStores = {}
     // --- am: end list of stores ---
 
+    /*
+    You'll notice we have two providers. 
+    The first, ApolloProvider, allows us to make Apollo calls in all our components
+    The second, Provider, allows us to access the MobX store in our components (after using inject())
+    */
     return (
-      <Provider rootStore={rootStore} userStore = {rootStore.userStore} navigationStore={rootStore.navigationStore} {...otherStores}>
-        <BackButtonHandler canExit={this.canExit}>
-          <StatefulNavigator />
-        </BackButtonHandler>
-      </Provider>
+      <ApolloProvider client={client}>
+        <Provider rootStore={rootStore} userStore = {rootStore.userStore} navigationStore={rootStore.navigationStore} {...otherStores}>
+          <BackButtonHandler canExit={this.canExit}>
+            <StatefulNavigator />
+          </BackButtonHandler>
+        </Provider>
+      </ApolloProvider>
     )
   }
 }

@@ -13,6 +13,9 @@ import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
+// Apollo
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -75,6 +78,18 @@ const HEART: ImageStyle = {
   height: 10,
   resizeMode: "contain",
 }
+
+// Create GraphQL Call
+const GET_VENDOR = gql`
+  {
+    vendor(name:"Nicolas LLC") {
+      locationOptions {
+        _id
+        name
+      }
+    }
+  }
+`;
 
 export interface MenuScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
@@ -144,7 +159,22 @@ export class MenuScreen extends React.Component<MenuScreenProps, {}> {
             <Text style={TAGLINE} tx={"secondExampleScreen.tagLine"} />
             <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
             <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
-
+            <View>
+              <Query query={GET_VENDOR}>
+              {({ loading, error, data }) => {
+                console.log(data);
+                // Get random location name
+                let commons = Math.floor(Math.random() * 6);
+                return (
+                  <View>
+                    {loading 
+                      ? <Text style={TAGLINE} tx={"secondExampleScreen.title"} /> 
+                      : <Text style={TAGLINE}>{data.vendor[0].locationOptions[commons].name}</Text> }
+                  </View>
+                )
+              }}
+              </Query>
+            </View>
             <View>
               <Button
                 style={DEMO}
