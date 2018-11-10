@@ -94,6 +94,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, {}> {
   demoReactotron = async () => {
     let userStore = this.state.userStore;
     userStore.getUsers();
+    userStore.addUser("jmd16", "Josh", "Dunning");
     console.log(this.state)
     console.tron.log("Your Friendly tron log message")
     console.tron.logImportant("I am important")

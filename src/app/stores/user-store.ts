@@ -11,6 +11,21 @@ const GET_USERS = gql`
     }
 `
 
+const ADD_USER = gql`
+    mutation CreateUser($netid: String!, $firstName: String!, $lastName: String!){
+        createUser(input:{
+            netid:$netid
+            firstName:$firstName
+            lastName:$lastName
+        }) {
+            _id
+            netid
+            firstName
+            lastName
+        }
+    }
+`
+
  const User = types
 .model('User', {
     netid: types.string,
@@ -37,11 +52,21 @@ export const UserStoreModel = types
     (self) => ({
         async getUsers() {
             // Fetch from backend
-            let users = await client.query({
+            let dataObject = await client.query({
                 query: GET_USERS
             });
-            console.log(users);
-            return users;
+            return dataObject.data;
+        },
+        async addUser(netid, firstName, lastName) {
+            let dataObject = await client.mutate({
+                mutation: ADD_USER,
+                variables: {
+                    netid: netid,
+                    firstName: firstName,
+                    lastName: lastName
+                }
+            });
+            return dataObject.data;
         }
     })
 )
