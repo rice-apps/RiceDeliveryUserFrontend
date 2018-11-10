@@ -66,10 +66,11 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
 @inject("rootStore")
 @observer 
 export class OrderScreen extends React.Component<OrderScreenProps, {}> {
-  state = this.props.rootStore.orderStore
+  orders = this.props.rootStore.orderStore
 
   goBack = () => this.props.navigation.goBack(null)
 
+  
   render() {
     return (
       <View style={FULL}>
@@ -83,6 +84,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {}> {
               style={HEADER}
               titleStyle={HEADER_TITLE}
             />
+            {/* <BulletItem text= {this.state.userStore.users[0].netid}/> */}
 
             <View>
               <Button
@@ -92,7 +94,6 @@ export class OrderScreen extends React.Component<OrderScreenProps, {}> {
                 // onPress={this.demoReactotron}
               />
             </View>
-            
           </Screen>
         </SafeAreaView>
       </View>

@@ -1,7 +1,7 @@
 import {types, destroy} from "mobx-state-tree";
 
 
-const Location = types.model('Location', {name: types.string})
+export const Location = types.model('Location', {name: types.string})
 
 const SizePrice = types.model('SizePrice', {size: types.string, price: types.number})
 
