@@ -13,6 +13,12 @@ import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
+import { ApolloClient } from 'apollo-boost'
+
+// Apollo client to make calls from
+export const client = new ApolloClient({
+  uri: "http://localhost:3000/graphql"
+});
 
 interface MenuItem {
   name: String,
@@ -25,7 +31,7 @@ interface CartItems {
   price: number
 }
 interface Cart {
-  cart: CartItems[]
+  cart?: CartItems[]
 }
 
 const mockCart: Cart = {
@@ -130,8 +136,9 @@ export interface CartScreenProps extends NavigationScreenProps<{}> {
 @inject("rootStore")
 @observer 
 export class CartScreen extends React.Component<CartScreenProps, {}> {
+  // Local cart that gets updated when item gets added.
+  cart: Cart = mockCart
   state = this.props.rootStore
-
   goBack = () => this.props.navigation.goBack(null)
 
   confirmOrder(Cart): any {
