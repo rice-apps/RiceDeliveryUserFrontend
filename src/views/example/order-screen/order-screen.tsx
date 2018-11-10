@@ -7,7 +7,6 @@ import { Button } from "../../shared/button"
 import { Wallpaper } from "../../shared/wallpaper"
 import { Header } from "../../shared/header"
 import { color, spacing } from "../../../theme"
-import { logoIgnite, heart } from "./"
 import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
@@ -55,28 +54,8 @@ const TAGLINE: TextStyle = {
   lineHeight: 22,
   marginBottom: spacing[4] + spacing[1],
 }
-const IGNITE: ImageStyle = {
-  marginVertical: spacing[6],
-  alignSelf: "center",
-}
-const LOVE_WRAPPER: ViewStyle = {
-  flexDirection: "row",
-  alignItems: "center",
-  alignSelf: "center",
-}
-const LOVE: TextStyle = {
-  color: "#BAB6C8",
-  fontSize: 15,
-  lineHeight: 22,
-}
-const HEART: ImageStyle = {
-  marginHorizontal: spacing[2],
-  width: 10,
-  height: 10,
-  resizeMode: "contain",
-}
 
-export interface ConfirmOrderScreenProps extends NavigationScreenProps<{}> {
+export interface OrderScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
 }
 
@@ -86,47 +65,12 @@ export interface ConfirmOrderScreenProps extends NavigationScreenProps<{}> {
  */
 @inject("rootStore")
 @observer 
-export class ConfirmOrderScreen extends React.Component<ConfirmOrderScreenProps, {}> {
-  state = this.props.rootStore
+export class OrderScreen extends React.Component<OrderScreenProps, {}> {
+  orders = this.props.rootStore.orderStore
 
   goBack = () => this.props.navigation.goBack(null)
 
-  demoReactotron = async () => {
-    console.log(this.state)
-    console.tron.log("Your Friendly tron log message")
-    console.tron.logImportant("I am important")
-    console.tron.display({
-      name: "DISPLAY",
-      value: {
-        numbers: 1,
-        strings: "strings",
-        booleans: true,
-        arrays: [1, 2, 3],
-        objects: {
-          deeper: {
-            deeper: {
-              yay: "👾",
-            },
-          },
-        },
-        functionNames: function hello() {},
-      },
-      preview: "More control with display()",
-      important: true,
-      image: {
-        uri:
-          "https://avatars2.githubusercontent.com/u/3902527?s=200&u=a0d16b13ed719f35d95ca0f4440f5d07c32c349a&v=4",
-      },
-    })
-    // make an API call for the demo
-    // Don't do API like this, use store's API
-    const demo = new Api()
-    demo.setup()
-    demo.getUser("1")
-    // Let's do some async storage stuff
-    await save("Cool Name", "Boaty McBoatface")
-  }
-
+  
   render() {
     return (
       <View style={FULL}>
@@ -140,24 +84,15 @@ export class ConfirmOrderScreen extends React.Component<ConfirmOrderScreenProps,
               style={HEADER}
               titleStyle={HEADER_TITLE}
             />
-            <Text style={TITLE} preset="header" tx={"secondExampleScreen.title"} />
-            <Text style={TAGLINE} tx={"secondExampleScreen.tagLine"} />
-            <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
+            {/* <BulletItem text= {this.state.userStore.users[0].netid}/> */}
 
             <View>
               <Button
                 style={DEMO}
                 textStyle={DEMO_TEXT}
                 tx="secondExampleScreen.reactotron"
-                onPress={this.demoReactotron}
+                // onPress={this.demoReactotron}
               />
-            </View>
-            <Image source={logoIgnite} style={IGNITE} />
-            <View style={LOVE_WRAPPER}>
-              <Text style={LOVE} text="Made with" />
-              <Image source={heart} style={HEART} />
-              <Text style={LOVE} text="by Infinite Red" />
             </View>
           </Screen>
         </SafeAreaView>

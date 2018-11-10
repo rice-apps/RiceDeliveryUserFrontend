@@ -1,9 +1,16 @@
 import { types, destroy } from "mobx-state-tree";
+import { Location } from "./vendorStore";
+
+const OrderItem = types
+.model('OrderItem' , {
+    item: types.string,
+    quantity: types.number
+})
 
  const Order = types
 .model('Order', {
-    location: types.string,
-    items: types.array(types.string),
+    location: Location,
+    items: types.array(OrderItem),
     vendor: types.string,
     user: types.string
 })
