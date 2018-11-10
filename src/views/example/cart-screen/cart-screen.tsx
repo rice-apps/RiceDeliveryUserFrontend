@@ -147,7 +147,7 @@ export class CartScreen extends React.Component<CartScreenProps, {}> {
       <View style={FULL}>
         <Wallpaper />
         <SafeAreaView style={FULL}>
-          <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
+          {/* <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
             <Header
               headerTx="secondExampleScreen.howTo"
               leftIcon="back"
@@ -158,23 +158,17 @@ export class CartScreen extends React.Component<CartScreenProps, {}> {
             <Text style={TITLE} preset="header" tx={"secondExampleScreen.title"} />
             <Text style={TAGLINE} tx={"secondExampleScreen.tagLine"} />
             <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
+            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." /> */}
 
             <View>
               <Button
                 style={DEMO}
                 textStyle={DEMO_TEXT}
-                tx="secondExampleScreen.reactotron"
+                text="Confirm Order"
                 onPress={this.demoReactotron}
               />
             </View>
-            <Image source={logoIgnite} style={IGNITE} />
-            <View style={LOVE_WRAPPER}>
-              <Text style={LOVE} text="Made with" />
-              <Image source={heart} style={HEART} />
-              <Text style={LOVE} text="by Infinite Red" />
-            </View>
-          </Screen>
+          {/* </Screen> */}
         </SafeAreaView>
       </View>
     )
