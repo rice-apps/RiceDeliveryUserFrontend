@@ -4,8 +4,8 @@ import { client } from "../main";
 import gql from "graphql-tag";
 
 const GET_ORDERS = gql`
-    {
-        query user($netid: String!) {
+    
+        query GetOrders($netid: String!) {
             user(netid: $netid) {
                 orders{
                     location{
@@ -18,15 +18,15 @@ const GET_ORDERS = gql`
                         quantity
                     }
                     vendor{
-                        id
+                        _id
                     }
                     user{
                         netid
                     }
                 }
             }
-        }  
-    }
+        }
+    
 `
 
 const OrderItem = types
@@ -50,14 +50,37 @@ export const OrderStoreModel = types
 .actions(
     (self) => ({
         async getOrders(netid) {
-            let orders = await client.query({
+            let orders : any = await client.query({
                 query: GET_ORDERS,
                 variables: {netid: netid}
             });
-            console.log(orders);
-            return orders;
+            let formattedOrders = orders.data.user[0].orders
+            .map(x => ({
+                        location: x.location, 
+                        items: x.items,
+                        vendor:x.vendor._id, 
+                        user:x.user.netid}));
+            
+            console.log({orders: formattedOrders});
+            return {orders: formattedOrders};
         }
     })
 )
+
+// .actions(
+//     (self) => ({
+//         async getUsers() {
+//             // Fetch from backend
+//             let users = await client.query({
+//                 query: GET_USERS
+//             });
+//             console.log(users);
+//             return users;
+//         }
+//     })
+// )
+
+
+
 
  export type OrderStore = typeof OrderStoreModel.Type

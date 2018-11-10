@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, SectionList } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { Screen } from "../../shared/screen"
 import { Text } from "../../shared/text"
@@ -12,6 +12,8 @@ import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
+import { OrderStoreModel } from "../../../app/stores/order-store";
+import { getRoot } from "mobx-state-tree";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -65,12 +67,27 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
  */
 @inject("rootStore")
 @observer 
-export class OrderScreen extends React.Component<OrderScreenProps, {}> {
-  orders = this.props.rootStore.orderStore
+export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<any>, user: any}> {
+  constructor(props) {
+    super(props)
+    let {orders: orderArray} = this.props.rootStore.orderStore;
+    let user = this.props.rootStore.userStore.users[0];
+    this.state = {orders: orderArray, user: user} 
+    // this.userStore = this.props.rootStore.userStore
+    // this.orders = this.props.rootStore.orderStore
+  }
+
 
   goBack = () => this.props.navigation.goBack(null)
 
-  
+  getOrders = async () => {
+    let { orderStore } = this.props.rootStore;
+    let orders = await orderStore.getOrders(this.state.user.netid);
+    this.setState( orders )
+    console.log(this.state);
+
+  }
+
   render() {
     return (
       <View style={FULL}>
@@ -85,13 +102,31 @@ export class OrderScreen extends React.Component<OrderScreenProps, {}> {
               titleStyle={HEADER_TITLE}
             />
             {/* <BulletItem text= {this.state.userStore.users[0].netid}/> */}
+               
+            <SectionList
+                renderItem={({item, index}) => <Text key={index}>{item}</Text>}
+                renderSectionHeader={({section: {title}}) => (
+                  <Text style={{fontWeight: 'bold'}}>{title}</Text>
+                )}
+                sections={
+
+                  
+                  [
+                  {title: "Title1" , data: [this.state.user.firstName]},
+                  // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
+                  {title: 'Title3', data: this.state.orders.map(x => x.user)},
+                ]
+              
+              }
+                keyExtractor={(item, index) => item + index}
+              />
 
             <View>
               <Button
                 style={DEMO}
                 textStyle={DEMO_TEXT}
                 tx="secondExampleScreen.reactotron"
-                // onPress={this.demoReactotron}
+                onPress={this.getOrders}
               />
             </View>
           </Screen>
