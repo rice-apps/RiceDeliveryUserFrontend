@@ -27,29 +27,17 @@ interface Cart {
 
 const mockCart: Cart = {
   cart: [
-    {order: {
-      name: "Chicken Nuggets",
-      description: "Crispy chicken nuggets.",
-      inventory: 45
-      },
+    {menuId: "5bd01d4e2e964215214ad0a3",
     quantity: 1,
-    price: 5
+    price: 5.00
     },
-    {order: {
-      name: "Full Hawaiian Pizza",
-      description: "An entire Hawaiian pizza with pineapples and ham.",
-      inventory: 3
-      }, 
+    {menuId: "5bd01d4e2e964215214ad0a6", 
     quantity: 1,
-    price: 7
+    price: 7.00
     },
-    {order: {
-      name: "Chicken Sandwich",
-      description: "Chicken sandwich from Chik-fil-a",
-      inventory: 15
-      }, 
+    {menuId:  "5bd01d4e2e964215214ad0af", 
     quantity: 4,
-    price: 4
+    price: 4.00
     }
   ]
 }
