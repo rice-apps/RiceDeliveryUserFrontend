@@ -1,5 +1,6 @@
 import {types, destroy} from "mobx-state-tree";
-
+import { client } from '../main';
+import gql from "graphql-tag";
 
 const Location = types.model('Location', {name: types.string})
 

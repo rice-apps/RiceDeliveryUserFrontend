@@ -86,13 +86,17 @@ export interface MenuScreenProps extends NavigationScreenProps<{}> {
  */
 @inject("rootStore")
 @observer 
-export class MenuScreen extends React.Component<MenuScreenProps, {}> {
-  state = this.props.rootStore
-
+export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: String, vendorMenu: Array<Object> }> {
   goBack = () => this.props.navigation.goBack(null)
 
   demoReactotron = async () => {
-    console.log(this.state)
+    let { vendor: vendorArray } = this.props.rootStore.vendorStore;
+    let vendor = vendorArray[0];
+    let vendorName = vendor.name;
+    let vendorMenu = vendor.menu;
+    this.setState({ vendorName: vendorName, vendorMenu: vendorMenu });
+    console.log(vendorName);
+    console.log(vendorMenu);
     console.tron.log("Your Friendly tron log message")
     console.tron.logImportant("I am important")
     console.tron.display({

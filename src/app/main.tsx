@@ -6,6 +6,16 @@ import { AppRegistry } from "react-native"
 import { RootComponent } from "./root-component"
 import { StorybookUIRoot } from "../../storybook"
 
+// Apollo Imports
+import ApolloClient from "apollo-boost";
+
+/**
+* Initializing Apollo Client. We'll use this to make 
+*/
+ export const client = new ApolloClient({
+   uri: "http://localhost:3000/graphql"
+ });
+
 /**
  * This needs to match what's found in your app_delegate.m and MainActivity.java.
  */
