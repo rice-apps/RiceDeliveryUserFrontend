@@ -30,3 +30,4 @@ export const VendorStoreModel = types
 })
 
 export type VendorStore = typeof VendorStoreModel.Type
+export type MenuItem = typeof MenuItem.Type

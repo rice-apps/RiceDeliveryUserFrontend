@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, SectionList, TouchableHighlight } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { Screen } from "../../shared/screen"
 import { Text } from "../../shared/text"
@@ -13,6 +13,7 @@ import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
+import { MenuItem } from "./menu-item"
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -85,18 +86,20 @@ export interface MenuScreenProps extends NavigationScreenProps<{}> {
  * observer lets us read things from the store
  */
 @inject("rootStore")
-@observer 
+@observer
 export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: String, vendorMenu: Array<Object> }> {
-  goBack = () => this.props.navigation.goBack(null)
-
-  demoReactotron = async () => {
+  constructor(props) {
+    super(props);
     let { vendor: vendorArray } = this.props.rootStore.vendorStore;
     let vendor = vendorArray[0];
     let vendorName = vendor.name;
     let vendorMenu = vendor.menu;
-    this.setState({ vendorName: vendorName, vendorMenu: vendorMenu });
-    console.log(vendorName);
-    console.log(vendorMenu);
+    this.state = { vendorName: vendorName, vendorMenu: vendorMenu };
+  }
+
+  goBack = () => this.props.navigation.goBack(null)
+
+  demoReactotron = async () => {
     console.tron.log("Your Friendly tron log message")
     console.tron.logImportant("I am important")
     console.tron.display({
@@ -113,7 +116,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
             },
           },
         },
-        functionNames: function hello() {},
+        functionNames: function hello() { },
       },
       preview: "More control with display()",
       important: true,
@@ -132,6 +135,8 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
   }
 
   render() {
+    let { cartStore } = this.props.rootStore;
+    let { vendorName, vendorMenu } = this.state;
     return (
       <View style={FULL}>
         <Wallpaper />
@@ -144,25 +149,24 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
               style={HEADER}
               titleStyle={HEADER_TITLE}
             />
-            <Text style={TITLE} preset="header" tx={"secondExampleScreen.title"} />
-            <Text style={TAGLINE} tx={"secondExampleScreen.tagLine"} />
-            <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
 
-            <View>
-              <Button
-                style={DEMO}
-                textStyle={DEMO_TEXT}
-                tx="secondExampleScreen.reactotron"
-                onPress={this.demoReactotron}
-              />
-            </View>
-            <Image source={logoIgnite} style={IGNITE} />
-            <View style={LOVE_WRAPPER}>
-              <Text style={LOVE} text="Made with" />
-              <Image source={heart} style={HEART} />
-              <Text style={LOVE} text="by Infinite Red" />
-            </View>
+            <SectionList
+              renderItem={({ item, index, section }) => <MenuItem menuItem = { item } cartStore = { cartStore }></MenuItem>}
+              renderSectionHeader={({ section: { title } }) => (
+                <Text style={TITLE}>{title}</Text>
+              )}
+              sections={[
+                { title: vendorName + '\'s Menu', data: vendorMenu },
+                // { title: 'Title2', data: ['item3', 'item4'] },
+                // { title: 'Title3', data: ['item5', 'item6'] },
+              ]}
+              keyExtractor={(item, index) => item + index}
+            />
+
+            <TouchableHighlight onPress = {() => console.log(this.props.rootStore.cartStore)}>
+              <Text>Get Cart Store</Text>
+            </TouchableHighlight>
+
           </Screen>
         </SafeAreaView>
       </View>
