@@ -14,14 +14,10 @@ import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store"
 import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag'
 
-interface MenuItem {
-  name: String,
-  description: String,
-  inventory: number
-}
 interface CartItems {
-  order: MenuItem,
+  menuId: String,
   quantity: number
   price: number
 }
@@ -124,8 +120,15 @@ export interface CartScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
 }
 
+// Function to send the cart to the backend and create orders.
 const POST_CART = gql`
-  mutation ` 
+  mutation CartMutation($cart: Cart, $user: String, $location: String, $vendor: String) {
+    addOrder(cart: $cart, user: $user, location: $location, vendor: $vendor) {
+      orderID
+    }
+  }
+  
+  ` 
 
 /**
  * inject finds root store in mobx state tree
