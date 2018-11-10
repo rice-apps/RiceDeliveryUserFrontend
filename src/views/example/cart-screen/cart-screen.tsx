@@ -12,13 +12,8 @@ import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
-import { RootStore } from "../../../app/root-store";
-import { ApolloClient } from 'apollo-boost'
-
-// Apollo client to make calls from
-export const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql"
-});
+import { RootStore } from "../../../app/root-store"
+import { Mutation } from 'react-apollo';
 
 interface MenuItem {
   name: String,
@@ -31,7 +26,7 @@ interface CartItems {
   price: number
 }
 interface Cart {
-  cart?: CartItems[]
+  cart: CartItems[]
 }
 
 const mockCart: Cart = {
@@ -129,6 +124,9 @@ export interface CartScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
 }
 
+const POST_CART = gql`
+  mutation ` 
+
 /**
  * inject finds root store in mobx state tree
  * observer lets us read things from the store
@@ -136,14 +134,10 @@ export interface CartScreenProps extends NavigationScreenProps<{}> {
 @inject("rootStore")
 @observer 
 export class CartScreen extends React.Component<CartScreenProps, {}> {
-  // Local cart that gets updated when item gets added.
-  cart: Cart = mockCart
   state = this.props.rootStore
+
   goBack = () => this.props.navigation.goBack(null)
 
-  confirmOrder(Cart): any {
-    // make a mutate call
-  }
   demoReactotron = async () => {
     console.log(this.state)
     console.tron.log("Your Friendly tron log message")
@@ -185,34 +179,18 @@ export class CartScreen extends React.Component<CartScreenProps, {}> {
       <View style={FULL}>
         <Wallpaper />
         <SafeAreaView style={FULL}>
-          <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
-            <Header
-              headerTx="secondExampleScreen.howTo"
-              leftIcon="back"
-              onLeftPress={this.goBack}
-              style={HEADER}
-              titleStyle={HEADER_TITLE}
-            />
-            <Text style={TITLE} preset="header" tx={"secondExampleScreen.title"} />
-            <Text style={TAGLINE} tx={"secondExampleScreen.tagLine"} />
-            <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
-
             <View>
-              <Button
-                style={DEMO}
-                textStyle={DEMO_TEXT}
-                tx="secondExampleScreen.reactotron"
-                onPress={this.demoReactotron}
-              />
+              <Mutation mutation={POST_CART}>
+                {postMutation => 
+                <Button
+                  style={DEMO}
+                  textStyle={DEMO_TEXT}
+                  tx="Confirm Order"
+                  onPress={postMutation}
+                />
+                }
+              </Mutation>
             </View>
-            <Image source={logoIgnite} style={IGNITE} />
-            <View style={LOVE_WRAPPER}>
-              <Text style={LOVE} text="Made with" />
-              <Image source={heart} style={HEART} />
-              <Text style={LOVE} text="by Infinite Red" />
-            </View>
-          </Screen>
         </SafeAreaView>
       </View>
     )
