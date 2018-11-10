@@ -28,6 +28,34 @@ interface Cart {
   cart: CartItems[]
 }
 
+const mockCart: Cart = {
+  cart: [
+    {order: {
+      name: "Chicken Nuggets",
+      description: "Crispy chicken nuggets.",
+      inventory: 45
+      },
+    quantity: 1,
+    price: 5
+    },
+    {order: {
+      name: "Full Hawaiian Pizza",
+      description: "An entire Hawaiian pizza with pineapples and ham.",
+      inventory: 3
+      }, 
+    quantity: 1,
+    price: 7
+    },
+    {order: {
+      name: "Chicken Sandwich",
+      description: "Chicken sandwich from Chik-fil-a",
+      inventory: 15
+      }, 
+    quantity: 4,
+    price: 4
+    }
+  ]
+}
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -106,6 +134,9 @@ export class CartScreen extends React.Component<CartScreenProps, {}> {
 
   goBack = () => this.props.navigation.goBack(null)
 
+  confirmOrder(Cart): any {
+    // make a mutate call
+  }
   demoReactotron = async () => {
     console.log(this.state)
     console.tron.log("Your Friendly tron log message")
@@ -147,7 +178,7 @@ export class CartScreen extends React.Component<CartScreenProps, {}> {
       <View style={FULL}>
         <Wallpaper />
         <SafeAreaView style={FULL}>
-          {/* <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
+          <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
             <Header
               headerTx="secondExampleScreen.howTo"
               leftIcon="back"
@@ -158,17 +189,23 @@ export class CartScreen extends React.Component<CartScreenProps, {}> {
             <Text style={TITLE} preset="header" tx={"secondExampleScreen.title"} />
             <Text style={TAGLINE} tx={"secondExampleScreen.tagLine"} />
             <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." /> */}
+            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
 
             <View>
               <Button
                 style={DEMO}
                 textStyle={DEMO_TEXT}
-                text="Confirm Order"
+                tx="secondExampleScreen.reactotron"
                 onPress={this.demoReactotron}
               />
             </View>
-          {/* </Screen> */}
+            <Image source={logoIgnite} style={IGNITE} />
+            <View style={LOVE_WRAPPER}>
+              <Text style={LOVE} text="Made with" />
+              <Image source={heart} style={HEART} />
+              <Text style={LOVE} text="by Infinite Red" />
+            </View>
+          </Screen>
         </SafeAreaView>
       </View>
     )
