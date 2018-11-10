@@ -14,6 +14,21 @@ import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
 
+interface MenuItem {
+  name: String,
+  description: String,
+  inventory: number
+}
+interface CartItems {
+  order: MenuItem,
+  quantity: number
+  price: number
+}
+interface Cart {
+  cart: CartItems[]
+}
+
+
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
