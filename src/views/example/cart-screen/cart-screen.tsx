@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, FlatList } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { Screen } from "../../shared/screen"
 import { Text } from "../../shared/text"
@@ -15,32 +15,12 @@ import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store"
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag'
-
-interface CartItems {
-  menuId: String,
-  quantity: number
-  price: number
-}
-interface Cart {
-  cart: CartItems[]
-}
-
-const mockCart: Cart = {
-  cart: [
-    {menuId: "5bd01d4e2e964215214ad0a3",
-    quantity: 1,
-    price: 5.00
-    },
-    {menuId: "5bd01d4e2e964215214ad0a6", 
-    quantity: 1,
-    price: 7.00
-    },
-    {menuId:  "5bd01d4e2e964215214ad0af", 
-    quantity: 4,
-    price: 4.00
-    }
-  ]
-}
+import ApolloClient from "apollo-boost";
+export const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql"
+});
+// Just for testing purposes disable yellowbox warnings
+console.disableYellowBox = true;
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -104,19 +84,55 @@ const HEART: ImageStyle = {
   resizeMode: "contain",
 }
 
-export interface CartScreenProps extends NavigationScreenProps<{}> {
+interface CartScreenProps  {
   rootStore?: RootStore
 }
 
+interface CartScreenState {
+  cart?: Cart
+}
 // Function to send the cart to the backend and create orders.
 const POST_CART = gql`
-  mutation CartMutation($cart: Cart, $user: String, $location: String, $vendor: String) {
-    addOrder(cart: $cart, user: $user, location: $location, vendor: $vendor) {
-      orderID
+  mutation CartMutation($cart: CartInput!, $userID: String!, $location: String!, $vendorID: String!) {
+    addOrder(cart: $cart, userID: $userID, location: $location, vendorID: $vendorID) {
+      _id
     }
   }
-  
   ` 
+const GET_MENU_ITEM = gql`
+  query getMenuItem($itemId: String) {
+    getMenuItem(itemId: $itemId) {
+      name 
+      description
+    }
+  }
+`
+interface CartItems {
+  menuId: String,
+  quantity: number
+  price: number
+}
+interface Cart {
+  cart: CartItems[]
+}
+
+const MOCK_CART: Cart = {
+  cart: [
+    {menuId: "5bd01d4e2e964215214ad0a3",
+    quantity: 1,
+    price: 5.00
+    },
+    {menuId: "5bd01d4e2e964215214ad0a6", 
+    quantity: 1,
+    price: 7.00
+    },
+    {menuId:  "5bd01d4e2e964215214ad0af", 
+    quantity: 4,
+    price: 4.00
+    }
+  ]
+}
+
 
 /**
  * inject finds root store in mobx state tree
@@ -124,10 +140,15 @@ const POST_CART = gql`
  */
 @inject("rootStore")
 @observer 
-export class CartScreen extends React.Component<CartScreenProps, {}> {
-  state = this.props.rootStore
-
-  goBack = () => this.props.navigation.goBack(null)
+export class CartScreen extends React.Component<CartScreenProps, CartScreenState> {
+  constructor(props: CartScreenProps) {
+    super(props)
+    this.state = {
+      cart: MOCK_CART, 
+    }
+    console.log("SET STATE", this.state)
+  }
+  store = this.props.rootStore
 
   demoReactotron = async () => {
     console.log(this.state)
@@ -165,22 +186,40 @@ export class CartScreen extends React.Component<CartScreenProps, {}> {
     await save("Cool Name", "Boaty McBoatface")
   }
 
+  /**
+   * Function to get information about the menuitems in the cart.
+   */
+  getMenuItems() {
+    const menuItems = []
+    this.state.cart.cart.forEach(async (item) => {
+      const menuItem = await client.query({
+        query: GET_MENU_ITEM,
+        variables: {itemId: item.menuId}
+      })
+      menuItems.push(menuItem.data)
+    })
+    return menuItems
+  }
+
+  async generateOrder()  {
+    const order =  await client.mutate({
+      mutation: POST_CART,
+      variables: {cart: this.state.cart, userID: "5bd01994032993139cbbc845", location: "Wiess Commons", vendorID: "5bd01d4e2e964215214ad094" }
+    })
+    return order
+  }
   render() {
     return (
       <View style={FULL}>
         <Wallpaper />
         <SafeAreaView style={FULL}>
             <View>
-              <Mutation mutation={POST_CART}>
-                {postMutation => 
-                <Button
-                  style={DEMO}
-                  textStyle={DEMO_TEXT}
-                  tx="Confirm Order"
-                  onPress={postMutation}
-                />
-                }
-              </Mutation>
+              <Button
+                style={DEMO}
+                textStyle={DEMO_TEXT}
+                text="Confirm Order"
+                onPress={() => this.generateOrder()}
+              />            
             </View>
         </SafeAreaView>
       </View>
