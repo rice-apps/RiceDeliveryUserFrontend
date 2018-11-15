@@ -2,6 +2,7 @@ import { types, destroy } from "mobx-state-tree";
 import { client } from '../main';
 import gql from "graphql-tag";
 
+
 // Queries
 const GET_USERS = gql`
     {

@@ -9,6 +9,33 @@ import { Wallpaper } from "../../shared/wallpaper"
 import { Header } from "../../shared/header"
 import { color, spacing } from "../../../theme"
 import { bowserLogo } from "./"
+import gql from "graphql-tag";
+
+
+// const channelsListQuery = gql`
+//    query ChannelsListQuery {
+//      channels {
+//        id
+//        name
+//      }
+//    }
+//  `;
+
+
+// const ChannelsList = ({ data: {loading, error, channels }}) => {
+//   if (loading) {
+//     return <p>Loading ...</p>;
+//   }
+//   if (error) {
+//     return <p>{error.message}</p>;
+//   }
+//   return <ul>
+//     { channels.map( ch => <li key={ch.id}>{ch.name}</li> ) }
+//   </ul>;
+// };
+
+// const ChannelsListWithData = graphql(channelsListQuery)(ChannelsList);
+
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = { 
