@@ -14,11 +14,6 @@ import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store"
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag'
-import ApolloClient from "apollo-boost";
-export const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
-});
 // Just for testing purposes disable yellowbox warnings
 console.disableYellowBox = true;
 
@@ -91,22 +86,7 @@ interface CartScreenProps  {
 interface CartScreenState {
   cart?: Cart
 }
-// Function to send the cart to the backend and create orders.
-const POST_CART = gql`
-  mutation CartMutation($cart: CartInput!, $userID: String!, $location: String!, $vendorID: String!) {
-    addOrder(cart: $cart, userID: $userID, location: $location, vendorID: $vendorID) {
-      _id
-    }
-  }
-  ` 
-const GET_MENU_ITEM = gql`
-  query getMenuItem($itemId: String) {
-    getMenuItem(itemId: $itemId) {
-      name 
-      description
-    }
-  }
-`
+
 interface CartItems {
   menuId: String,
   quantity: number
@@ -116,22 +96,22 @@ interface Cart {
   cart: CartItems[]
 }
 
-const MOCK_CART: Cart = {
-  cart: [
-    {menuId: "5bd01d4e2e964215214ad0a3",
-    quantity: 1,
-    price: 5.00
-    },
-    {menuId: "5bd01d4e2e964215214ad0a6", 
-    quantity: 1,
-    price: 7.00
-    },
-    {menuId:  "5bd01d4e2e964215214ad0af", 
-    quantity: 4,
-    price: 4.00
-    }
-  ]
-}
+// const MOCK_CART: Cart = {
+//   cart: [
+//     {menuId: "5bd01d4e2e964215214ad0a3",
+//     quantity: 1,
+//     price: 5.00
+//     },
+//     {menuId: "5bd01d4e2e964215214ad0a6", 
+//     quantity: 1,
+//     price: 7.00
+//     },
+//     {menuId:  "5bd01d4e2e964215214ad0af", 
+//     quantity: 4,
+//     price: 4.00
+//     }
+//   ]
+// }
 
 
 /**
@@ -144,10 +124,11 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
   constructor(props: CartScreenProps) {
     super(props)
     this.state = {
-      cart: MOCK_CART, 
+      cart: props.rootStore.cartStore.cartItems, 
     }
     console.log("SET STATE", this.state)
   }
+
   store = this.props.rootStore
 
   demoReactotron = async () => {

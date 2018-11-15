@@ -11,6 +11,7 @@ export const RootStoreModel = types.model("RootStore").props({
   navigationStore: types.optional(NavigationStoreModel, {}),
   userStore: types.optional(UserStoreModel, {
     users: [{
+              _id: "5bd01994032993139cbbc845",
               netid: "Lyla.Nicolas",
               firstName: "Will",
               lastName: "James",
