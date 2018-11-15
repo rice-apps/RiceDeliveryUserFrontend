@@ -2,7 +2,7 @@ import {types, destroy} from "mobx-state-tree";
 import { client } from '../main';
 import gql from "graphql-tag";
 
-const Location = types.model('Location', {name: types.string})
+export const Location = types.model('Location', {name: types.string})
 
 const SizePrice = types.model('SizePrice', {size: types.string, price: types.number})
 
