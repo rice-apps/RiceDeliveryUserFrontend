@@ -9,6 +9,8 @@ import { color, spacing } from "../../../theme"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store"
 import { MenuItem } from "./menu-item"
+import { CartStore } from "../../../app/stores/cart-store";
+import { VendorStore } from "../../../app/stores/vendorStore";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -50,17 +52,23 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
   // Loading in first vendor from vendorStore
   constructor(props) {
     super(props);
-    let { vendor: vendorArray } = this.props.rootStore.vendorStore;
-    let vendor = vendorArray[0];
-    let vendorName = vendor.name;
-    let vendorMenu = vendor.menu;
+    let vendorName, vendorMenu;
+    let { vendor: vendorArray } : VendorStore = this.props.rootStore.vendorStore;
+    if (vendorArray.length > 0) {
+      let vendor = vendorArray[0];
+      vendorName = vendor.name;
+      vendorMenu = vendor.menu;
+    } else {
+      vendorName = "";
+      vendorMenu = []; 
+    }
     this.state = { vendorName: vendorName, vendorMenu: vendorMenu };
   }
 
   goBack = () => this.props.navigation.goBack(null)
 
   render() {
-    let { cartStore } = this.props.rootStore;
+    let { cartStore } : RootStore = this.props.rootStore;
     let { vendorName, vendorMenu } = this.state;
     return (
       <View style={FULL}>

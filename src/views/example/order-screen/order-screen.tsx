@@ -70,8 +70,14 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
 export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<any>, user: Object}> {
   constructor(props) {
     super(props)
+    let user;
     let {orders: orderArray} = this.props.rootStore.orderStore;
-    let user = this.props.rootStore.userStore.users[0];
+    let { users: userArray } = this.props.rootStore.userStore; 
+    if (userArray.length > 0) {
+      user = userArray[0];
+    } else {
+      user = {};
+    }
     this.state = {orders: orderArray, user: user} 
     // this.userStore = this.props.rootStore.userStore
     // this.orders = this.props.rootStore.orderStore

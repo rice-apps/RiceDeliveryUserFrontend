@@ -1,5 +1,6 @@
-import { types, destroy } from "mobx-state-tree";
+import { types, destroy, getRoot } from "mobx-state-tree";
 import { MenuItem } from './vendorStore';
+import { RootStore } from "../root-store";
 
 const OrderItem = types
 .model('OrderItem', {
