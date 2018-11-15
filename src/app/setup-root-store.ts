@@ -5,6 +5,7 @@ import * as storage from "../lib/storage"
 import { Reactotron } from "../services/reactotron"
 import { Api } from "../services/api"
 import { create } from 'apisauce'
+import { OrderStoreModel } from "./stores/order-store";
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -54,7 +55,6 @@ export async function setupRootStore() {
 
     let vendorRes: any = await api.post('', { query: vendorQuery, })
     data.vendorStore = {"vendor": vendorRes.data.data.vendor};
-
 
     rootStore = RootStoreModel.create(data, env)
   } catch(e) {
