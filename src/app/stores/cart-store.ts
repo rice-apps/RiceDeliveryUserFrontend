@@ -36,7 +36,7 @@ export const CartStoreModel = types
 .actions(
     (self) => ({
         addToCart(menuItemID) {
-            self.cartItems.push({itemID: menuItemID, quantity : 1})
+            self.cartItems.push({itemID: menuItemID, quantity : 1, price: 2})
         },
         removeFromCart(menuItemID) {
             let idx = self.cartItems.findIndex((menuItem) => menuItem.itemID == menuItemID)

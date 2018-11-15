@@ -50,6 +50,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
   // Loading in first vendor from vendorStore
   constructor(props) {
     super(props);
+    console.log(this.props.rootStore);
     let { vendor: vendorArray } = this.props.rootStore.vendorStore;
     console.log(vendorArray);
     let vendor = vendorArray[0];

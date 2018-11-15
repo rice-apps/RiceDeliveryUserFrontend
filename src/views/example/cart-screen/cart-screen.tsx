@@ -14,6 +14,7 @@ import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store"
 import { Mutation } from 'react-apollo';
+import { CartStore } from "../../../app/stores/cart-store";
 // Just for testing purposes disable yellowbox warnings
 console.disableYellowBox = true;
 
@@ -84,16 +85,7 @@ interface CartScreenProps  {
 }
 
 interface CartScreenState {
-  cart?: Cart
-}
-
-interface CartItems {
-  menuId: String,
-  quantity: number
-  price: number
-}
-interface Cart {
-  cart: CartItems[]
+  cart?: CartStore
 }
 
 // const MOCK_CART: Cart = {
@@ -124,7 +116,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
   constructor(props: CartScreenProps) {
     super(props)
     this.state = {
-      cart: props.rootStore.cartStore.cartItems, 
+      cart: props.rootStore.cartStore, 
     }
     console.log("SET STATE", this.state)
   }
