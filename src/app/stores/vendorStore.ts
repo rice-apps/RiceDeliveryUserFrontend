@@ -1,5 +1,6 @@
 import {types, destroy} from "mobx-state-tree";
-
+import { client } from '../main';
+import gql from "graphql-tag";
 
 export const Location = types.model('Location', {name: types.string})
 
@@ -29,3 +30,4 @@ export const VendorStoreModel = types
 })
 
 export type VendorStore = typeof VendorStoreModel.Type
+export type MenuItem = typeof MenuItem.Type
