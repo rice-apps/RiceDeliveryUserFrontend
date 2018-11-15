@@ -67,7 +67,7 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
  */
 @inject("rootStore")
 @observer 
-export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<any>, user: any}> {
+export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<any>, user: Object}> {
   constructor(props) {
     super(props)
     let {orders: orderArray} = this.props.rootStore.orderStore;
