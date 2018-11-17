@@ -10,9 +10,9 @@ export const MenuItem = types
 .model('MenuItem', {
     id: types.string,
     name: types.string,
-    description: types.string,
-    inventory: types.number,
-    prices: types.array(SizePrice)
+    description: types.optional(types.string, ""),
+    inventory: types.optional(types.number, 0),
+    prices: types.optional(types.array(SizePrice), [])
 })
 
 const Vendor = types

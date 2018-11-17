@@ -1,5 +1,5 @@
 import { types, destroy } from "mobx-state-tree";
-import { Location } from "./vendorStore";
+import { Location, MenuItem } from "./vendorStore";
 import { client } from "../main";
 import gql from "graphql-tag";
 
@@ -32,11 +32,11 @@ const GET_ORDERS = gql`
 
 const OrderItem = types
 .model('OrderItem' , {
-    item: types.string,
+    item: MenuItem,
     quantity: types.number
 })
 
- const Order = types
+const Order = types
 .model('Order', {
     location: Location,
     items: types.array(OrderItem),
@@ -50,31 +50,42 @@ export const OrderStoreModel = types
 })
 .actions(
     (self) => ({
-        async getOrders(netid) {
+        startOrderPolling(netid) {
             // let orders : any = await client.query({
             //     query: GET_ORDERS,
             //     variables: {netid: netid}
             // });
-            let orders = self.orders;
-            let observable = await client.watchQuery({
+
+            // let formattedOrders = orders.data.user[0].orders
+            // .map(x => ({
+            //     location: x.location, 
+            //     items: x.items,
+            //     vendor:x.vendor._id, 
+            //     user:x.user.netid
+            // }));
+            // self.orders = formattedOrders;
+            // let orders = self.orders;
+            let observable = client.watchQuery({
                 query: GET_ORDERS,
                 variables: { netid: netid },
                 pollInterval: 100
             });
+            console.log("Started polling!");
             observable.subscribe({
-                next: ({ data }) => {
-                    let formattedOrders = data.user[0].orders
-                    .map(x => ({
-                                location: x.location, 
-                                items: x.items,
-                                vendor:x.vendor._id, 
-                                user:x.user.netid}));
-                    orders = formattedOrders;
-                    console.log({orders: formattedOrders});
-                    // return {orders: formattedOrders};
-                }
+                next: ({ data }) => self.updateOrderStore(data)
             });
-            self.orders = orders;
+        },
+        updateOrderStore(data) {
+            console.log("Updating store!");
+            let formattedOrders = data.user[0].orders
+            .map(x => ({
+                location: x.location, 
+                items: x.items,
+                vendor:x.vendor._id, 
+                user:x.user.netid
+            }));
+            console.log(formattedOrders);
+            self.orders = formattedOrders;
         }
     })
 )
