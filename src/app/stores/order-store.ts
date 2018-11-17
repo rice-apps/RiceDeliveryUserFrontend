@@ -54,6 +54,14 @@ export const OrderStoreModel = types
                 query: GET_ORDERS,
                 variables: {netid: netid}
             });
+            // let observable = await client.watchQuery({
+            //     query: GET_ORDERS,
+            //     variables: { netid: netid },
+            //     pollInterval: 100
+            // });
+            // observable.subscribe({
+            //     next: ({ data }) => console.log("data")
+            // });
             let formattedOrders = orders.data.user[0].orders
             .map(x => ({
                         location: x.location, 
