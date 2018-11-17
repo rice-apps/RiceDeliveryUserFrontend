@@ -70,14 +70,9 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
 export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<any>, user: Object}> {
   constructor(props) {
     super(props)
-    let user;
+    let user  =  this.props.rootStore.userStore; 
     let {orders: orderArray} = this.props.rootStore.orderStore;
-    let { users: userArray } = this.props.rootStore.userStore; 
-    if (userArray.length > 0) {
-      user = userArray[0];
-    } else {
-      user = {};
-    }
+
     this.state = {orders: orderArray, user: user} 
     this.props.rootStore.orderStore.startOrderPolling("Walter.Shaniya");
     // this.userStore = this.props.rootStore.userStore
@@ -111,7 +106,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
             {/* <BulletItem text= {this.state.userStore.users[0].netid}/> */}
                
             <SectionList
-                renderItem={({item, index}) => <Text key={index}>{item}</Text>}
+                renderItem={({item, index}) => <Text key={index}>{item}</Text>} 
                 renderSectionHeader={({section: {title}}) => (
                   <Text style={{fontWeight: 'bold'}}>{title}</Text>
                 )}

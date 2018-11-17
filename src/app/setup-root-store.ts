@@ -39,6 +39,24 @@ const vendorQuery = `
     }
   }
   `;
+const userQuery = `
+query user{
+  user (netid: "Lyla.Nicolas") {
+    _id
+    netid
+    firstName
+    lastName
+    phone
+    defaultLocation {
+      _id
+      name
+    }
+    orders{
+      _id
+    }
+  }
+}
+  `;
 
 /**
  * Setup the root state.
@@ -53,8 +71,14 @@ export async function setupRootStore() {
     // load data from storage
     data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
 
+    //getting all vendors
     let vendorRes: any = await api.post('', { query: vendorQuery, })
     data.vendorStore = {"vendor": vendorRes.data.data.vendor};
+    
+    //getting a speicifc user
+    let userRes: any = await api.post('', { query: userQuery, })
+    data.userStore = {"user": userRes.data.data.user };
+
 
     rootStore = RootStoreModel.create(data, env)
   } catch(e) {
