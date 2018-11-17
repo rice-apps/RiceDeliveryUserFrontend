@@ -14,6 +14,7 @@ const GET_ORDERS = gql`
                     items{
                         item{
                             id
+                            name
                         }
                         quantity
                     }
@@ -50,27 +51,30 @@ export const OrderStoreModel = types
 .actions(
     (self) => ({
         async getOrders(netid) {
-            let orders : any = await client.query({
-                query: GET_ORDERS,
-                variables: {netid: netid}
-            });
-            // let observable = await client.watchQuery({
+            // let orders : any = await client.query({
             //     query: GET_ORDERS,
-            //     variables: { netid: netid },
-            //     pollInterval: 100
+            //     variables: {netid: netid}
             // });
-            // observable.subscribe({
-            //     next: ({ data }) => console.log("data")
-            // });
-            let formattedOrders = orders.data.user[0].orders
-            .map(x => ({
-                        location: x.location, 
-                        items: x.items,
-                        vendor:x.vendor._id, 
-                        user:x.user.netid}));
-            
-            console.log({orders: formattedOrders});
-            return {orders: formattedOrders};
+            let orders = self.orders;
+            let observable = await client.watchQuery({
+                query: GET_ORDERS,
+                variables: { netid: netid },
+                pollInterval: 100
+            });
+            observable.subscribe({
+                next: ({ data }) => {
+                    let formattedOrders = data.user[0].orders
+                    .map(x => ({
+                                location: x.location, 
+                                items: x.items,
+                                vendor:x.vendor._id, 
+                                user:x.user.netid}));
+                    orders = formattedOrders;
+                    console.log({orders: formattedOrders});
+                    // return {orders: formattedOrders};
+                }
+            });
+            self.orders = orders;
         }
     })
 )
