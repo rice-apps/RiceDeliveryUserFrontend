@@ -1,6 +1,6 @@
 import { types, destroy } from "mobx-state-tree";
 
- export const User = types
+const User = types
 .model('User', {
     _id: types.optional(types.string, ""),
     netid: types.optional(types.string, ""),
@@ -14,6 +14,16 @@ import { types, destroy } from "mobx-state-tree";
 
 export const UserStoreModel = types
 .model('UserStoreModel', {
-    user : types.optional(User, {})
+    user : types.optional(User, {
+            netid: "Lyla.Nicolas",
+            firstName: "Will",
+            lastName: "James",
+            phone: "780-594-8541",
+            stripeId: "0123",
+            defaultLocation: "5bca4c408f2c68f7ba37422e",
+            access: "Employee"
+        } )
 })
+
+
  export type UserStore = typeof UserStoreModel.Type

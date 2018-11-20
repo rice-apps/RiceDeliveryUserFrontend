@@ -84,8 +84,14 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
 
   getOrders = async () => {
     let { orderStore } = this.props.rootStore;
-    let orders = await orderStore.startOrderPolling(this.state.user.netid)
 
+    //pulls however many orders a speicifc user has 
+    //for now the default user is netid: Lyla.Nicolas 
+    //she has only one order
+
+    let orders = await orderStore.startOrderPolling("");
+    
+    console.log(this.state.user.netid)
     // this.setState( orders )
     // console.log(this.state);
 
@@ -115,7 +121,8 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
 
                   
                   [
-                  {title: "Title1" , data: [this.state.user.firstName]},
+                  {title: "Title1" , data: this.state.user.firstName},
+           
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
                   {title: 'Title3', data: this.state.orders.map((x, idx) => idx)},
                 ]

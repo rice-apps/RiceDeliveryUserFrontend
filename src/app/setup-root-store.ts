@@ -39,6 +39,7 @@ const vendorQuery = `
     }
   }
   `;
+  
 const userQuery = `
 query user{
   user (netid: "Lyla.Nicolas") {
