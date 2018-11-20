@@ -39,25 +39,26 @@ const vendorQuery = `
     }
   }
   `;
-  
-const userQuery = `
-query user{
-  user (netid: "Lyla.Nicolas") {
-    _id
-    netid
-    firstName
-    lastName
-    phone
-    defaultLocation {
-      _id
-      name
-    }
-    orders{
-      _id
-    }
-  }
-}
-  `;
+
+  //not used right now
+// const userQuery = `
+// query user{
+//   user (netid: "Lyla.Nicolas") {
+//     _id
+//     netid
+//     firstName
+//     lastName
+//     phone
+//     defaultLocation {
+//       _id
+//       name
+//     }
+//     orders{
+//       _id
+//     }
+//   }
+// }
+//   `;
 
 /**
  * Setup the root state.
@@ -76,9 +77,10 @@ export async function setupRootStore() {
     let vendorRes: any = await api.post('', { query: vendorQuery, })
     data.vendorStore = {"vendor": vendorRes.data.data.vendor};
     
+    //not used right now
     //getting a speicifc user
-    let userRes: any = await api.post('', { query: userQuery, })
-    data.userStore = {"user": userRes.data.user };
+    // let userRes: any = await api.post('', { query: userQuery, })
+    // data.userStore = {"user": userRes.data.user };
 
 
     rootStore = RootStoreModel.create(data, env)

@@ -121,8 +121,8 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
 
                   
                   [
-                  {title: "Title1" , data: this.state.user.firstName},
-           
+                  {title: "First Name" , data: [this.state.user.firstName]},
+
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
                   {title: 'Title3', data: this.state.orders.map((x, idx) => idx)},
                 ]
