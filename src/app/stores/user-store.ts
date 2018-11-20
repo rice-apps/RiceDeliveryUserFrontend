@@ -1,6 +1,6 @@
 import { types, destroy } from "mobx-state-tree";
 
- const User = types
+ export const User = types
 .model('User', {
     _id: types.optional(types.string, ""),
     netid: types.optional(types.string, ""),

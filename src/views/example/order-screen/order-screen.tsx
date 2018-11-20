@@ -70,7 +70,7 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
 export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<any>, user: Object}> {
   constructor(props) {
     super(props)
-    let user  =  this.props.rootStore.userStore; 
+    let user  =  this.props.rootStore.userStore.user; 
     let {orders: orderArray} = this.props.rootStore.orderStore;
 
     this.state = {orders: orderArray, user: user} 
@@ -82,9 +82,10 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
 
   goBack = () => this.props.navigation.goBack(null)
 
-  getOrders = () => {
+  getOrders = async () => {
     let { orderStore } = this.props.rootStore;
-    console.log(this.state.user);
+    let orders = await orderStore.startOrderPolling(this.state.user.netid)
+
     // this.setState( orders )
     // console.log(this.state);
 

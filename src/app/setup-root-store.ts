@@ -77,7 +77,7 @@ export async function setupRootStore() {
     
     //getting a speicifc user
     let userRes: any = await api.post('', { query: userQuery, })
-    data.userStore = {"user": userRes.data.data.user };
+    data.userStore = {"user": userRes.data.user };
 
 
     rootStore = RootStoreModel.create(data, env)
