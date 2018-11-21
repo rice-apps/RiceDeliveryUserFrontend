@@ -3,11 +3,9 @@ import { View, ViewStyle, TextStyle, SafeAreaView, SectionList } from "react-nat
 import { NavigationScreenProps } from "react-navigation"
 import { Screen } from "../../shared/screen"
 import { Text } from "../../shared/text"
-import { Button } from "../../shared/button"
 import { Wallpaper } from "../../shared/wallpaper"
 import { Header } from "../../shared/header"
 import { color, spacing } from "../../../theme"
-import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
 import { OrderStoreModel } from "../../../app/stores/order-store";
@@ -61,10 +59,10 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
     } else {
       user = {};
     }
-    console.log(user);
     this.state = {orders: orderArray, user: user} 
-    // this.props.rootStore.orderStore.startOrderPolling("Lyla.Nicolas");
-    this.props.rootStore.orderStore.startOrderPolling("Lowe_Deangelo");
+    // The current hard-coded user has netid = "Lyla.Nicolas"
+    this.props.rootStore.orderStore.startOrderPolling(user.netid);
+    // this.props.rootStore.orderStore.startOrderPolling("Lowe_Deangelo");
   }
 
   goBack = () => this.props.navigation.goBack(null)
@@ -72,6 +70,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
   render() {
     let { firstName, lastName } = this.state.user;
     let { orders } = this.state;
+    let { vendorStore } = this.props.rootStore;
       return (
       <View style={FULL}>
         <Wallpaper />
@@ -86,7 +85,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
             />
                
             <SectionList
-                renderItem={({item, index}) => {return <SingleOrder order= {item}></SingleOrder>}}
+                renderItem={({item, index}) => {return <SingleOrder order= {item} vendorStore= {vendorStore}></SingleOrder>}}
                 renderSectionHeader={({section: {title}}) => <Text style={TITLE}>{title}</Text>}
                 sections={[
                   {title: firstName + ' ' +  lastName + '\'s Orders:', data: orders.map((x, index) => x)},
