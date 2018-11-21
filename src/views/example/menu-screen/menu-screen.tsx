@@ -86,7 +86,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
             {/* Section List to render in each item on menu */}
             <SectionList
               // Passing in the entire cart store into each menuItem
-              renderItem={({ item, index, section }) => <MenuItem menuItem = { item } cartStore = { cartStore }></MenuItem>}
+              renderItem={({ item, index }) => <MenuItem menuItem = { item } cartStore = { cartStore }></MenuItem>}
               renderSectionHeader={({ section: { title } }) => (
                 <Text style={TITLE}>{title}</Text>
               )}

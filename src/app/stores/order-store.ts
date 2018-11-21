@@ -104,6 +104,6 @@ export const OrderStoreModel = types
 // )
 
 
-
+export type Order = typeof Order.Type
 
  export type OrderStore = typeof OrderStoreModel.Type
