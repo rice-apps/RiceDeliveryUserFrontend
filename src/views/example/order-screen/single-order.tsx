@@ -43,7 +43,7 @@ export class SingleOrder extends React.Component<SingleOrderProps, {}> {
                     let { quantity } = item;
                     let { name, prices } = item.item;
                     // We don't actually have any price pairs currently...
-                    console.log("Price pairs:", prices)
+                    // console.log("Price pairs:", prices)
                     // let { price } = prices[0];
                     return <Text style={ITEM}> { quantity } { name } </Text>}}
                 renderSectionHeader={({section: {title}}) => <Text style={ORDER}>{title}</Text>}

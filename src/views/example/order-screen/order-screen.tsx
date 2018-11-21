@@ -8,9 +8,9 @@ import { Header } from "../../shared/header"
 import { color, spacing } from "../../../theme"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
-import { OrderStoreModel } from "../../../app/stores/order-store";
-import { getRoot } from "mobx-state-tree";
+import { Order } from "../../../app/stores/order-store";
 import { SingleOrder } from "./single-order"
+import { User } from "../../../app/stores/user-store";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -48,7 +48,7 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
  */
 @inject("rootStore")
 @observer
-export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<Object>, user: Object}> {
+export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<Order>, user: User}> {
   constructor(props) {
     super(props)
     let user;

@@ -59,3 +59,5 @@ export const UserStoreModel = types
 // .create({
 //      names: [{name: "William Su", vip: true}]
 //  })
+
+export type User = typeof User.Type

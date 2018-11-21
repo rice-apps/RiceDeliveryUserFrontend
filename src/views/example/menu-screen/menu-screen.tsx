@@ -48,7 +48,7 @@ export interface MenuScreenProps extends NavigationScreenProps<{}> {
  */
 @inject("rootStore")
 @observer
-export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: String, vendorMenu: Array<Object> }> {
+export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: String, vendorMenu: Array<MenuItem> }> {
   // Loading in first vendor from vendorStore
   constructor(props) {
     super(props);
