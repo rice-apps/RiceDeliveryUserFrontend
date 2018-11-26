@@ -79,6 +79,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
       user = {};
     }
     this.state = {orders: orderArray, user: user} 
+    this.props.rootStore.orderStore.startOrderPolling("Walter.Shaniya");
     // this.userStore = this.props.rootStore.userStore
     // this.orders = this.props.rootStore.orderStore
   }
@@ -86,11 +87,11 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
 
   goBack = () => this.props.navigation.goBack(null)
 
-  getOrders = async () => {
+  getOrders = () => {
     let { orderStore } = this.props.rootStore;
-    let orders = await orderStore.getOrders(this.state.user.netid);
-    this.setState( orders )
-    console.log(this.state);
+    console.log(this.state.user);
+    // this.setState( orders )
+    // console.log(this.state);
 
   }
 
@@ -120,7 +121,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
                   [
                   {title: "Title1" , data: [this.state.user.firstName]},
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
-                  {title: 'Title3', data: this.state.orders.map(x => x.user)},
+                  {title: 'Title3', data: this.state.orders.map((x, idx) => idx)},
                 ]
               
               }

@@ -17,7 +17,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag'
 import ApolloClient from "apollo-boost";
 export const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
+  uri: "http://localhost:3000/graphql"
 });
 // Just for testing purposes disable yellowbox warnings
 console.disableYellowBox = true;
