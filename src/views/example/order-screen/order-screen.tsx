@@ -121,7 +121,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
  
                 [
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
-                  {title: 'Title3', data: this.state.orders.map((x, idx) => idx)},
+                  {title: 'Orders', data: this.state.orders.map((x, idx) => idx)},
                 ]
               
               }
@@ -129,12 +129,6 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
               />
 
             <View>
-              <Button
-                style={DEMO}
-                textStyle={DEMO_TEXT}
-                tx="secondExampleScreen.reactotron"
-                onPress={this.getOrders}
-              />
             </View>
           </Screen>
         </SafeAreaView>

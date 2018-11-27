@@ -9,11 +9,17 @@ import gql from "graphql-tag";
 const BOLD: TextStyle = { fontWeight: "bold" }
 const UNSELECTED_STYLE: TextStyle = {
     ...BOLD,
-    fontSize: 25,
-    lineHeight: 30,
-    textAlign: "center",
+    fontSize: 15,
+    lineHeight: 20,
+    textAlign: "left",
     letterSpacing: 1.5,
     color: "white",
+}
+const ITEM_STYLE: TextStyle = {
+    fontSize: 20,
+    lineHeight: 20,
+    textAlign: "left",
+    color: "grey"
 }
 const SELECTED_STYLE: TextStyle = {
     ...UNSELECTED_STYLE,
@@ -66,13 +72,13 @@ export class Order extends React.Component<OrderProps, {}> {
         // Currently, only displaying first element
         return (
             <View>
-                <Text>{user}: { status.pending }</Text>
-                <FlatList
+                <Text style={UNSELECTED_STYLE}>{user}: { new Date(status.pending * 1000).toDateString() }</Text>
+                {/* <FlatList
                 data={items}
-                renderItem={({ item, index }) => <Text key={index}>{item ? item.name : ""}</Text>}
+                renderItem={({ item, index }) => <Text style={ITEM_STYLE} key={index}>{item ? item.name : ""}</Text>}
                 keyExtractor={(item, index) => index.toString()}
                 >
-                </FlatList>
+                </FlatList> */}
             </View>
         )
     }
