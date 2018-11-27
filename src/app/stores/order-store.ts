@@ -26,6 +26,10 @@ const GET_ORDERS = gql`
                     user{
                         netid
                     }
+                    status {
+                        pending
+                        onTheWay
+                    }
                 }
             }
         }
@@ -38,12 +42,19 @@ const OrderItem = types
     quantity: types.number
 })
 
+const OrderStatus = types
+.model('OrderStatus', {
+    pending: types.optional(types.string, "0"),
+    onTheWay: types.optional(types.null, null)
+});
+
 const Order = types
 .model('Order', {
     location: Location,
     items: types.array(OrderItem),
     vendor: types.string,
-    user: types.string
+    user: types.string,
+    status: types.optional(OrderStatus, {pending: "0", onTheWay: null})
 })
 
 export const OrderStoreModel = types
@@ -71,7 +82,8 @@ export const OrderStoreModel = types
                 location: x.location, 
                 items: x.items,
                 vendor:x.vendor._id, 
-                user:x.user.netid
+                user:x.user.netid,
+                status: x.status
             }));
             console.log(formattedOrders);
             self.orders = formattedOrders;

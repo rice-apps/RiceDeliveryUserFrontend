@@ -57,15 +57,16 @@ export class Order extends React.Component<OrderProps, {}> {
     render() {
         let orderNum = this.props.order;
         let order = this.props.orderStore.orders[orderNum];
-        let { items, location, user, vendor } = order;
+        let { items, location, user, vendor, status } = order;
         if (items != undefined) {
             items = this._renderItems(items);
         }
         console.log(items);
+        console.log(status);
         // Currently, only displaying first element
         return (
             <View>
-                <Text>{user}</Text>
+                <Text>{user}: { status.pending }</Text>
                 <FlatList
                 data={items}
                 renderItem={({ item, index }) => <Text key={index}>{item ? item.name : ""}</Text>}
