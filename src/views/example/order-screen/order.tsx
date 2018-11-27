@@ -72,7 +72,7 @@ export class Order extends React.Component<OrderProps, {}> {
         // Currently, only displaying first element
         return (
             <View>
-                <Text style={UNSELECTED_STYLE}>{user}: { new Date(status.pending * 1000).toDateString() }</Text>
+                <Text style={UNSELECTED_STYLE}>{user}: { new Date(status.pending * 1000).toLocaleTimeString() }</Text>
                 {/* <FlatList
                 data={items}
                 renderItem={({ item, index }) => <Text style={ITEM_STYLE} key={index}>{item ? item.name : ""}</Text>}

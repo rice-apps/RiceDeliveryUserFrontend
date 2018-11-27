@@ -12,9 +12,9 @@ export const RootStoreModel = types.model("RootStore").props({
   userStore: types.optional(UserStoreModel, {
     users: [{
               _id: "5bd01994032993139cbbc84c",
-              netid: "Walter.Shaniya",
-              firstName: "Elody",
-              lastName: "Balistreri",
+              netid: "mz10",
+              firstName: "Mark",
+              lastName: "Zuckerberg",
               phone: "322-499-8353",
               stripeId: "0123",
               defaultLocation: "5bca4c408f2c68f7ba37422e",
