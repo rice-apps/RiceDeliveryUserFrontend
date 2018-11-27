@@ -96,3 +96,4 @@ export const OrderStoreModel = types
 
 
  export type OrderStore = typeof OrderStoreModel.Type
+ export type OrderItemStore = typeof OrderItem.Type

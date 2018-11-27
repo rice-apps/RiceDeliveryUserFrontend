@@ -70,6 +70,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
   render() {
     let { cartStore } : RootStore = this.props.rootStore;
     let { vendorName, vendorMenu } = this.state;
+    console.log(vendorMenu);
     return (
       <View style={FULL}>
         <Wallpaper />

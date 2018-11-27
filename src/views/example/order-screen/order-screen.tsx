@@ -14,6 +14,7 @@ import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store";
 import { OrderStoreModel } from "../../../app/stores/order-store";
 import { getRoot } from "mobx-state-tree";
+import { Order } from "./order";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -74,11 +75,12 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
     let {orders: orderArray} = this.props.rootStore.orderStore;
     let { users: userArray } = this.props.rootStore.userStore; 
     if (userArray.length > 0) {
+      console.log(userArray);
       user = userArray[0];
     } else {
       user = {};
     }
-    this.state = {orders: orderArray, user: user} 
+    this.state = {orders: orderArray, user: user } 
     this.props.rootStore.orderStore.startOrderPolling("Walter.Shaniya");
     // this.userStore = this.props.rootStore.userStore
     // this.orders = this.props.rootStore.orderStore
@@ -96,7 +98,6 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
   }
 
   render() {
-    console.log(this.state.orders);
     return (
       <View style={FULL}>
         <Wallpaper />
@@ -112,14 +113,13 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
             {/* <BulletItem text= {this.state.userStore.users[0].netid}/> */}
                
             <SectionList
-                renderItem={({item, index}) => <Text key={index}>{item}</Text>}
+                renderItem={({item, index}) => <Order key={index} order={index} orderStore={this.props.rootStore.orderStore}></Order>}
                 renderSectionHeader={({section: {title}}) => (
                   <Text style={{fontWeight: 'bold'}}>{title}</Text>
                 )}
                 sections={
  
                 [
-                  {title: "Title1" , data: [this.state.user.firstName]},
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
                   {title: 'Title3', data: this.state.orders.map((x, idx) => idx)},
                 ]
