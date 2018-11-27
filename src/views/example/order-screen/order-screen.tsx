@@ -96,6 +96,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
   }
 
   render() {
+    console.log(this.state.orders);
     return (
       <View style={FULL}>
         <Wallpaper />
@@ -116,9 +117,8 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
                   <Text style={{fontWeight: 'bold'}}>{title}</Text>
                 )}
                 sections={
-
-                  
-                  [
+ 
+                [
                   {title: "Title1" , data: [this.state.user.firstName]},
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
                   {title: 'Title3', data: this.state.orders.map((x, idx) => idx)},

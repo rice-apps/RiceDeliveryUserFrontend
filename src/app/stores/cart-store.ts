@@ -35,11 +35,12 @@ export const CartStoreModel = types
             console.log(self.cartItems);
         },
         async createOrder() {
+            console.log(self.cartItems);
             const order = await client.mutate({
                 mutation: POST_CART,
                 variables: {
                     cart: { cart: self.cartItems },
-                    userID: "5bd01994032993139cbbc845",
+                    userID: "5bd01994032993139cbbc84c",
                     location: "Wiess Commons",
                     vendorID: "5bd01d4e2e964215214ad094"
                 }

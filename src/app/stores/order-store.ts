@@ -7,7 +7,9 @@ const GET_ORDERS = gql`
     
         query GetOrders($netid: String!) {
             user(netid: $netid) {
+                netid
                 orders{
+                    _id
                     location{
                         name
                     }
@@ -51,20 +53,6 @@ export const OrderStoreModel = types
 .actions(
     (self) => ({
         startOrderPolling(netid) {
-            // let orders : any = await client.query({
-            //     query: GET_ORDERS,
-            //     variables: {netid: netid}
-            // });
-
-            // let formattedOrders = orders.data.user[0].orders
-            // .map(x => ({
-            //     location: x.location, 
-            //     items: x.items,
-            //     vendor:x.vendor._id, 
-            //     user:x.user.netid
-            // }));
-            // self.orders = formattedOrders;
-            // let orders = self.orders;
             let observable = client.watchQuery({
                 query: GET_ORDERS,
                 variables: { netid: netid },
@@ -77,6 +65,7 @@ export const OrderStoreModel = types
         },
         updateOrderStore(data) {
             console.log("Updating store!");
+            console.log(data);
             let formattedOrders = data.user[0].orders
             .map(x => ({
                 location: x.location, 
