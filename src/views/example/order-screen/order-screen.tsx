@@ -104,14 +104,11 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
         <SafeAreaView style={FULL}>
           <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
             <Header
-              headerTx="secondExampleScreen.howTo"
-              leftIcon="back"
-              onLeftPress={this.goBack}
+              headerText="Orders"
               style={HEADER}
               titleStyle={HEADER_TITLE}
             />
             {/* <BulletItem text= {this.state.userStore.users[0].netid}/> */}
-               
             <SectionList
                 renderItem={({item, index}) => <Order key={index} order={index} orderStore={this.props.rootStore.orderStore}></Order>}
                 renderSectionHeader={({section: {title}}) => (
@@ -121,7 +118,7 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
  
                 [
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
-                  {title: 'Orders', data: this.state.orders.map((x, idx) => idx)},
+                  {title: 'Today\'s Orders', data: this.state.orders.map((x, idx) => idx)},
                 ]
               
               }

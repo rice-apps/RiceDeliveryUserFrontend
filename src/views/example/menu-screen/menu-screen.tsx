@@ -77,7 +77,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
         <SafeAreaView style={FULL}>
           <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
             <Header
-              headerTx="secondExampleScreen.howTo"
+              headerText="Vendor"
               leftIcon="back"
               onLeftPress={this.goBack}
               style={HEADER}
@@ -98,9 +98,9 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
             />
 
               {/* Access cart store just to debug */}
-            <TouchableHighlight onPress = {() => console.log(this.props.rootStore.cartStore)}>
+            {/* <TouchableHighlight onPress = {() => console.log(this.props.rootStore.cartStore)}>
               <Text>Checkout Cart Store</Text>
-            </TouchableHighlight>
+            </TouchableHighlight> */}
 
           </Screen>
         </SafeAreaView>

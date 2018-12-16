@@ -75,7 +75,7 @@ export class Order extends React.Component<OrderProps, {}> {
                 <Text style={UNSELECTED_STYLE}>{user}: { new Date(status.pending * 1000).toLocaleTimeString() }</Text>
                 {/* <FlatList
                 data={items}
-                renderItem={({ item, index }) => <Text style={ITEM_STYLE} key={index}>{item ? item.name : ""}</Text>}
+                renderItem={({ item, index }) => <Text style={ITEM_STYLE} key={index}>{item.name}</Text>}
                 keyExtractor={(item, index) => index.toString()}
                 >
                 </FlatList> */}
