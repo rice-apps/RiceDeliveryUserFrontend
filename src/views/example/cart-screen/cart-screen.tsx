@@ -13,6 +13,7 @@ import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store"
+import { CartStore } from "../../../app/stores/cart-store"
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag'
 import ApolloClient from "apollo-boost";
@@ -89,8 +90,10 @@ interface CartScreenProps  {
 }
 
 interface CartScreenState {
-  cart?: Cart
+  cart?: Cart,
+  cartStore?: CartStore
 }
+
 // Function to send the cart to the backend and create orders.
 const POST_CART = gql`
   mutation CartMutation($cart: CartInput!, $userID: String!, $location: String!, $vendorID: String!) {
@@ -145,6 +148,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
     super(props)
     this.state = {
       cart: MOCK_CART, 
+      cartStore: props.rootStore.cartStore
     }
     console.log("SET STATE", this.state)
   }
@@ -218,7 +222,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
                 style={DEMO}
                 textStyle={DEMO_TEXT}
                 text="Confirm Order"
-                onPress={() => this.generateOrder()}
+                onPress={() => this.state.cartStore.createOrder()}
               />            
             </View>
         </SafeAreaView>

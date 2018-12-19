@@ -7,7 +7,9 @@ const GET_ORDERS = gql`
     
         query GetOrders($netid: String!) {
             user(netid: $netid) {
+                netid
                 orders{
+                    _id
                     location{
                         name
                     }
@@ -24,6 +26,10 @@ const GET_ORDERS = gql`
                     user{
                         netid
                     }
+                    status {
+                        pending
+                        onTheWay
+                    }
                 }
             }
         }
@@ -36,12 +42,19 @@ const OrderItem = types
     quantity: types.number
 })
 
+const OrderStatus = types
+.model('OrderStatus', {
+    pending: types.optional(types.string, "0"),
+    onTheWay: types.optional(types.null, null)
+});
+
 const Order = types
 .model('Order', {
     location: Location,
     items: types.array(OrderItem),
     vendor: types.string,
-    user: types.string
+    user: types.string,
+    status: types.optional(OrderStatus, {pending: "0", onTheWay: null})
 })
 
 export const OrderStoreModel = types
@@ -51,20 +64,6 @@ export const OrderStoreModel = types
 .actions(
     (self) => ({
         startOrderPolling(netid) {
-            // let orders : any = await client.query({
-            //     query: GET_ORDERS,
-            //     variables: {netid: netid}
-            // });
-
-            // let formattedOrders = orders.data.user[0].orders
-            // .map(x => ({
-            //     location: x.location, 
-            //     items: x.items,
-            //     vendor:x.vendor._id, 
-            //     user:x.user.netid
-            // }));
-            // self.orders = formattedOrders;
-            // let orders = self.orders;
             let observable = client.watchQuery({
                 query: GET_ORDERS,
                 variables: { netid: netid },
@@ -77,12 +76,14 @@ export const OrderStoreModel = types
         },
         updateOrderStore(data) {
             console.log("Updating store!");
+            console.log(data);
             let formattedOrders = data.user[0].orders
             .map(x => ({
                 location: x.location, 
                 items: x.items,
                 vendor:x.vendor._id, 
-                user:x.user.netid
+                user:x.user.netid,
+                status: x.status
             }));
             console.log(formattedOrders);
             self.orders = formattedOrders;
@@ -107,3 +108,4 @@ export const OrderStoreModel = types
 
 
  export type OrderStore = typeof OrderStoreModel.Type
+ export type OrderItemStore = typeof OrderItem.Type
