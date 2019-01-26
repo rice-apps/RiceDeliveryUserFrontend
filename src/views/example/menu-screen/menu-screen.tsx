@@ -65,7 +65,8 @@ export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: S
     this.state = { vendorName: vendorName, vendorMenu: vendorMenu };
   }
 
-  goBack = () => this.props.navigation.goBack(null)
+  // goBack = () => this.props.navigation.goBack(null)
+  goBack = () => this.props.navigation.push("auth")
 
   render() {
     let { cartStore } : RootStore = this.props.rootStore;

@@ -10,7 +10,7 @@ import { Header } from "../../shared/header"
 import { color, spacing } from "../../../theme"
 import { bowserLogo } from "./"
 // Linking
-import { Platform, Linking } from 'react-native';
+import { Platform, Linking, WebView } from 'react-native';
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = { 
@@ -88,13 +88,14 @@ const api = create({
 
 export interface AuthenticationScreenProps extends NavigationScreenProps<{}> {}
 
-export class AuthenticationScreen extends React.Component<AuthenticationScreenProps, {author: object, person: string, authorJSON: string}> {
+export class AuthenticationScreen extends React.Component<AuthenticationScreenProps, {author: object, person: string, authorJSON: string, displayBrowser: boolean}> {
   constructor(props) {
     super(props);
     this.state = {
       author : {},
       authorJSON: "",
-      person : ""
+      person : "",
+      displayBrowser: false
     };
   }
 
@@ -133,50 +134,37 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
     );
   }
 
+  toggleBrowser() {
+    this.setState({ displayBrowser: !this.state.displayBrowser });
+  }
+
   render() {
     return (
       <View style={FULL}>
-        <StatusBar barStyle="light-content" />      
-        <Wallpaper />
+        <StatusBar barStyle="light-content" />
+        {/* <Wallpaper /> */}
+        <Button
+          style={CONTINUE}
+          textStyle={CONTINUE_TEXT}
+          tx="firstExampleScreen.continue"
+          onPress={() => this.toggleBrowser()}
+        />
+        <WebView
+          source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=http://localhost:8080/auth'}}
+          style={{marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
+        /> 
+        {/* <Wallpaper />
         <SafeAreaView style={FULL}>
           <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
-            <Header
-              headerTx="firstExampleScreen.poweredBy"
-              style={HEADER}
-              titleStyle={HEADER_TITLE}
-            />
-            <Text style={TITLE_WRAPPER}> 
-              <Text style={TITLE} text="Your new app, " />
-              <Text style={ALMOST} text="almost" />
-              <Text style={TITLE} text="!" />
-            </Text>
-            <Text style={TITLE} preset="header" tx="firstExampleScreen.readyForLaunch" />          
-            <Image source={bowserLogo} style={BOWSER} />
-            <Text style={CONTENT}>
-              This probably isn't what your app is going to look like. Unless your designer handed you this screen and, in that case, congrats! You're ready to ship.
-            </Text>
-            <Text style={CONTENT}>
-              For everyone else, this is where you'll see a live preview of your fully functioning app using Ignite.
-            </Text>
-            <Text style={{paddingTop: 10,paddingBottom: 10, backgroundColor: 'blue', color: 'white'}}>
-              <Text>
-                Hello {this.state.author != {} ? this.state.author['lastName'] : ""} 
-              </Text>
-            </Text>
-            <TextInput
-              style={{height: 40, backgroundColor:'white', paddingLeft: 10}}
-              value={this.state.person}
-              placeholder="Person"
-              onChangeText={(input) => this.setState({ person: input })}
-            />
+          
             <Button
               style={CONTINUE}
               textStyle={CONTINUE_TEXT}
               tx="firstExampleScreen.continue"
-              onPress={() => this.queryGetPost(this.state.person)}
+              onPress={() => this.showWeb()}
             />
           </Screen>
-        </SafeAreaView>
+        </SafeAreaView> */}
       </View>
     )
   }
