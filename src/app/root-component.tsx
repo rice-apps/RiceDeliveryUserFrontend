@@ -46,7 +46,10 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
   }
 
   handleOpenURL(event) {
+    console.log("this is the root navigator")
     console.log(event.url);
+    
+
   }
 
   render() {

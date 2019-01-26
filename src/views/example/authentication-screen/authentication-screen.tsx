@@ -1,6 +1,7 @@
 import * as React from "react"
 import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, StatusBar, TextInput } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
+import { inject, observer } from "mobx-react"
 import { create } from 'apisauce'
 import { Text } from "../../shared/text"
 import { Button } from "../../shared/button"
@@ -11,6 +12,8 @@ import { color, spacing } from "../../../theme"
 import { bowserLogo } from "./"
 // Linking
 import { Platform, Linking, WebView } from 'react-native';
+import { UserStoreModel, UserStore } from "../../../app/stores/user-store";
+import { RootStore } from "../../../app/root-store";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = { 
@@ -86,16 +89,22 @@ const api = create({
   headers: {'Accept': 'application/json'}
 });
 
-export interface AuthenticationScreenProps extends NavigationScreenProps<{}> {}
+export interface AuthenticationScreenProps extends NavigationScreenProps<{}> {
+  rootStore?: RootStore
+}
 
-export class AuthenticationScreen extends React.Component<AuthenticationScreenProps, {author: object, person: string, authorJSON: string, displayBrowser: boolean}> {
+@inject("rootStore")
+@observer 
+export class AuthenticationScreen extends React.Component<AuthenticationScreenProps, {author: object, person: string, authorJSON: string, displayBrowser: boolean, userStore: UserStore}> {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       author : {},
       authorJSON: "",
       person : "",
-      displayBrowser: false
+      displayBrowser: false,
+      userStore: props.rootStore.userStore
     };
   }
 
@@ -126,8 +135,48 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
     this.setState({ displayBrowser: !this.state.displayBrowser });
   }
 
+
+  authenticate = (ticket) => {
+    api
+    .post(
+      '',
+      {
+        query: `
+          mutation Authenticate($ticket: String!) {
+            authenticator(ticket:$ticket) {
+              netID
+            }
+          }
+        `,
+        variables: {
+          ticket: ticket
+        }
+      }
+    )
+    .then((res) => {
+      let user = res.data.data.authenticator;
+      
+      console.log(user);
+      console.log(res);
+    });
+  }
+
   _onNavigationStateChange(webViewState) {
     console.log(webViewState.url);
+
+    var equalSignIndex = webViewState.url.indexOf('ticket=') + 1;
+    if (equalSignIndex > 0) {
+
+      var ticket = webViewState.url.substring(equalSignIndex +6,);
+      console.log("Parsed Ticket: " + ticket);
+      this.state.userStore.authenticate(ticket);
+    }
+
+
+  }
+
+  checkUser() {
+    console.log(this.state.userStore.users);
   }
 
   render() {
@@ -139,11 +188,17 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
           style={CONTINUE}
           textStyle={CONTINUE_TEXT}
           tx="firstExampleScreen.continue"
+          onPress={() => this.checkUser()}
+        />
+        <Button
+          style={CONTINUE}
+          textStyle={CONTINUE_TEXT}
+          tx="firstExampleScreen.continue"
           onPress={() => this.toggleBrowser()}
         />
         <WebView
-          // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=http://localhost:8080/auth'}}
-          source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=http://localhost:8080/auth'}}
+          // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=hedwig://localhost:8080/auth'}}
+          source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org'}}
           onNavigationStateChange={this._onNavigationStateChange.bind(this)}
           style={{marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
         /> 
