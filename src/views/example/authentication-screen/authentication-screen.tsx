@@ -99,18 +99,6 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
     };
   }
 
-  componentDidMount() {
-    Linking.addEventListener('url', this.handleOpenURL);
-  }
-
-  componentWillUnmount() { // C
-    Linking.removeEventListener('url', this.handleOpenURL);
-  }
-
-  handleOpenURL(event) {
-    this.props.navigation.push("secondExample");
-  }
-
   queryGetPost = (name) => {
     api
     .post(
@@ -138,6 +126,10 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
     this.setState({ displayBrowser: !this.state.displayBrowser });
   }
 
+  _onNavigationStateChange(webViewState) {
+    console.log(webViewState.url);
+  }
+
   render() {
     return (
       <View style={FULL}>
@@ -150,7 +142,9 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
           onPress={() => this.toggleBrowser()}
         />
         <WebView
+          // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=http://localhost:8080/auth'}}
           source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=http://localhost:8080/auth'}}
+          onNavigationStateChange={this._onNavigationStateChange.bind(this)}
           style={{marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
         /> 
         {/* <Wallpaper />
