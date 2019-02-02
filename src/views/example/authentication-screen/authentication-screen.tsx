@@ -162,7 +162,7 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
       });
   }
 
-  _onNavigationStateChange(webViewState) {
+  async _onNavigationStateChange(webViewState) {
     console.log(webViewState.url);
 
     var equalSignIndex = webViewState.url.indexOf('ticket=') + 1;
@@ -170,9 +170,18 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
 
       var ticket = webViewState.url.substring(equalSignIndex + 6);
       console.log("Parsed Ticket: " + ticket);
-      this.state.userStore.authenticate(ticket);
+      let badTicket = "28939299239";
+      this.state.userStore.authenticate(badTicket);
+      console.log("Authenticated");
+      // let authenticated = this.state.userStore.authenticated;
+      console.log("Post Auth");
+      console.log(authenticated);
+      if (authenticated) {
+        this.props.navigation.navigate("Menu");
+      } else {
+        this.props.navigation.replace("Login");
+      }
     }
-
 
   }
 

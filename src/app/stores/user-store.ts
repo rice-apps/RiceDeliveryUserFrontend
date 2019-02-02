@@ -17,17 +17,18 @@ const AUTHENTICATION = gql`
  const User = types
 .model('User', {
     // _id: types.string,
-    netID: types.string,
-    firstName: types.string,
-    lastName: types.string,
-    phone: types.string,
+    netID: types.optional(types.string, ""),
+    firstName: types.optional(types.string, ""),
+    lastName: types.optional(types.string, ""),
+    phone: types.optional(types.string, ""),
     // defaultLocation: types.optional(Location, {name: ""}),
 })
 
 
 export const UserStoreModel = types
 .model('UserStoreModel', {
-    user : User
+    user : User,
+    authenticated: types.optional(types.boolean, false)
 })
 .actions(
     (self) => ({
@@ -40,7 +41,13 @@ export const UserStoreModel = types
                 }
             });
             console.log(user.data.authenticator);
-            self.setUser(user.data.authenticator);
+
+            console.log("Almost authenticated");
+            
+            if (user.data.authenticator) {
+                self.setUser(user.data.authenticator);
+                self.setAuth(true);
+            }
 
             // api
             // .post(
@@ -68,6 +75,12 @@ export const UserStoreModel = types
         setUser(user) {
             self.user = user;
         },
+        loggedIn() {
+            self.user ? true : false
+        },
+        setAuth(authState) {
+            self.authenticated = authState;
+        }
     })
 )
 
