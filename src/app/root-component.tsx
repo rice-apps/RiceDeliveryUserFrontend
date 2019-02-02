@@ -8,6 +8,7 @@ import { BackButtonHandler } from "../navigation/back-button-handler"
 import { contains } from "ramda"
 import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
+import { Linking } from "react-native";
 
 interface RootComponentState {
   rootStore?: RootStore
@@ -22,6 +23,8 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
    * re-renders when we're good to go.
    */
   async componentDidMount() {
+    // Setup URL Event Listener
+    Linking.addEventListener('url', this.handleOpenURL);
     SplashScreen.hide()
     this.setState({
       rootStore: await setupRootStore(),
@@ -38,6 +41,17 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
     return contains(routeName, DEFAULT_NAVIGATION_CONFIG.exitRoutes)
   }
 
+  componentWillUnmount() { // C
+    Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  handleOpenURL(event) {
+    console.log("this is the root navigator")
+    console.log(event.url);
+    
+
+  }
+
   render() {
     const rootStore = this.state && this.state.rootStore
 
@@ -47,6 +61,9 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
     //
     // This step should be completely covered over by the splash screen though.
     //
+
+
+
     // You're welcome to swap in your own component to render if your boot up
     // sequence is too slow though.
     if (!rootStore) {

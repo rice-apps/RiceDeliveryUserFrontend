@@ -10,16 +10,14 @@ import { CartStoreModel } from "./stores/cart-store";
 export const RootStoreModel = types.model("RootStore").props({
   navigationStore: types.optional(NavigationStoreModel, {}),
   userStore: types.optional(UserStoreModel, {
-    users: [{
+    user: {
               _id: "5bd01994032993139cbbc84c",
-              netid: "mz10",
+              netID: "mz10",
               firstName: "Mark",
               lastName: "Zuckerberg",
               phone: "322-499-8353",
-              stripeId: "0123",
-              defaultLocation: "5bca4c408f2c68f7ba37422e",
-              access: "Employee"
-    }]
+              // defaultLocation: "5bca4c408f2c68f7ba37422e",
+    }
   }),
   // userStore: types.optional(UserStoreModel, { users: [] }),
   vendorStore: types.optional(VendorStoreModel, {vendor : []}),

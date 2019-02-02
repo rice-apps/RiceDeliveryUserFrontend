@@ -28,7 +28,7 @@ const SELECTED_STYLE: TextStyle = {
 
 const GET_MENU_ITEM = gql`
   query getMenuItem($itemId: String) {
-    getMenuItem(itemId: $itemId) {
+    menuItem(itemId: $itemId) {
       name 
       description
     }
@@ -51,10 +51,13 @@ export class Order extends React.Component<OrderProps, {}> {
         const menuItems = []
         items.forEach(async (item) => {
             console.log(item.item);
+            console.log("Pre query");
             const menuItem = await client.query({
                 query: GET_MENU_ITEM,
                 variables: {itemId: item.item.id}
             });
+            console.log("Render Items");
+            console.log(menuItem.data);
             menuItems.push(menuItem.data.getMenuItem)
         });
         return menuItems;

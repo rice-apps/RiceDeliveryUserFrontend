@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, SectionList } from "react-native"
+import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, SectionList, Button } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { Screen } from "../../shared/screen"
 import { Text } from "../../shared/text"
@@ -15,6 +15,11 @@ import { RootStore } from "../../../app/root-store";
 import { OrderStoreModel } from "../../../app/stores/order-store";
 import { getRoot } from "mobx-state-tree";
 import { Order } from "./order";
+import stripe from "tipsi-stripe";
+
+stripe.setOptions({
+  publishableKey: 'pk_test_AFqSBwnwrS3AInWfxCylFcyk',
+});
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -100,6 +105,17 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
 
   }
 
+  addCard = () => {
+    return stripe
+      .paymentRequestWithCardForm()
+      .then(stripeTokenInfo => {
+        console.warn('Token created', { stripeTokenInfo });
+      })
+      .catch(error => {
+        console.warn('Payment failed', { error });
+      });
+  }
+
   render() {
     return (
       <View style={FULL}>
@@ -110,6 +126,10 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
               headerText="Orders"
               style={HEADER}
               titleStyle={HEADER_TITLE}
+            />
+            <Button
+              title="Make a payment"
+              onPress={this.addCard}
             />
             {/* <BulletItem text= {this.state.userStore.users[0].netid}/> */}
             <SectionList

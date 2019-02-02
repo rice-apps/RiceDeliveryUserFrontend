@@ -1,21 +1,75 @@
 import { types, destroy } from "mobx-state-tree";
+import { client } from "../main";
+import gql from "graphql-tag";
+import { Location } from "./vendorStore";
+
+const AUTHENTICATION = gql`
+    mutation Authenticate($ticket: String!) {
+        authenticator(ticket:$ticket) {
+            netID
+            firstName
+            lastName
+            phone
+        }
+    }    
+`
 
  const User = types
 .model('User', {
-    _id: types.string,
-    netid: types.string,
+    // _id: types.string,
+    netID: types.string,
     firstName: types.string,
     lastName: types.string,
     phone: types.string,
-    stripeId: types.string,
-    defaultLocation: types.string,
-    access: types.string
+    // defaultLocation: types.optional(Location, {name: ""}),
 })
+
 
 export const UserStoreModel = types
 .model('UserStoreModel', {
-    users : types.array(User)
+    user : User
 })
+.actions(
+    (self) => ({
+        async authenticate(ticket) {
+            console.log("HERE");
+            let user = await client.mutate({
+                mutation: AUTHENTICATION,
+                variables: {
+                    ticket: ticket
+                }
+            });
+            console.log(user.data.authenticator);
+            self.setUser(user.data.authenticator);
+
+            // api
+            // .post(
+            // '',
+            // {
+            //     query: `
+            //     mutation Authenticate($ticket: String!) {
+            //         authenticator(ticket:$ticket) {
+            //         netID
+            //         }
+            //     }
+            //     `,
+            //     variables: {
+            //     ticket: ticket
+            //     }
+            // }
+            // )
+            // .then((res) => {
+            // let user = res.data.data.authenticator;
+            
+            // console.log(user);
+            // console.log(res);
+            // });
+        },
+        setUser(user) {
+            self.user = user;
+        },
+    })
+)
 
 // .create({
 //      users : [{
