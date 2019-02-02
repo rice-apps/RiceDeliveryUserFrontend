@@ -2,3 +2,4 @@
 import { BottomDrawerNavigator } from "./bottom-drawer-navigation"
 
 export const RootNavigator = BottomDrawerNavigator;
+//
