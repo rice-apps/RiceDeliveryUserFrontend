@@ -1,6 +1,6 @@
 import { types, destroy } from "mobx-state-tree";
 import { Location } from './location-store';
-// import { client } from "../main";
+import { client } from "../main";
 import gql from "graphql-tag";
 
 const AUTHENTICATION = gql`
@@ -30,36 +30,36 @@ export const UserStoreModel = types
     user : User,
     authenticated: types.optional(types.boolean, false)
 })
-// .actions(
-//     (self) => ({
-//         async authenticate(ticket) {
-//             console.log("HERE");
-//             let user = await client.mutate({
-//                 mutation: AUTHENTICATION,
-//                 variables: {
-//                     ticket: ticket
-//                 }
-//             });
-//             console.log(user.data.authenticator);
+.actions(
+    (self) => ({
+        async authenticate(ticket) {
+            console.log("HERE");
+            let user = await client.mutate({
+                mutation: AUTHENTICATION,
+                variables: {
+                    ticket: ticket
+                }
+            });
+            console.log(user.data.authenticator);
 
-//             console.log("Almost authenticated");
+            console.log("Almost authenticated");
             
-//             if (user.data.authenticator) {
-//                 self.setUser(user.data.authenticator);
-//                 self.setAuth(true);
-//             }
-//         },
-//         setUser(user) {
-//             self.user = user;
-//         },
-//         loggedIn() {
-//             self.user ? true : false
-//         },
-//         setAuth(authState) {
-//             self.authenticated = authState;
-//         }
-//     })
-// )
+            if (user.data.authenticator) {
+                // self.setUser(user.data.authenticator);
+                // self.setAuth(true);
+            }
+        },
+        setUser(user) {
+            self.user = user;
+        },
+        loggedIn() {
+            self.user ? true : false
+        },
+        setAuth(authState) {
+            self.authenticated = authState;
+        }
+    })
+)
 
 // .create({
 //      users : [{
@@ -74,7 +74,7 @@ export const UserStoreModel = types
 //  })
  //export type NavigationStore = typeof NavigationStoreModel.Type
 
-//  export type UserStore = typeof UserStoreModel.Type
+ export type UserStore = typeof UserStoreModel.Type
 
 
 

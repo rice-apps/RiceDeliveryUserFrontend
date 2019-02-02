@@ -3,7 +3,11 @@ package com.testigniteproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+<<<<<<< HEAD
 import com.gettipsi.stripe.StripeReactPackage;
+=======
+import com.oblador.vectoricons.VectorIconsPackage;
+>>>>>>> refactor screens, building basic components, account/order screen
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
@@ -27,7 +31,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+<<<<<<< HEAD
             new StripeReactPackage(),
+=======
+            new VectorIconsPackage(),
+>>>>>>> refactor screens, building basic components, account/order screen
             new SplashScreenReactPackage(),
             new KeychainPackage(),
             new RNI18nPackage()

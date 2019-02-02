@@ -1,68 +1,85 @@
 import * as React from 'react'
-import { ScrollView, View, StyleSheet, FlatList, Text} from 'react-native';
-// import { ListItem } from 'react-native-elements'
-// import SecondaryButton from '../../../../components/secondary-button.js'
-// import * as css from "../../../style";
+import { View, StyleSheet, FlatList, Text } from 'react-native';
+import * as css from "../../style";
+import { Divider } from 'react-native-elements';
 
+import PrimaryButton from '../../../components/primary-button.js'
+
+import { mock_orders } from '../../../components/temporary-mock-order';
+// Using mock order data again
 
 export class OrderScreen extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      order : mock_orders.order1
+    }
+  }
 
-  list = [
-    {
-      name: 'Vendor Name',
-      subtitle: 'Change vendor information',
-      navigateTo: 'VendorInfo'
-    },
-    {
-      name: 'Hours of Operation',
-      subtitle: 'Change hours of operation',
-      navigateTo: 'HoursOperation'
-    },
-    {
-      name: 'Menu',
-      subtitle: 'Change the menu for the night',
-      navigateTo: 'Menu'
-    },
-    {
-      name: 'Transaction History',
-      subtitle: 'View all past orders',
-      navigateTo: "TransactionHist"
-    },
-  ];
-
-//   keyExtractor = (item, index) => index
-
-//   renderItem = ({ item }) => (
-//     <ListItem
-//       titleStyle={css.text.bodyText}
-//       title={item.name}
-//       subtitle={item.subtitle}
-//       onPress={() =>  this.props.navigation.navigate(item.navigateTo)}
-//     />
-//   )
+  previousOrdersPush = () => {
+    this.props.navigation.navigate("PreviousOrders")
+  }
 
   render() {
 
+    // var order = this.props.navigation.getParam('order', 'no_order_retrieved');
+    var order = this.state.order;
+
+    if (order == 'no_order_retrieved') {
+      console.log("Didn't find passed in order prop!");
+    }
+
+    var { firstName, lastName } = order.user;
+    var { location, id } = order;
+    var { pending, onTheWay, fulfilled } = order.status;
+
     return (
-        // <View style = {css.screen.paddedScreen}>
-      <View>
+      <View style={css.screen.defaultScreen}>
+    
+      <View style={css.screen.singleOrderDisplay}>
+        <Text style={css.text.headerText}>
+          Order ID: #{id}
+        </Text>
+        <Text style={css.text.smallText}>
+          {'Placed at : ' + pending}
+        </Text>
 
-        <Text>THIS IS THE CURRENT ORDERS</Text>
-{/*      
-        <ScrollView>
+        <Divider style={css.screen.divider} />
+
+        <Text style={css.text.bodyText}>
+          {firstName + ' ' + lastName + '\'s order'}
+        </Text>
+        <Text style={css.text.bodyText}>
+          {'Location : ' + location}
+        </Text>
+        <Text style={css.text.bodyText}>
+          {'Status : ' + 'pending'}
+        </Text>
+
+        <Divider style={css.screen.divider} />
+
+        <Text style={css.text.bigBodyText}>
+          Order Details
+        </Text>
+
+        <View>
           <FlatList
-            keyExtractor={this.keyExtractor}
-            data={this.list}
-            renderItem={this.renderItem}
-          />
-        </ScrollView> */}
+                // style={}
+                data= {order.items}
+                keyExtractor={(item, index) => item.item.id.toString()}
+                renderItem={({item}) => 
+                    <Text style={css.text.itemText}> 
+                      {item.quantity.toString() + 'x ' + item.item.itemName}
+                    </Text>
+                }
+              />
+        </View>
+      </View>
 
-
-        {/* <View>
-          <SecondaryButton
-            title ="Logout"
+        <PrimaryButton
+            title ="Previous Orders"
+            onPress = {this.previousOrdersPush}
           />
-        </View> */}
 
       </View>
     )

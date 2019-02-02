@@ -4,8 +4,9 @@ import { NavigationScreenProps } from "react-navigation"
 import { inject, observer } from "mobx-react"
 import { RootStore } from '../../stores/root-store';
 import { UserStore } from '../../stores/user-store';
-// import PrimaryButton from '../../../components/primary-button.js'
-// import SecondaryButton from '../../../components/secondary-button.js'
+import PrimaryButton from '../../components/primary-button.js'
+import SecondaryButton from '../../components/secondary-button.js'
+import * as css from '../style';
 
 console.disableYellowBox = true;
 // import * as css from "../../style"
@@ -93,14 +94,14 @@ class LoginScreen extends React.Component<LoginScreenProps, { userStore: UserSto
                     placeholder="Enter password"
                 />         */}
     
-                {/* <PrimaryButton
+                <PrimaryButton
                     title ="Sign In"
                     onPress={this.loginHandler}
                 />
 
                 <SecondaryButton
                     title ="Create Account"
-                /> */}
+                />
 
             </View>
         )
