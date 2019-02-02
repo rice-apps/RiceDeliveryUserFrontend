@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, SectionList, TouchableHighlight } from "react-native"
+import { View, ViewStyle, TextStyle, SafeAreaView, SectionList, TouchableHighlight } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { Screen } from "../../shared/screen"
 import { Text } from "../../shared/text"
@@ -9,7 +9,7 @@ import { color, spacing } from "../../../theme"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/root-store"
 import { MenuItem } from "./menu-item"
-import { CartStore } from "../../../app/stores/cart-store";
+// import { CartStore } from "../../../app/stores/cart-store";
 import { VendorStore } from "../../../app/stores/vendorStore";
 
 const FULL: ViewStyle = { flex: 1 }

@@ -86,8 +86,10 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
       user = {};
     }
     this.state = {orders: orderArray, user: user } 
-    this.props.rootStore.orderStore.startOrderPolling("mz10");
 
+    // The startOrderPolling action is causing errors w/ Apollo client?
+
+    // this.props.rootStore.orderStore.startOrderPolling("mz10");
     // this.userStore = this.props.rootStore.userStore
     // this.orders = this.props.rootStore.orderStore
   }
