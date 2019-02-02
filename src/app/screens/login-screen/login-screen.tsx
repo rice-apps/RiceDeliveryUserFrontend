@@ -1,7 +1,8 @@
 import React from 'react'
 import {View, Text, Button, TextInput, Image, TouchableHighlight} from 'react-native'
-// import PrimaryButton from '../../../components/primary-button.js'
-// import SecondaryButton from '../../../components/secondary-button.js'
+import PrimaryButton from '../../components/primary-button.js'
+import SecondaryButton from '../../components/secondary-button.js'
+import * as css from '../style';
 
 console.disableYellowBox = true;
 // import * as css from "../../style"
@@ -14,14 +15,8 @@ class LoginScreen extends React.Component {
 
     render() {
         return (
-            // <View style={css.screen.defaultScreen}>
-            <View style={{
-                marginTop : 50,
-                marginLeft : 50,
-                }}>
-                <TouchableHighlight onPress={this.loginHandler}>
-                    <Text>LOGIN</Text>
-                </TouchableHighlight>
+            <View style={css.screen.defaultScreen}>
+            {/* <View> */}
                 {/* <Text style={css.text.logo}>
                     hedwig.
                     <Image source={require('../../../img/hedwig.png')} style={css.image.logo} />
@@ -45,14 +40,14 @@ class LoginScreen extends React.Component {
                     placeholder="Enter password"
                 />         */}
     
-                {/* <PrimaryButton
+                <PrimaryButton
                     title ="Sign In"
                     onPress={this.loginHandler}
                 />
 
                 <SecondaryButton
                     title ="Create Account"
-                /> */}
+                />
 
             </View>
         )

@@ -1,23 +1,22 @@
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
 // import { ConfirmOrderScreen } from "../views/example/confirm-order-screen"
-
-// Old Screens
-// import { CartScreen } from "../views/example/cart-screen"
-// import { MenuScreen } from "../views/example/menu-screen"
-// import { OrderScreen } from "../views/example/order-screen"
+import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
 
 // Login Screen
 import LoginScreen  from "../app/screens/login-screen/login-screen";
 
 // Account Stack
-import { AccountScreen } from "../app/screens/accountStack/account-setting-screen"
+import { AccountScreen } from "../app/screens/accountStack/account-setting-screen";
+import { AccountInfoScreen } from "../app/screens/accountStack/account-info-screen/account-info-scren";
+import { PaymentInfoScreen } from "../app/screens/accountStack/payment-info-screen/payment-info-screen";
+import { LocationInfoScreen } from "../app/screens/accountStack/location-info-screen/location-info-screen";
 
 // Menu Stack
 import { VendorsScreen } from "../app/screens/menuStack/vendors-screen/vendors-screen";
 
 // Order Stack
 import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen";
-import { MenuScreen } from "../views/example/menu-screen";
+import { PreviousOrdersScreen } from "../app/screens/orderStack/previous-orders-screen/previous-orders-screen";
 
 
 const accountStackNavigator = createStackNavigator({
@@ -26,7 +25,25 @@ const accountStackNavigator = createStackNavigator({
       navigationOptions: {
         title: 'Account Settings'
         }
-    }
+    },
+    AccountInfo : {
+        screen: AccountInfoScreen,
+        navigationOptions: {
+            title: 'Account Info'
+        }
+    },
+    PaymentInfo : {
+        screen: PaymentInfoScreen,
+        navigationOptions: {
+            title: 'Payment Info'
+        }
+    },
+    LocationInfo : {
+        screen: LocationInfoScreen,
+        navigationOptions: {
+            title: 'Location Info'
+        }
+    },
 });
 
 const menuStackNavigator = createStackNavigator({
@@ -35,16 +52,22 @@ const menuStackNavigator = createStackNavigator({
       navigationOptions: {
         title: 'Menu'
         }
-    }
+    },
 });
 
 const orderStackNavigator = createStackNavigator({
-    Order: { 
+    Order: {
       screen: OrderScreen,
       navigationOptions: {
         title: 'Order'
         }
-    }
+    },
+    PreviousOrders : {
+        screen: PreviousOrdersScreen,
+        navigationOptions: {
+            title: 'Previous Orders'
+        }
+    },
 });
 
 
@@ -52,55 +75,28 @@ export const TabNavigator = createBottomTabNavigator({
     MenuStack: {
         screen: menuStackNavigator,
         navigationOptions: {
-           // tabBarIcon: pendingOrdersIcon, 
+           tabBarIcon: pendingOrdersIcon, 
            title: "Menu"
          }      
     },
     OrderStack: {
         screen: orderStackNavigator,
         navigationOptions: {
-        // tabBarIcon: pendingOrdersIcon, 
+        tabBarIcon: currentBatchesIcon, 
         title: "Order"
         }      
     },
     AccountStack: {
-         screen: accountStackNavigator,
-         navigationOptions: {
-            // tabBarIcon: pendingOrdersIcon, 
-            title: "Account"
-          }      
+        screen: accountStackNavigator,
+        navigationOptions: {
+        tabBarIcon: accountIcon, 
+        title: "Account"
+        }      
     },
   },
   {initialRouteName: 'OrderStack'}
   );
 
-
-// export const TabNavigator = createBottomTabNavigator({
-    // OrderStack: {
-    //   screen: OrdersStackNavigator,
-    //   navigationOptions: {
-    //     tabBarIcon: pendingOrdersIcon, 
-    //     title: "Pending Orders"
-    //   }
-    // }, 
-    // BatchesStack: {
-    //   screen: batchStackNavigator,
-    //   navigationOptions: {
-    //     tabBarIcon: currentBatchesIcon, 
-    //     title: 'Current Batches'
-    //   }
-    // }, 
-//     AccountStack: {
-//       screen: accountStackNavigator,
-//       navigationOptions: {
-//         // tabBarIcon: accountIcon,
-//         title: "Account"
-//       }
-//     },
-//   },
-//     {initialRouteName: 'BatchesStack'}
-//   )
-  
 
 export const RootNavigator = createStackNavigator({
     Login: {
