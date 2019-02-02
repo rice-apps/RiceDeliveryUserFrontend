@@ -14,13 +14,14 @@ import { bowserLogo } from "./"
 import { Platform, Linking, WebView } from 'react-native';
 import { UserStoreModel, UserStore } from "../../../app/stores/user-store";
 import { RootStore } from "../../../app/root-store";
+import { NavigationEvents } from "../../../navigation/navigation-events";
 
 const FULL: ViewStyle = { flex: 1 }
-const CONTAINER: ViewStyle = { 
+const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[4],
 }
-const TEXT: TextStyle = { 
+const TEXT: TextStyle = {
   color: color.palette.white,
   fontFamily: "Montserrat",
 }
@@ -30,7 +31,7 @@ const HEADER: TextStyle = {
   paddingBottom: spacing[4] + spacing[1],
   paddingHorizontal: 0,
 }
-const HEADER_TITLE: TextStyle = { 
+const HEADER_TITLE: TextStyle = {
   ...TEXT,
   ...BOLD,
   fontSize: 12,
@@ -38,20 +39,20 @@ const HEADER_TITLE: TextStyle = {
   textAlign: "center",
   letterSpacing: 1.5,
 }
-const TITLE_WRAPPER: TextStyle = { 
+const TITLE_WRAPPER: TextStyle = {
   ...TEXT,
   textAlign: "center",
 }
-const TITLE: TextStyle = { 
-  ...TEXT, 
+const TITLE: TextStyle = {
+  ...TEXT,
   ...BOLD,
   fontSize: 28,
   lineHeight: 38,
   textAlign: "center",
 }
-const ALMOST: TextStyle = { 
-  ...TEXT, 
-  ...BOLD,  
+const ALMOST: TextStyle = {
+  ...TEXT,
+  ...BOLD,
   fontSize: 26,
   fontStyle: "italic",
 }
@@ -61,14 +62,14 @@ const BOWSER: ImageStyle = {
   maxWidth: "100%",
 }
 const CONTENT: TextStyle = {
-  ...TEXT,  
-  color: "#BAB6C8",  
+  ...TEXT,
+  color: "#BAB6C8",
   fontSize: 15,
   lineHeight: 22,
   marginBottom: spacing[5],
 }
-const CONTINUE: ViewStyle = { 
-  paddingVertical: spacing[4], 
+const CONTINUE: ViewStyle = {
+  paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
   backgroundColor: "#5D2555",
 }
@@ -80,13 +81,13 @@ const CONTINUE_TEXT: TextStyle = {
 }
 const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
 const FOOTER_CONTENT: ViewStyle = {
-  paddingVertical: spacing[4], 
+  paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
 }
 
 const api = create({
   baseURL: "http://localhost:3000/graphql",
-  headers: {'Accept': 'application/json'}
+  headers: { 'Accept': 'application/json' }
 });
 
 export interface AuthenticationScreenProps extends NavigationScreenProps<{}> {
@@ -94,15 +95,15 @@ export interface AuthenticationScreenProps extends NavigationScreenProps<{}> {
 }
 
 @inject("rootStore")
-@observer 
-export class AuthenticationScreen extends React.Component<AuthenticationScreenProps, {author: object, person: string, authorJSON: string, displayBrowser: boolean, userStore: UserStore}> {
+@observer
+export class AuthenticationScreen extends React.Component<AuthenticationScreenProps, { author: object, person: string, authorJSON: string, displayBrowser: boolean, userStore: UserStore }> {
   constructor(props) {
     super(props);
     console.log(props);
     this.state = {
-      author : {},
+      author: {},
       authorJSON: "",
-      person : "",
+      person: "",
       displayBrowser: false,
       userStore: props.rootStore.userStore
     };
@@ -110,25 +111,25 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
 
   queryGetPost = (name) => {
     api
-    .post(
-      '',
-      {
-        query: `
+      .post(
+        '',
+        {
+          query: `
           query Author($firstName: String!) {
           author(filter:$firstName){
             lastName
           }
         }
         `,
-        variables: {
-          firstName: name
-        },
-      }
-    ).then(
-      (res: any) => {
-        return this.setState({ author: res.data.data.author[0] });
-      }
-    );
+          variables: {
+            firstName: name
+          },
+        }
+      ).then(
+        (res: any) => {
+          return this.setState({ author: res.data.data.author[0] });
+        }
+      );
   }
 
   toggleBrowser() {
@@ -138,27 +139,27 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
 
   authenticate = (ticket) => {
     api
-    .post(
-      '',
-      {
-        query: `
+      .post(
+        '',
+        {
+          query: `
           mutation Authenticate($ticket: String!) {
             authenticator(ticket:$ticket) {
               netID
             }
           }
         `,
-        variables: {
-          ticket: ticket
+          variables: {
+            ticket: ticket
+          }
         }
-      }
-    )
-    .then((res) => {
-      let user = res.data.data.authenticator;
-      
-      console.log(user);
-      console.log(res);
-    });
+      )
+      .then((res) => {
+        let user = res.data.data.authenticator;
+
+        console.log(user);
+        console.log(res);
+      });
   }
 
   _onNavigationStateChange(webViewState) {
@@ -167,7 +168,7 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
     var equalSignIndex = webViewState.url.indexOf('ticket=') + 1;
     if (equalSignIndex > 0) {
 
-      var ticket = webViewState.url.substring(equalSignIndex +6,);
+      var ticket = webViewState.url.substring(equalSignIndex + 6);
       console.log("Parsed Ticket: " + ticket);
       this.state.userStore.authenticate(ticket);
     }
@@ -176,15 +177,29 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
   }
 
   checkUser() {
-    console.log(this.state.userStore.users);
+    console.log(this.state.userStore.user);
   }
+
 
   render() {
     return (
       <View style={FULL}>
         <StatusBar barStyle="light-content" />
+        {this.state.userStore.user ?
+          this.props.navigation.navigate("Menu") :
+          (
+            <WebView
+              // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=hedwig://localhost:8080/auth'}}
+              source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org' }}
+              onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+              style={{ marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
+            />
+          )
+        }
+        }}
+
         {/* <Wallpaper /> */}
-        <Button
+        {/* <Button
           style={CONTINUE}
           textStyle={CONTINUE_TEXT}
           tx="firstExampleScreen.continue"
@@ -201,7 +216,15 @@ export class AuthenticationScreen extends React.Component<AuthenticationScreenPr
           source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org'}}
           onNavigationStateChange={this._onNavigationStateChange.bind(this)}
           style={{marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
-        /> 
+        />  */}
+
+
+
+
+
+
+
+
         {/* <Wallpaper />
         <SafeAreaView style={FULL}>
           <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">

@@ -24,9 +24,10 @@ const AUTHENTICATION = gql`
     // defaultLocation: types.optional(Location, {name: ""}),
 })
 
+
 export const UserStoreModel = types
 .model('UserStoreModel', {
-    users : types.array(User)
+    user : User
 })
 .actions(
     (self) => ({
@@ -65,7 +66,7 @@ export const UserStoreModel = types
             // });
         },
         setUser(user) {
-            self.users.push(user);
+            self.user = user;
         },
     })
 )
