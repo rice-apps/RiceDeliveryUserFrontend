@@ -7,16 +7,17 @@ import LoginScreen  from "../app/screens/login-screen/login-screen";
 
 // Account Stack
 import { AccountScreen } from "../app/screens/accountStack/account-setting-screen";
-import { AccountInfoScreen } from "../app/screens/accountStack/account-info-screen/account-info-scren";
+import { AccountInfoScreen } from "../app/screens/accountStack/account-info-screen/account-info-screen";
 import { PaymentInfoScreen } from "../app/screens/accountStack/payment-info-screen/payment-info-screen";
 import { LocationInfoScreen } from "../app/screens/accountStack/location-info-screen/location-info-screen";
 
 // Menu Stack
 import { VendorsScreen } from "../app/screens/menuStack/vendors-screen/vendors-screen";
+import { SingleVendorMenu } from "../app/screens/menuStack/single-vendor-menu/single-vendor-menu";
 
 // Order Stack
 import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen";
-import { PreviousOrdersScreen } from "../app/screens/orderStack/previous-orders-screen/previous-orders-screen";
+import { OrderHistoryScreen } from "../app/screens/orderStack/order-history-screen/order-history-screen";
 
 
 const accountStackNavigator = createStackNavigator({
@@ -53,6 +54,12 @@ const menuStackNavigator = createStackNavigator({
         title: 'Menu'
         }
     },
+    SingleVendorMenu: {
+        screen: SingleVendorMenu,
+        navigationOptions: {
+            title: 'Single Vendor Menu'
+            }
+        }
 });
 
 const orderStackNavigator = createStackNavigator({
@@ -62,10 +69,10 @@ const orderStackNavigator = createStackNavigator({
         title: 'Order'
         }
     },
-    PreviousOrders : {
-        screen: PreviousOrdersScreen,
+    OrderHistory : {
+        screen: OrderHistoryScreen,
         navigationOptions: {
-            title: 'Previous Orders'
+            title: 'Order History'
         }
     },
 });
