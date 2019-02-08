@@ -2,7 +2,6 @@ import * as React from 'react'
 import { View, StyleSheet, FlatList, Text } from 'react-native';
 import * as css from "../../style";
 import { Divider } from 'react-native-elements';
-
 import PrimaryButton from '../../../components/primary-button.js'
 
 import { mock_orders } from '../../../components/temporary-mock-order';
@@ -11,18 +10,18 @@ import { mock_orders } from '../../../components/temporary-mock-order';
 export class OrderScreen extends React.Component<any, any> {
   constructor(props) {
     super(props);
+    // We must link this with the most recent/active order for this user
     this.state = {
       order : mock_orders.order1
     }
   }
 
+  // Link to order history screen
   previousOrdersPush = () => {
-    this.props.navigation.navigate("PreviousOrders")
+    this.props.navigation.navigate("OrderHistory")
   }
 
   render() {
-
-    // var order = this.props.navigation.getParam('order', 'no_order_retrieved');
     var order = this.state.order;
 
     if (order == 'no_order_retrieved') {
@@ -37,11 +36,12 @@ export class OrderScreen extends React.Component<any, any> {
       <View style={css.screen.defaultScreen}>
     
       <View style={css.screen.singleOrderDisplay}>
-        <Text style={css.text.headerText}>
-          Order ID: #{id}
-        </Text>
+        <Text style={css.text.headerText}>Active Order</Text>
         <Text style={css.text.smallText}>
           {'Placed at : ' + pending}
+        </Text>
+        <Text style={css.text.headerText}>
+          Order ID: #{id}
         </Text>
 
         <Divider style={css.screen.divider} />

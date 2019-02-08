@@ -94,7 +94,25 @@ export const flatlist = StyleSheet.create({
         padding:10, 
         flex: 1,
         width : "100%",
-      }
+      },
+      vendorView: {
+        backgroundColor: 'white',
+        // flex: 1,
+        flexDirection: 'row',  // main axis
+        justifyContent: 'flex-start', // main axis
+        alignItems: 'center', // cross axis
+        paddingTop: 70,
+        paddingBottom: 10,
+        paddingLeft: 50,
+        paddingRight: 50,
+        marginLeft: 6,
+        marginRight: 6,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 17,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
 });
 
 //TOUCHABLEOPACITY

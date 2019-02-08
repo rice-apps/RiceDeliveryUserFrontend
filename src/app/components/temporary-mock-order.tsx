@@ -169,7 +169,7 @@ export interface Vendor {
 
 export interface SKU {
   _id: string
-  active: boolean
+  // active: boolean
   // attributes: [AttributePair]
   image: string
   // inventory: Inventory
@@ -185,4 +185,19 @@ export interface Product {
   images: string[],
   skuItems: SKU[],
   description: String,
+}
+
+
+var EastWestTea = {
+  _id : 10,
+  name : "East West Tea",
+  hours : [[10, 12], [11, 1], [10, 2], [9, 12], [10, 12], [11, 1], [10, 2]],
+  phone : "123-456-7890",
+  products : [
+    {
+      _id : 1,
+      name : "Taro Milk Tea",
+      
+    },
+  ]
 }
