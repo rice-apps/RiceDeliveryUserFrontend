@@ -2,7 +2,7 @@ import React from 'react'
 import {View, Text, Button, TextInput, Image, TouchableHighlight, WebView} from 'react-native'
 import { NavigationScreenProps } from "react-navigation"
 import { inject, observer } from "mobx-react"
-import { RootStore } from '../../root-store';
+import { RootStore } from '../../stores/root-store';
 import { UserStore } from '../../stores/user-store';
 // import PrimaryButton from '../../../components/primary-button.js'
 // import SecondaryButton from '../../../components/secondary-button.js'

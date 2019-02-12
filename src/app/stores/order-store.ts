@@ -1,111 +1,34 @@
-import { types, destroy } from "mobx-state-tree";
-import { Location, MenuItem } from "./vendorStore";
-import { client } from "../main";
-import gql from "graphql-tag";
+import { types } from "mobx-state-tree"
 
-const GET_ORDERS = gql`
-    
-        query GetOrders($netid: String!) {
-            user(netid: $netid) {
-                netid
-                orders{
-                    _id
-                    location{
-                        name
-                    }
-                    items{
-                        item{
-                            id
-                            name
-                        }
-                        quantity
-                    }
-                    vendor{
-                        _id
-                    }
-                    user{
-                        netid
-                    }
-                    status {
-                        pending
-                        onTheWay
-                    }
-                }
-            }
-        }
-    
-`
-
-const OrderItem = types
-.model('OrderItem' , {
-    item: MenuItem,
-    quantity: types.number
+export const OrderItem = types.model("OrderItem", {
+  amount: types.number,
+  description: types.string,
+  parent: types.string,
+  quantity: types.number
 })
 
-const OrderStatus = types
-.model('OrderStatus', {
-    pending: types.optional(types.string, "0"),
-    onTheWay: types.optional(types.null, null)
-});
-
-const Order = types
-.model('Order', {
-    location: Location,
-    items: types.array(OrderItem),
-    vendor: types.string,
-    user: types.string,
-    status: types.optional(OrderStatus, {pending: "0", onTheWay: null})
+export const OrderStatus = types.model("OrderStatus", {
+  pending: types.Date, //Might not convert int to date.
+  onTheWay: types.Date, //Might not convert int to date.
+  fulfilled: types.Date, //Might not convert int to date.
+  unfulfilled: types.boolean
 })
 
-export const OrderStoreModel = types
-.model('OrderStoreModel', {
-    orders : types.array(Order)
+export const Order = types.model("Order", {
+  id: types.string,
+  amount: types.number,
+  created: types.number,
+  customer: types.string,
+  email: types.string,
+  items: types.array(OrderItem),
+  orderStatus: OrderStatus,
+  paymentStatus: types.string, 
+  location: Location
 })
-.actions(
-    (self) => ({
-        startOrderPolling(netid) {
-            let observable = client.watchQuery({
-                query: GET_ORDERS,
-                variables: { netid: netid },
-                pollInterval: 100
-            });
-            console.log("Started polling!");
-            observable.subscribe({
-                next: ({ data }) => self.updateOrderStore(data)
-            });
-        },
-        updateOrderStore(data) {
-            console.log("Updating store!");
-            console.log(data);
-            let formattedOrders = data.user[0].orders
-            .map(x => ({
-                location: x.location, 
-                items: x.items,
-                vendor:x.vendor._id, 
-                user:x.user.netid,
-                status: x.status
-            }));
-            console.log(formattedOrders);
-            self.orders = formattedOrders;
-        }
-    })
-)
 
-// .actions(
-//     (self) => ({
-//         async getUsers() {
-//             // Fetch from backend
-//             let users = await client.query({
-//                 query: GET_USERS
-//             });
-//             console.log(users);
-//             return users;
-//         }
-//     })
-// )
+export const OrderModel = types.model("OrderModel", {
+  pending: types.array(Order)
+})
 
-
-
-
- export type OrderStore = typeof OrderStoreModel.Type
- export type OrderItemStore = typeof OrderItem.Type
+//  export type OrderStore = typeof OrderStoreModel.Type
+//  export type OrderItemStore = typeof OrderItem.Type

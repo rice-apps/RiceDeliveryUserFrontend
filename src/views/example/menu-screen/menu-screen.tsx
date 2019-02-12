@@ -7,10 +7,10 @@ import { Wallpaper } from "../../shared/wallpaper"
 import { Header } from "../../shared/header"
 import { color, spacing } from "../../../theme"
 import { inject, observer } from "mobx-react"
-import { RootStore } from "../../../app/root-store"
+import { RootStore } from "../../../app/stores/root-store"
 import { MenuItem } from "./menu-item"
 // import { CartStore } from "../../../app/stores/cart-store";
-import { VendorStore } from "../../../app/stores/vendorStore";
+import { VendorStore } from "../../../app/stores/vendor-store";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {

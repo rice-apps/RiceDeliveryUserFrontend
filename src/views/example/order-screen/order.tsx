@@ -1,5 +1,5 @@
 import * as React from "react"
-import { MenuItem as MenuItemModel } from "../../../app/stores/vendorStore"
+import { MenuItem as MenuItemModel } from "../../../app/stores/vendor-store"
 import { View, Text, TextStyle, TouchableHighlight, FlatList } from "react-native"
 import { CartStore } from "../../../app/stores/cart-store"
 import { OrderItemStore, OrderStore } from "../../../app/stores/order-store";

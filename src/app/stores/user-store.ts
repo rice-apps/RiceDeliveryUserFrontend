@@ -1,7 +1,6 @@
 import { types, destroy } from "mobx-state-tree";
 import { client } from "../main";
 import gql from "graphql-tag";
-import { Location } from "./vendorStore";
 
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!) {
@@ -30,59 +29,36 @@ export const UserStoreModel = types
     user : User,
     authenticated: types.optional(types.boolean, false)
 })
-.actions(
-    (self) => ({
-        async authenticate(ticket) {
-            console.log("HERE");
-            let user = await client.mutate({
-                mutation: AUTHENTICATION,
-                variables: {
-                    ticket: ticket
-                }
-            });
-            console.log(user.data.authenticator);
+// .actions(
+//     (self) => ({
+//         async authenticate(ticket) {
+//             console.log("HERE");
+//             let user = await client.mutate({
+//                 mutation: AUTHENTICATION,
+//                 variables: {
+//                     ticket: ticket
+//                 }
+//             });
+//             console.log(user.data.authenticator);
 
-            console.log("Almost authenticated");
+//             console.log("Almost authenticated");
             
-            if (user.data.authenticator) {
-                self.setUser(user.data.authenticator);
-                self.setAuth(true);
-            }
-
-            // api
-            // .post(
-            // '',
-            // {
-            //     query: `
-            //     mutation Authenticate($ticket: String!) {
-            //         authenticator(ticket:$ticket) {
-            //         netID
-            //         }
-            //     }
-            //     `,
-            //     variables: {
-            //     ticket: ticket
-            //     }
-            // }
-            // )
-            // .then((res) => {
-            // let user = res.data.data.authenticator;
-            
-            // console.log(user);
-            // console.log(res);
-            // });
-        },
-        setUser(user) {
-            self.user = user;
-        },
-        loggedIn() {
-            self.user ? true : false
-        },
-        setAuth(authState) {
-            self.authenticated = authState;
-        }
-    })
-)
+//             if (user.data.authenticator) {
+//                 self.setUser(user.data.authenticator);
+//                 self.setAuth(true);
+//             }
+//         },
+//         setUser(user) {
+//             self.user = user;
+//         },
+//         loggedIn() {
+//             self.user ? true : false
+//         },
+//         setAuth(authState) {
+//             self.authenticated = authState;
+//         }
+//     })
+// )
 
 // .create({
 //      users : [{
@@ -97,7 +73,7 @@ export const UserStoreModel = types
 //  })
  //export type NavigationStore = typeof NavigationStoreModel.Type
 
- export type UserStore = typeof UserStoreModel.Type
+//  export type UserStore = typeof UserStoreModel.Type
 
 
 

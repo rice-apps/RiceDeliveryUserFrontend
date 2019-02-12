@@ -1,7 +1,7 @@
 import { types, destroy, getRoot } from "mobx-state-tree";
 import gql from 'graphql-tag'
-import { MenuItem } from './vendorStore';
-import { RootStore } from "../root-store";
+import { MenuItem } from './vendor-store';
+import { RootStore } from "./root-store";
 import { client } from "../main";
 
 // GraphQL Mutations

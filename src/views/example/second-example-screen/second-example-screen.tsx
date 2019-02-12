@@ -12,7 +12,7 @@ import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
-import { RootStore } from "../../../app/root-store";
+import { RootStore } from "../../../app/stores/root-store";
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {

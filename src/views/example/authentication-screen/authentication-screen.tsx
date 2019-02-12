@@ -13,7 +13,7 @@ import { bowserLogo } from "./"
 // Linking
 import { Platform, Linking, WebView } from 'react-native';
 import { UserStoreModel, UserStore } from "../../../app/stores/user-store";
-import { RootStore } from "../../../app/root-store";
+import { RootStore } from "../../../app/stores/root-store";
 import { NavigationEvents } from "../../../navigation/navigation-events";
 
 const FULL: ViewStyle = { flex: 1 }

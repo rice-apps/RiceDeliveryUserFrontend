@@ -1,11 +1,11 @@
 import { onSnapshot } from "mobx-state-tree"
-import { RootStoreModel, RootStore } from "./root-store"
+import { RootStoreModel, RootStore } from "./stores/root-store"
 import { Environment } from "./environment"
 import * as storage from "../lib/storage"
 import { Reactotron } from "../services/reactotron"
 import { Api } from "../services/api"
 import { create } from 'apisauce'
-import { OrderStoreModel } from "./stores/order-store";
+// import { OrderStoreModel } from "./stores/order-store";
 
 /**
  * The key we'll be saving our state as within async storage.
