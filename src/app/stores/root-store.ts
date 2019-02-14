@@ -1,7 +1,7 @@
 import { types } from "mobx-state-tree"
 import { NavigationStoreModel } from "../../navigation/navigation-store"
 import { UserStoreModel }  from "./user-store"
-// import { VendorStoreModel }  from "./vendor-store"
+import { VendorStoreModel }  from "./vendor-store"
 import { OrderModel } from "./order-store"
 // import { CartStoreModel } from "./cart-store";
 /**
@@ -12,8 +12,7 @@ export const RootStoreModel = types.model("RootStore").props({
   userStore: types.optional(UserStoreModel, {
     user: {}
   }),
-  // userStore: types.optional(UserStoreModel, { users: [] }),
-  // vendorStore: types.optional(VendorStoreModel, {vendor : []}),
+  vendorStore: types.optional(VendorStoreModel, {vendor : []}),
   orderStore: types.optional(OrderModel, {pending : []}),
   // cartStore: types.optional(CartStoreModel, {cartItems: []})
 })

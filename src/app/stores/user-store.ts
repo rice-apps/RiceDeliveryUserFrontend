@@ -1,5 +1,6 @@
 import { types, destroy } from "mobx-state-tree";
-import { client } from "../main";
+import { Location } from './location-store';
+// import { client } from "../main";
 import gql from "graphql-tag";
 
 const AUTHENTICATION = gql`
@@ -20,7 +21,7 @@ const AUTHENTICATION = gql`
     firstName: types.optional(types.string, ""),
     lastName: types.optional(types.string, ""),
     phone: types.optional(types.string, ""),
-    // defaultLocation: types.optional(Location, {name: ""}),
+    defaultLocation: types.optional(Location, {_id: "", name: ""}),
 })
 
 
