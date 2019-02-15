@@ -1,4 +1,5 @@
 import { types } from "mobx-state-tree"
+import { Location } from "./location-store"
 
 export const OrderItem = types.model("OrderItem", {
   amount: types.number,
