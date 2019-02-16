@@ -1,6 +1,39 @@
 // The mock structure/data for orders.
 // Using this to test out the listItem / list components I am trying to build.
 
+// --------------------- MOCK ORDER STRUCTS ---------------------
+
+export default interface Order {
+    id : number
+    user : {
+        firstName : string,
+        lastName : string,
+    },
+    status : {
+        pending : string,
+        onTheWay: string, 
+        fulfilled: string, 
+        unfulfilled: boolean,
+    }, 
+    location : string,
+    items : OrderItem[],
+}
+ 
+interface OrderItem {
+    item : {
+        itemName : string,
+    },
+    quantity : number,
+}
+
+export interface Batch {
+  batchNumber : number,
+  orders : Order[],
+}
+
+
+// --------------------- MOCK ORDERS ---------------------
+
 var order1 = {
     id : 6969,
     user : {
@@ -100,6 +133,8 @@ export var mock_orders = {
     order3 : order3,
 }
 
+// --------------------- MOCK BATCH STRUCTS ---------------------
+
 export var mock_batches = {
   batch1 : {
     batchNumber : 1,
@@ -116,39 +151,13 @@ export var mock_batches = {
   },
 }
 
-export default interface Order {
-    id : number
-    user : {
-        firstName : string,
-        lastName : string,
-    },
-    status : {
-        pending : string,
-        onTheWay: string, 
-        fulfilled: string, 
-        unfulfilled: boolean,
-    }, 
-    location : string,
-    items : OrderItem[],
-}
- 
-interface OrderItem {
-    item : {
-        itemName : string,
-    },
-    quantity : number,
-}
-
-export interface Batch {
-  batchNumber : number,
-  orders : Order[],
-}
 
 
 // This is the schema I am following for the vendor mock data.
 // Comes from stripe-connect branch on backend.
 // x marks a field I am using:
 
+// --------------------- MOCK VENDOR STRUCTS ---------------------
 
 export interface Vendor {
   _id: string,
@@ -200,10 +209,13 @@ interface Inventory {
 }
 
 export interface CartItem {
-  quantity: number
-  product: Product
+  quantity: number    // Quantity of product
+  product: Product    // The product
+  sku: string         // Specifies which sku (correponds to _id field in SKU)
 }
 
+
+// --------------------- MOCK PRODUCTS ---------------------
 export var TaroMilkTea = {
   _id : "1",
   active : true,
@@ -251,16 +263,22 @@ export var mockCart = [
   {
     quantity : 1,
     product: PearlMilkTea,
+    sku: "1",
   },
   {
     quantity : 2,
     product: TaroMilkTea,
+    sku: "1",
   },
   {
     quantity : 1,
     product: ThaiMilkTea,
+    sku: "1",
   },
 ]
+
+
+// --------------------- MOCK VENDORS ---------------------
 
 
 export var EastWestTea = {
@@ -337,6 +355,7 @@ export var realVendors = [
     "products": [
       {
         "id": "prod_EJSdVzKZjEi6Tx",
+        "name": "Add-Ons",
         "active": true,
         "attributes": [
           "topping"
@@ -421,13 +440,17 @@ export var realVendors = [
       },
       {
         "id": "prod_EJSOU3XwmvX5zE",
+        "name": "Tea",
         "active": true,
         "attributes": [
           "size",
           "flavor"
         ],
         "caption": "The best tea this side of the RMC",
-        "images": [],
+        "images": [
+          "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA2NS81MTEvb3JpZ2luYWwvZ2xhc3MtZnJvZy5qcGc=",
+          "https://www.australiangeographic.com.au/wp-content/uploads/2018/06/green-tree-frogs.jpg"
+        ],
         "description": null,
         "skuItems": [
           {
@@ -546,6 +569,7 @@ export var realVendors = [
     "products": [
       {
         "id": "prod_EM2yVxL6wXlJXS",
+        "name": "Chick-fil-a Sandwich",
         "active": true,
         "attributes": [
           "flavor"
@@ -594,6 +618,7 @@ export var realVendors = [
       },
       {
         "id": "prod_EM2w2W2i7oSA1M",
+        "name": "Chick-fil-a Nuggets",
         "active": true,
         "attributes": [
           "flavor"
@@ -624,6 +649,7 @@ export var realVendors = [
       },
       {
         "id": "prod_EJaEfo5Mih4o3u",
+        "name": "HBCB",
         "active": true,
         "attributes": [],
         "caption": "HubChub from your favorite Whata-bub",
@@ -647,14 +673,17 @@ export var realVendors = [
       },
       {
         "id": "prod_EJSfozstvZH8Qg",
+        "name": "Pizza",
         "active": true,
         "attributes": [
           "size",
           "topping"
         ],
         "caption": "Papa John's Coming Through",
-        "images": [],
-        "description": null,
+        "images": [
+          "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+        ],
+        "description": "The thing about pizza is that everyone generally likes it, but we aim to be the exception by making pizza no one likes. Buy it!",
         "skuItems": [
           {
             "id": "sku_EJSfIsb4QZ5IWP",

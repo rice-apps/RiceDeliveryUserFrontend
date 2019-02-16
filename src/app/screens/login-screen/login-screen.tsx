@@ -93,15 +93,21 @@ class LoginScreen extends React.Component<LoginScreenProps, { userStore: UserSto
                     style = {css.text.textInput}
                     placeholder="Enter password"
                 />         */}
-    
-                <PrimaryButton
-                    title ="Sign In"
-                    onPress={this.loginHandler}
-                />
+                <View style={{flex : 1, flexDirection: "column"}}>
 
-                <SecondaryButton
-                    title ="Create Account"
-                />
+                    <View style={{width: "50%", height: 300}}>
+
+                    </View>
+                    <PrimaryButton
+                        title ="Sign In"
+                        onPress={this.loginHandler}
+                    />
+
+                    <SecondaryButton
+                        title ="Create Account"
+                    />
+                </View>
+    
 
             </View>
         )
