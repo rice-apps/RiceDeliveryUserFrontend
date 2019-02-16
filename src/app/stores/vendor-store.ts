@@ -40,6 +40,7 @@ const Vendor = types
 .model('Vendor', {
     name: types.string,
     phone: types.string,
+    hours: types.array(types.optional(types.array(types.number), [])),
     locationOptions: types.array(Location),
     products: types.array(Product)
 })
