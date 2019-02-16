@@ -18,6 +18,8 @@ import { SingleVendorMenu } from "../app/screens/menuStack/single-vendor-menu/si
 // Order Stack
 import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen";
 import { OrderHistoryScreen } from "../app/screens/orderStack/order-history-screen/order-history-screen";
+import { CartScreen } from "../app/screens/menuStack/cart-screen/cart-screen";
+import { CheckoutScreen } from "../app/screens/menuStack/checkout-screen/checkout-screen";
 
 
 const accountStackNavigator = createStackNavigator({
@@ -59,7 +61,20 @@ const menuStackNavigator = createStackNavigator({
         navigationOptions: {
             title: 'Single Vendor Menu'
             }
-        }
+    },
+    Cart : {
+        screen: CartScreen,
+        navigationOptions: {
+            title: 'Cart'
+            }
+    },
+    Checkout : {
+        screen: CheckoutScreen,
+        navigationOptions: {
+            title: 'Checkout'
+            }
+    },
+    
 });
 
 const orderStackNavigator = createStackNavigator({
