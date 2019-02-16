@@ -53,13 +53,13 @@ const menuStackNavigator = createStackNavigator({
     Menu: { 
       screen: VendorsScreen,
       navigationOptions: {
-        title: 'Menu'
+        title: 'Vendors'
         }
     },
     SingleVendorMenu: {
         screen: SingleVendorMenu,
         navigationOptions: {
-            title: 'Single Vendor Menu'
+            title: 'Menu'
             }
     },
     Cart : {

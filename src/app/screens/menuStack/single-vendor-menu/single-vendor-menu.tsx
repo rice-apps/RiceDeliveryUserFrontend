@@ -5,6 +5,7 @@ import * as css from "../../style";
 import { VendorStoreModel } from '../../../stores/vendorStore';
 import PrimaryButton from '../../../components/primary-button.js'
 import { Vendor } from '../../../components/temporary-mock-order';
+import { MenuScreenItem } from '../../../components/menu-item';
 
 
 interface SingleVendorMenuState {
@@ -29,28 +30,29 @@ export class SingleVendorMenu extends React.Component<any, SingleVendorMenuState
   render() {
     var vendor = this.state.vendor;
     var { name, products } = vendor;
+    console.log(products);
 
     return (
       <View style={css.screen.defaultScreen}>
 
         <View style={css.flatlist.container}>
 
-          <Text style={css.text.headerText}>
+          <Text style={css.text.menuHeaderText}>
                 { name }
             </Text>
 
-            <Text style={css.text.headerText}>
+            <Text style={css.text.menuHeaderText}>
                 Select Items
             </Text>
 
-            {/* <FlatList
-                // style={css.flatlist}
+            <FlatList
+                style={css.flatlist.container}
                 data= { products }
-                keyExtractor={(product, index) => product.name}
-                renderItem={({product}) => 
-                    <Text> {</Text>
+                keyExtractor={(product, index) => product._id}
+                renderItem={({item}) => 
+                    <MenuScreenItem product={item}/> 
                 }
-              /> */}
+              />
         </View>
 
         <PrimaryButton
