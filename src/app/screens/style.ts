@@ -56,6 +56,12 @@ export const text = StyleSheet.create({
         fontWeight: '800',
         fontSize: 40,
       },
+    menuHeaderText: {
+        color: color.storybookTextColor,
+        fontWeight: '800',
+        fontSize: 40,
+        textAlign: "center"
+    },
     bodyText: {
         fontSize: 20,
         color: color.storybookTextColor,
@@ -79,6 +85,40 @@ export const text = StyleSheet.create({
         fontSize: 15,
         paddingTop : 5,
         paddingBottom : 5,
+      },
+});
+
+export const container = StyleSheet.create({
+    menu: {
+        padding:10, 
+        flex: 1,
+        width : "100%",
+        alignContent : "center",
+    },
+    menuItem: {
+        backgroundColor: 'white',
+        flexDirection: 'row',  // main axis
+        justifyContent: 'flex-start', // main axis
+        alignItems: 'center', // cross axis
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        // marginLeft: 6,
+        // marginRight: 6,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
+      cartItem: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        // paddingLeft: 10,
+        // paddingRight: 10,
+        // marginTop: 5,
+        // marginBottom: 5,
       },
 });
 
