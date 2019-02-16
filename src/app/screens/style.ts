@@ -13,8 +13,12 @@ const FONT_FAMILY = "Verdana"
 export const screen = StyleSheet.create({
     defaultScreen: {
         flex: 1, 
-        justifyContent: "center", 
-        alignItems: "center",
+        // justifyContent: "center", 
+        // alignItems: "center",
+        width: "100%",
+        height: "100%",
+        borderColor: "black",
+        borderWidth: 1,
         backgroundColor: LIGHT_GRAY
     }, 
     paddedScreen: {

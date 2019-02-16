@@ -19,10 +19,10 @@ export class CartScreen extends React.Component<any, CartScreenState> {
     }
   }
 
-    // Link to checkout screen
-    checkoutPush = () => {
-        this.props.navigation.navigate("Checkout")
-      }
+  // Link to checkout screen
+  checkoutPush = () => {
+      this.props.navigation.navigate("Checkout")
+    }
     
 
   render() {
@@ -30,22 +30,57 @@ export class CartScreen extends React.Component<any, CartScreenState> {
     var { cart } = this.state;
     console.log(cart);
 
+    var subtotal = 0;
+    var deliveryCost = 1.99;
+
+    for ( let item of cart ) {
+      let { quantity, sku } = item;
+      let SKU = item.product.skuItems.filter((SKU, index, array) => SKU._id == sku)[0];
+      subtotal += SKU.price * quantity;
+    }
+
     return (
       <View style={css.screen.defaultScreen}>
-        <Text style={css.text.headerText}>
-            CartScreen
-        </Text> 
-
         <FlatList 
-            // style={}
+            style={css.flatlist.container}
             data= { cart }
             keyExtractor={(item, index) => item.product._id}
-            renderItem={({item}) => 
-                <CartScreenItem cartItem={item}/>
+            renderItem={({item}) => {
+
+              var { quantity, product, sku } = item;
+              var { name } = product;
+              // Finding corresponding skuItem with this cart item.
+              // Check if sku works? May index empty array.
+              var SKU = product.skuItems.filter((SKU, index, array) => SKU._id == sku)[0];
+              var price = SKU.price * quantity;
+
+              return (
+              <CartScreenItem 
+              text={{
+                left: quantity.toString(),
+                middle: name,
+                right: "$" + price.toString(),
+              }}/>
+              )
+            }
             }
         />
 
         <Divider style={css.screen.divider} />
+
+
+        <CartScreenItem 
+              text={{
+                left: "",
+                middle: "Subtotal",
+                right: "$" + subtotal.toString(),
+          }}/>
+          <CartScreenItem 
+              text={{
+                left: "",
+                middle: "Delivery",
+                right: "$" + deliveryCost.toString(),
+          }}/>
         
         <PrimaryButton
             title ="Checkout"

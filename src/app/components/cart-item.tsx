@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import * as css from '../screens/style';
-import { CartItem } from '../components/temporary-mock-order';
 
 
 interface CartScreenItemProps {
-    cartItem : CartItem
+    text : {
+        left : string
+        right : string
+        middle : string
+    }
 }
 
 // Should we always define the input props/state for components instead of <any, any>???
@@ -15,13 +18,27 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
     }
 
     render() {
-        var { quantity, product } = this.props.cartItem;
-        // var price = quantity * product.skuItems
-        
+        var {left, middle, right} = this.props.text;
         return (
-            <View style={css.container.cartItem}>
-                <Text style={css.text.bodyText}> {quantity}    {product.name} </Text>
+            <View style={{
+                paddingLeft: 20,
+                paddingRight: 20,
+                width: "100%",
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+                    <Text style={css.text.bigBodyText}>
+                            {left}
+                    </Text>
+                    <Text style={css.text.bigBodyText}>
+                        {middle}
+                    </Text>
+                    <Text style={css.text.bigBodyText}>
+                        {right}
+                    </Text>
             </View>
+        
         )
     }
 }
