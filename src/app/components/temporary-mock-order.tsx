@@ -145,14 +145,9 @@ export interface Batch {
 }
 
 
-// export interface Vendor {
-//   name : string,
-//   hours : number[][],
-//   locationOptions {
-//     _id
-//     name
-//   }
-// }
+// This is the schema I am following for the vendor mock data.
+// Comes from stripe-connect branch on backend.
+// x marks a field I am using:
 
 
 export interface Vendor {
@@ -161,25 +156,36 @@ export interface Vendor {
   hours: number[][],
   // users: string[],
   phone: string,
-  // locationOptions: [Location]
+  locationOptions: [Location]
   products: [Product]
   // orders: [Order]
   // batches: [Batches]
 }
 
+export interface Location {
+  _id: string
+  name: string
+}
+
 export interface SKU {
   _id: string
-  // active: boolean
-  // attributes: [AttributePair]
+  active: boolean
+  attributes: [AttributePair]
   image: string
-  // inventory: Inventory
+  inventory: number
   price: number
   product: string
+}
+
+export interface AttributePair {
+  key: string,
+  value: string,
 }
 
 export interface Product {
   _id: string,
   active: boolean,
+  name: string,
   attributes: string[],
   caption: string,
   images: string[],
@@ -188,16 +194,57 @@ export interface Product {
 }
 
 
-var EastWestTea = {
+export var EastWestTea = {
   _id : 10,
   name : "East West Tea",
   hours : [[10, 12], [11, 1], [10, 2], [9, 12], [10, 12], [11, 1], [10, 2]],
   phone : "123-456-7890",
+  locationOptions: [
+    {
+      id : "1",
+      name : "Jones",
+    },
+    {
+      id : "2",
+      name : "Martel",
+    },
+    {
+      id : "3",
+      name : "Brown",
+    },
+    {
+      id : "4",
+      name : "Sid",
+    },
+  ],
   products : [
     {
-      _id : 1,
+      _id : "1",
+      active : true,
+      attributes : [ "Good", "Idk"],
+      caption : "This is a caption",
+      images : ["link", "to", "image"],
       name : "Taro Milk Tea",
-      
+      skuItems : [
+        {
+          _id : "1",
+          active : true,
+          attributes : [
+            {
+              key: "Size",
+              value: "Small",
+            },
+            {
+              key: "Flavor",
+              value: "Taro",
+            },
+          ],
+          image : "image",
+          price : 4,
+          product : "idkwhatishere",
+        },
+      ],
+      description : "This is tea. Drink it."
     },
   ]
 }
