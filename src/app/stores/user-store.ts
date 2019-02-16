@@ -1,21 +1,88 @@
 import { types, destroy } from "mobx-state-tree";
+import { client } from "../main";
+import gql from "graphql-tag";
+import { Location } from "./vendorStore";
+
+const AUTHENTICATION = gql`
+    mutation Authenticate($ticket: String!) {
+        authenticator(ticket:$ticket) {
+            netID
+            firstName
+            lastName
+            phone
+        }
+    }    
+`
 
  const User = types
 .model('User', {
-    _id: types.string,
-    netid: types.string,
-    firstName: types.string,
-    lastName: types.string,
-    phone: types.string,
-    stripeId: types.string,
-    defaultLocation: types.string,
-    access: types.string
+    // _id: types.string,
+    netID: types.optional(types.string, ""),
+    firstName: types.optional(types.string, ""),
+    lastName: types.optional(types.string, ""),
+    phone: types.optional(types.string, ""),
+    // defaultLocation: types.optional(Location, {name: ""}),
 })
+
 
 export const UserStoreModel = types
 .model('UserStoreModel', {
-    users : types.array(User)
+    user : User,
+    authenticated: types.optional(types.boolean, false)
 })
+.actions(
+    (self) => ({
+        async authenticate(ticket) {
+            console.log("HERE");
+            let user = await client.mutate({
+                mutation: AUTHENTICATION,
+                variables: {
+                    ticket: ticket
+                }
+            });
+            console.log(user.data.authenticator);
+
+            console.log("Almost authenticated");
+            
+            if (user.data.authenticator) {
+                self.setUser(user.data.authenticator);
+                self.setAuth(true);
+            }
+
+            // api
+            // .post(
+            // '',
+            // {
+            //     query: `
+            //     mutation Authenticate($ticket: String!) {
+            //         authenticator(ticket:$ticket) {
+            //         netID
+            //         }
+            //     }
+            //     `,
+            //     variables: {
+            //     ticket: ticket
+            //     }
+            // }
+            // )
+            // .then((res) => {
+            // let user = res.data.data.authenticator;
+            
+            // console.log(user);
+            // console.log(res);
+            // });
+        },
+        setUser(user) {
+            self.user = user;
+        },
+        loggedIn() {
+            return self.authenticated ? true : false
+        },
+        setAuth(authState) {
+            self.authenticated = authState;
+        }
+    })
+)
 
 // .create({
 //      users : [{
