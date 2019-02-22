@@ -18,25 +18,27 @@ export class VendorsScreen extends React.Component<any, any> {
           // More fields...
         },
       ],
-      realVendors : realVendors
+      // realVendors : realVendors
     }
   }
 
   render() {
     var vendors = this.state.vendors;
-    var vendors = this.state.realVendors;
+    // var vendors = this.state.realVendors;
 
     return (
       <View style={css.screen.defaultScreen}>
-          <Text style={css.text.headerText}>Select Vendor</Text>
+        <View style={css.flatlist.container}>
+          <Text style={css.text.menuHeaderText}>Select Vendor</Text>
           <FlatList
                 // style={css.orderList.flatList}
                 data= { vendors }
-                keyExtractor={(item, index) => item._id}
+                keyExtractor={(item, index) => item.name}
                 renderItem={({item}) => 
                     <SingleVendorButton vendor={item}></SingleVendorButton>
                 }
               />
+          </View>
       </View>
     )
   }

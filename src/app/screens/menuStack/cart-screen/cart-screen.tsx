@@ -28,7 +28,6 @@ export class CartScreen extends React.Component<any, CartScreenState> {
   render() {
 
     var { cart } = this.state;
-    console.log(cart);
 
     var subtotal = 0;
     var deliveryCost = 1.99;
