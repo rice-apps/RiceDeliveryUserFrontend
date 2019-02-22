@@ -9,11 +9,17 @@ export class CheckoutScreen extends React.Component<any, any> {
   constructor(props) {
     super(props) 
     this.state = {
-      location : "Nowhere"
+	  location : "Nowhere",
+	  name : "Jonathan Cai",
+	  email : "coolguy@gmail.com",
+	  phone : "(123)456-789",
+	  card : "123456789",
     }
   }
 
   render() {
+
+	let {name, email, phone, card} = this.state;
 
     return (
       <View style={css.screen.defaultScreen}>
@@ -60,19 +66,15 @@ export class CheckoutScreen extends React.Component<any, any> {
 
             <View style={css.container.checkoutScreenContainer}>
             <Text style={css.text.itemText}>
-                    Name
-                </Text>
-                <Text style={css.text.itemText}>
-                    Email
-                </Text>
-                <Text style={css.text.itemText}>
-                    Phone
+                    Name : {name}{"\n"}
+                    Email : {email}{"\n"}
+                    Phone : {phone}
                 </Text>
             </View>
 
             <View style={css.container.checkoutScreenContainer}>
                 <Text>
-                    Card Number
+                    Card Number : {card}
                 </Text>
             </View>
 
