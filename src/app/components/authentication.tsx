@@ -7,6 +7,7 @@ import { create } from 'apisauce'
 import { WebView } from 'react-native';
 import { UserStore } from "../stores/user-store";
 import { RootStore } from "../root-store";
+import CookieManager from 'react-native-cookies'; 
 
 const FULL: ViewStyle = { flex: 1 }
 
@@ -92,6 +93,9 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
   async _onNavigationStateChange(webViewState) {
     console.log(webViewState.url);
 
+    CookieManager.get(webViewState.url).then((res) => {console.log('CookieManager.get =>', res);
+    });
+
     var equalSignIndex = webViewState.url.indexOf('ticket=') + 1;
     if (equalSignIndex > 0) {
 
@@ -122,18 +126,20 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
     return (
       <View style={FULL}>
         <StatusBar barStyle="light-content" />
-        {this.state.userStore.loggedIn() ?
-        //   this.props.navigation.navigate("Menu") :
-        this.props.onSuccess() :
-          (
-            <WebView
+        <WebView
               // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=hedwig://localhost:8080/auth'}}
               source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org' }}
               onNavigationStateChange={this._onNavigationStateChange.bind(this)}
               style={{ marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
             />
+        {/* {
+          this.state.userStore.loggedIn() ?
+        //   this.props.navigation.navigate("Menu") :
+        this.props.onSuccess() :
+          (
+            
           )
-        }
+        } */}
 
         {/* <Wallpaper /> */}
         {/* <Button

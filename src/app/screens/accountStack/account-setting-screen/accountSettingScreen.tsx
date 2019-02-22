@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { Text, ScrollView, View, StyleSheet, FlatList} from 'react-native';
+import { ScrollView, View, AsyncStorage, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
 import SecondaryButton from '../../../components/secondary-button';
 import * as css from "../../style";
 import CookieManager from 'react-native-cookies'; 
 
-
 export class AccountScreen extends React.Component<any, any> {
+
 
   list = [
     {
@@ -37,7 +37,6 @@ export class AccountScreen extends React.Component<any, any> {
     />
   )
 
-
   render() {
 
     return (
@@ -56,9 +55,12 @@ export class AccountScreen extends React.Component<any, any> {
           <SecondaryButton
             title ="Logout"
             onPress={() => {
-              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org',true).then((res) => {console.log('CookieManager.get =>', res);
-});
-              CookieManager.clearAll().then((res) => console.log('CookieManager.clearAll =>', res));
+              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org')
+                .then((res) => {console.log('CookieManager.get =>', res);});
+              CookieManager.clearAll()
+                .then((res) => console.log('CookieManager.clearAll =>', res));
+              AsyncStorage.removeItem("Authenticated");
+              this.props.navigation.popToTop();
             }}
           />
         </View>
