@@ -59,6 +59,10 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
         }
     }   
 
+    createHandler = async() => {
+        this.props.navigation.navigate("Tabs")
+    }
+
     render() {
         return (
             <View style={css.screen.defaultScreen}>
@@ -97,6 +101,7 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
 
                     <SecondaryButton
                         title ="Create Account"
+                        onPress={this.createHandler}
                     />
                 </View>
     
