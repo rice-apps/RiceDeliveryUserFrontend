@@ -13,8 +13,12 @@ const FONT_FAMILY = "Verdana"
 export const screen = StyleSheet.create({
     defaultScreen: {
         flex: 1, 
-        justifyContent: "center", 
-        alignItems: "center",
+        // justifyContent: "center", 
+        // alignItems: "center",
+        width: "100%",
+        height: "100%",
+        borderColor: "black",
+        borderWidth: 1,
         backgroundColor: LIGHT_GRAY
     }, 
     paddedScreen: {
@@ -28,8 +32,6 @@ export const screen = StyleSheet.create({
     },
     singleOrderDisplay : {
         width : "100%",
-        textAlign : "left",
-        color: 'black',
         flex : 1,
         paddingTop : 20,
         paddingBottom : 20,
@@ -56,6 +58,12 @@ export const text = StyleSheet.create({
         fontWeight: '800',
         fontSize: 40,
       },
+    menuHeaderText: {
+        color: color.storybookTextColor,
+        fontWeight: '800',
+        fontSize: 40,
+        textAlign: "center"
+    },
     bodyText: {
         fontSize: 20,
         color: color.storybookTextColor,
@@ -65,6 +73,11 @@ export const text = StyleSheet.create({
         fontSize: 26,
         color: color.storybookTextColor,
         textAlign: "left"
+    },
+    bigBodyTextCentered: {
+        fontSize: 26,
+        color: color.storybookTextColor,
+        textAlign: "center"
     },
     smallText : {
         fontSize : 15,
@@ -79,6 +92,55 @@ export const text = StyleSheet.create({
         fontSize: 15,
         paddingTop : 5,
         paddingBottom : 5,
+      },
+});
+
+export const container = StyleSheet.create({
+    menu: {
+        padding:10, 
+        flex: 1,
+        width : "100%",
+        alignContent : "center",
+    },
+    menuItem: {
+        backgroundColor: 'white',
+        flexDirection: 'row',  // main axis
+        justifyContent: 'flex-start', // main axis
+        alignItems: 'center', // cross axis
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        // marginLeft: 6,
+        // marginRight: 6,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
+      checkoutScreenContainer: {
+        backgroundColor: 'white',
+        flexDirection: 'row',  
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
+      cartItem: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        // paddingLeft: 10,
+        // paddingRight: 10,
+        // marginTop: 5,
+        // marginBottom: 5,
       },
 });
 

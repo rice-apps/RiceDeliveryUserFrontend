@@ -85,15 +85,21 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
                     style = {css.text.textInput}
                     placeholder="Enter password"
                 />         */}
-    
-                <PrimaryButton
-                    title ="Sign In"
-                    onPress={this.loginHandler}
-                />
+                <View style={{flex : 1, flexDirection: "column"}}>
 
-                <SecondaryButton
-                    title ="Create Account"
-                />
+                    <View style={{width: "50%", height: 300}}>
+
+                    </View>
+                    <PrimaryButton
+                        title ="Sign In"
+                        onPress={this.loginHandler}
+                    />
+
+                    <SecondaryButton
+                        title ="Create Account"
+                    />
+                </View>
+    
 
                 <AuthModal visible={this.state.modalVisible} setVisible={this.setModalVisible.bind(this)} onSuccess={this.onSuccess.bind(this)} onFailure={this.onFailure.bind(this)}>
                 </AuthModal>

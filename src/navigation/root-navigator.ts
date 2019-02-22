@@ -22,6 +22,7 @@ import { CartScreen } from "../app/screens/menuStack/cart-screen/cart-screen";
 import { CheckoutScreen } from "../app/screens/menuStack/checkout-screen/checkout-screen";
 
 
+// Stack Navigator for Account Stack
 const accountStackNavigator = createStackNavigator({
     Account: { 
       screen: AccountScreen,
@@ -49,17 +50,18 @@ const accountStackNavigator = createStackNavigator({
     },
 });
 
+// Stack Navigator for Menu Stack
 const menuStackNavigator = createStackNavigator({
     Menu: { 
       screen: VendorsScreen,
       navigationOptions: {
-        title: 'Menu'
+        title: 'Vendors'
         }
     },
     SingleVendorMenu: {
         screen: SingleVendorMenu,
         navigationOptions: {
-            title: 'Single Vendor Menu'
+            title: 'Menu'
             }
     },
     Cart : {
@@ -77,6 +79,7 @@ const menuStackNavigator = createStackNavigator({
     
 });
 
+// Stack Navigator for Order Stack
 const orderStackNavigator = createStackNavigator({
     Order: {
       screen: OrderScreen,
@@ -92,7 +95,7 @@ const orderStackNavigator = createStackNavigator({
     },
 });
 
-
+// Tab Navigator for App
 export const TabNavigator = createBottomTabNavigator({
     MenuStack: {
         screen: menuStackNavigator,
