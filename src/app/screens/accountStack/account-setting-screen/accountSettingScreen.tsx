@@ -37,6 +37,7 @@ export class AccountScreen extends React.Component<any, any> {
     />
   )
 
+
   render() {
 
     return (
@@ -54,7 +55,11 @@ export class AccountScreen extends React.Component<any, any> {
         <View>
           <SecondaryButton
             title ="Logout"
-            onPress={() => CookieManager.clearAll().then((res) => console.log("Cookies cleared"))}
+            onPress={() => {
+              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org',true).then((res) => {console.log('CookieManager.get =>', res);
+});
+              CookieManager.clearAll().then((res) => console.log('CookieManager.clearAll =>', res));
+            }}
           />
         </View>
 
