@@ -252,12 +252,15 @@ export var TaroMilkTea = {
 
 export var PearlMilkTea = {...TaroMilkTea};
 PearlMilkTea.name = "Pearl Milk Tea";
+PearlMilkTea._id = "2";
 
 var LycheeMilkTea = {...TaroMilkTea};
 LycheeMilkTea.name = "Lychee Milk Tea";
+LycheeMilkTea._id = "3";
 
 var ThaiMilkTea = {...TaroMilkTea};
 ThaiMilkTea.name = "Thai Milk Tea";
+ThaiMilkTea._id = "4";
 
 export var mockCart = [
   {

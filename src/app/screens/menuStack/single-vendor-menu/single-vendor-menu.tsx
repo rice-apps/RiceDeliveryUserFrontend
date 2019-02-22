@@ -30,7 +30,6 @@ export class SingleVendorMenu extends React.Component<any, SingleVendorMenuState
   render() {
     var vendor = this.state.vendor;
     var { name, products } = vendor;
-    console.log(products);
 
     return (
       <View style={css.screen.defaultScreen}>
@@ -41,7 +40,7 @@ export class SingleVendorMenu extends React.Component<any, SingleVendorMenuState
                 { name }
             </Text>
 
-            <Text style={css.text.menuHeaderText}>
+            <Text style={css.text.bigBodyTextCentered}>
                 Select Items
             </Text>
 

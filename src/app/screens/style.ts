@@ -32,8 +32,6 @@ export const screen = StyleSheet.create({
     },
     singleOrderDisplay : {
         width : "100%",
-        textAlign : "left",
-        color: 'black',
         flex : 1,
         paddingTop : 20,
         paddingBottom : 20,
@@ -76,6 +74,11 @@ export const text = StyleSheet.create({
         color: color.storybookTextColor,
         textAlign: "left"
     },
+    bigBodyTextCentered: {
+        fontSize: 26,
+        color: color.storybookTextColor,
+        textAlign: "center"
+    },
     smallText : {
         fontSize : 15,
     },
@@ -110,6 +113,21 @@ export const container = StyleSheet.create({
         paddingRight: 10,
         // marginLeft: 6,
         // marginRight: 6,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
+      checkoutScreenContainer: {
+        backgroundColor: 'white',
+        flexDirection: 'row',  
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
         marginTop: 5,
         marginBottom: 5,
         borderRadius: 14,
