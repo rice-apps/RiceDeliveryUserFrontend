@@ -7,6 +7,7 @@ import AuthModal from '../../components/auth-modal'
 import {NavigationScreenProps} from 'react-navigation'
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../root-store.js';
+ 
 
 console.disableYellowBox = true;
 // import * as css from "../../style"

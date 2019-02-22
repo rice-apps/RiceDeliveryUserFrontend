@@ -3,6 +3,7 @@ import { Text, ScrollView, View, StyleSheet, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
 import SecondaryButton from '../../../components/secondary-button';
 import * as css from "../../style";
+import CookieManager from 'react-native-cookies'; 
 
 
 export class AccountScreen extends React.Component<any, any> {
@@ -53,6 +54,7 @@ export class AccountScreen extends React.Component<any, any> {
         <View>
           <SecondaryButton
             title ="Logout"
+            onPress={() => CookieManager.clearAll().then((res) => console.log("Cookies cleared"))}
           />
         </View>
 
