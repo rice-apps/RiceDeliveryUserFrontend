@@ -1,7 +1,7 @@
 import { types, destroy } from "mobx-state-tree";
 import { client } from "../main";
 import gql from "graphql-tag";
-import { Location } from "./vendorStore";
+// import { Location } from "./vendor-store";
 
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!) {

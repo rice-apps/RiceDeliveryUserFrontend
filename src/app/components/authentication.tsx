@@ -5,8 +5,8 @@ import { inject, observer } from "mobx-react"
 import { create } from 'apisauce'
 // Linking
 import { WebView } from 'react-native';
-import { UserStore } from "../stores/user-store";
-import { RootStore } from "../root-store";
+import { UserStoreModel } from "../stores/user-store";
+import { RootStore } from "../stores/root-store";
 import CookieManager from 'react-native-cookies'; 
 
 const FULL: ViewStyle = { flex: 1 }

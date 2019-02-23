@@ -1,8 +1,9 @@
 import { types, destroy, getRoot } from "mobx-state-tree";
 import gql from 'graphql-tag'
-import { MenuItem } from './vendorStore';
-import { RootStore } from "../root-store";
 import { client } from "../main";
+import { MenuItem } from './vendor-store';
+import { RootStore } from "./root-store";
+
 
 // GraphQL Mutations
 const POST_CART = gql`
@@ -13,39 +14,20 @@ const POST_CART = gql`
   }
 `;
 
-const OrderItem = types
-.model('OrderItem', {
-    itemID: types.string,
-    quantity: types.number
-})
-
 export const CartStoreModel = types
 .model('CartStoreModel', {
-    cartItems : types.array(OrderItem)
+    
 })
 .actions(
     (self) => ({
-        addToCart(menuItemID) {
-            self.cartItems.push({itemID: menuItemID, quantity : 1})
-            console.log(self.cartItems);
+        addToCart() {
+            
         },
-        removeFromCart(menuItemID) {
-            let idx = self.cartItems.findIndex((menuItem) => menuItem.itemID == menuItemID)
-            self.cartItems.splice(idx, 1)
-            console.log(self.cartItems);
+        removeFromCart() {
+
         },
         async createOrder() {
-            console.log(self.cartItems);
-            const order = await client.mutate({
-                mutation: POST_CART,
-                variables: {
-                    cart: { cart: self.cartItems },
-                    userID: "5bd01994032993139cbbc84c",
-                    location: "Wiess Commons",
-                    vendorID: "5bd01d4e2e964215214ad094"
-                }
-            });
-            return order;
+            
         }
     }),
 )

@@ -11,7 +11,7 @@ import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
-import { RootStore } from "../../../app/root-store";
+import { RootStore } from "../../../app/stores/root-store";
 import { OrderStoreModel } from "../../../app/stores/order-store";
 import { getRoot } from "mobx-state-tree";
 import { Order } from "./order";
