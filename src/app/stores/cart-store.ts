@@ -14,22 +14,29 @@ const POST_CART = gql`
   }
 `;
 
-const SKUAtributesModel = types.model("SKUAttributeModel", {
+export const SKUAtributesModel = types.model("SKUAttributeModel", {
   key: "",
   value: ""
 })
-const CartItemModel = types.model("CartItemModel", {
+
+export const CartItemModel = types.model("CartItemModel", {
   productName: "", 
   productID: "",
   sku: "", 
   attributes: types.array(SKUAtributesModel)
 })
+
+
 export const CartStoreModel = types
 .model('CartStoreModel', {
-    cart: types.optional(types.array(CartItemModel), [])
+    cart: types.optional(types.array(CartItemModel), []),
+    cartMap: types.map(CartItemModel)
 })
 .actions(
     (self) => ({
+        addCartIem(name, CartItemModel) {
+          self.cartMap.set(name, CartItemModel)
+        },
         addToCart() {
             
         },
