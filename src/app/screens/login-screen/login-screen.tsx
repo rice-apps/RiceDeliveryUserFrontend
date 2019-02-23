@@ -35,7 +35,13 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
     async onSuccess() {
         // Cache data for persistence
         await AsyncStorage.setItem('Authenticated', this.state.rootStore.userStore.user.netID);
-        this.setState({modalVisible: false}, () => this.props.navigation.navigate("Menu"));
+        if (!this.state.rootStore.userStore.hasAccount) { // user account does not exist
+            // Navigate to screen for account information
+            console.log("Has Account " + this.state.rootStore.userStore.hasAccount);
+            this.props.navigation.replace("CreateAccount");
+        } else { // user account exists
+            this.setState({modalVisible: false}, () => this.props.navigation.navigate("Menu"));
+        }
     }
 
     onFailure() {
@@ -52,7 +58,8 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
     loginHandler = async () => {
         // this.props.navigation.navigate("Tabs")
         const authenticated = await AsyncStorage.getItem("Authenticated");
-        if (authenticated == null) {
+        console.log(this.state.rootStore.userStore.hasAccount);
+        if (!this.state.rootStore.userStore.hasAccount) {
             this.setModalVisible(!this.state.modalVisible);
         } else {
             this.props.navigation.navigate("Menu");
@@ -64,6 +71,7 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
     }
 
     render() {
+        console.log("Console!");
         return (
             <View style={css.screen.defaultScreen}>
             {/* <View> */}
