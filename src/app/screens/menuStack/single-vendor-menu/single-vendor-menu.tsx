@@ -1,48 +1,79 @@
 import * as React from 'react'
-import { View, Text, FlatList, ImageEditor } from 'react-native';
+import { View, Text, FlatList, ImageEditor, ActivityIndicator } from 'react-native';
 import { Divider } from 'react-native-elements';
 import * as css from "../../style";
-import { VendorStoreModel } from '../../../stores/vendor-store';
+import { VendorStore } from '../../../stores/vendor-store';
 import PrimaryButton from '../../../components/primary-button.js'
-import { Vendor } from '../../../components/temporary-mock-order';
+import { Vendor, EastWestTea, EastWestTeaWithoutProducts } from '../../../components/temporary-mock-order';
 import { MenuScreenItem } from '../../../components/menu-item';
 import gql from 'graphql-tag'
-import { client } from '../../../../app/main'
 import { CartItem, CartItemModel, SKUAtributesModel, CartStoreModel } from '../../../stores/cart-store'
+import { client } from '../../../main';
+import LoadingScreen from '../../LoadingScreen';
+import { observer, inject } from 'mobx-react';
+import { RootStore } from '../../../stores/root-store';
+import { NavigationScreenProp } from 'react-navigation';
+import { getSnapshot } from 'mobx-state-tree';
 
 // interface SingleVendorMenuState {
 //   vendor : Vendor
 // }
 
+interface SingleVendorMenuState {
+  vendor : Vendor,
+  cartMap: any,
+  isLoading: boolean
+}
+
+
+interface SingleVendorMenuProps {
+  rootStore: RootStore,
+  navigation: NavigationScreenProp<any, any>
+}
 const GET_MENU = gql`
-query getMenu($name: String!) {
-  vendor(name: $name) {
-    name
-    products {
-      id
+  query getMenu($vendorName: String!){
+    vendor(name: $vendorName) {
       name
-      active
-      skuItems {
+      products {
         id
-        price
-        product
-        attributes {
-          key
-          value
+        name
+        caption
+        active
+        images
+        attributes
+        description
+        skuItems {
+          image
+          active
+          id
+          price
+          product
+          attributes 
+          {
+            key
+            value
+          }
+          inventory {
+            type
+            value
+            quantity
+            
+          }
         }
-      } 
+      }
     }
   }
-}
 `
-
-export class SingleVendorMenu extends React.Component<any, any> {
+@inject("rootStore")
+@observer
+export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, SingleVendorMenuState> {
 
   constructor(props) {
     super(props)
     this.state = {
       vendor : this.props.navigation.getParam('vendor', 'no_order_retrieved'),
-      cartMap: new Map
+      cartMap: new Map,
+      isLoading: true
     }
   }
 
@@ -85,55 +116,54 @@ export class SingleVendorMenu extends React.Component<any, any> {
     }
   }
   
-  async getMenu() {
-    const info : any = await client.query({
+  async componentDidMount() {
+
+    const eastWest = this.props.rootStore.vendorStore.addVendor(EastWestTeaWithoutProducts)
+    const menu = await client.query({
       query: GET_MENU, 
       variables: {
-        name: this.state.vendor.name
-      } 
+        vendorName: this.state.vendor.name
+      }
     })
-    let products = info.data.vendor[0].products;
-
-    // Parse East-West products and skuItems.
-    this.getProductMapping(products);
+    const products = this.props.rootStore.vendorStore.initializeMenu(menu.data.vendor[0])
+    this.setState({isLoading: false})
+    this.getProductMapping(products)
   }
 
-  componentDidMount() {
-      this.getMenu();
-   }
-
   render() {
-    var vendor = this.state.vendor;
-    var { name, products } = vendor;
 
-    return (
-      <View style={css.screen.defaultScreen}>
-
-        <View style={css.flatlist.container}>
-
-          <Text style={css.text.menuHeaderText}>
-                { name }
-            </Text>
-
-            <Text style={css.text.bigBodyTextCentered}>
-                Select Items
-            </Text>
-
-            <FlatList
-                style={css.flatlist.container}
-                data= { products }
-                keyExtractor={(product, index) => product._id}
-                renderItem={({item}) => 
-                    <MenuScreenItem product={item}/> 
-                }
-              />
+    if (this.state.isLoading) {
+      return (<LoadingScreen />)
+    } else {
+      return (
+        <View style={css.screen.defaultScreen}>
+  
+          <View style={css.flatlist.container}>
+  
+            <Text style={css.text.menuHeaderText}>
+                  { this.state.vendor.name }
+              </Text>
+  
+              <Text style={css.text.bigBodyTextCentered}>
+                  Select Items
+              </Text>
+  
+              <FlatList
+                  style={css.flatlist.container}
+                  data= { this.state.vendor.products }
+                  keyExtractor={(product, index) => product._id}
+                  renderItem={({item}) => 
+                      <MenuScreenItem product={item}/> 
+                  }
+                />
+          </View>
+  
+          <PrimaryButton
+              title ="View Cart"
+              onPress = {this.viewCartPush}
+            />
         </View>
-
-        <PrimaryButton
-            title ="View Cart"
-            onPress = {this.viewCartPush}
-          />
-      </View>
-      )
+        )
+    }
   }
 }
