@@ -56,7 +56,7 @@ export class SingleVendorMenu extends React.Component<any, any> {
   getProductMapping(products) {
     for (let index = 0; index < products.length; index++) {
       let product = products[index];
-      console.log("big loop");
+      
       for (let sku = 0; sku < product.skuItems.length; sku++) {
         let skuItem = product.skuItems[sku]
         let mapArray = [product.name, skuItem.attributes[0].value, skuItem.attributes[1].value ];
@@ -82,7 +82,6 @@ export class SingleVendorMenu extends React.Component<any, any> {
         this.state.cartMap.set(mapArray, cartItem);
       }
 
-      console.log(this.state.cartMap);
     }
   }
   
@@ -101,7 +100,6 @@ export class SingleVendorMenu extends React.Component<any, any> {
 
   componentDidMount() {
       this.getMenu();
-      console.log("mountinggg");
    }
 
   render() {
