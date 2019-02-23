@@ -3,6 +3,7 @@ import { NavigationStoreModel } from "../../navigation/navigation-store"
 import { UserStoreModel }  from "./user-store"
 import { VendorStoreModel }  from "./vendor-store"
 import { OrderModel } from "./order-store"
+
 // import { CartStoreModel } from "./cart-store";
 /**
  * An RootStore model.
