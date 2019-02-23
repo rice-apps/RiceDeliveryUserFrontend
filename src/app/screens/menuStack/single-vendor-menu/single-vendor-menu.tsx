@@ -6,19 +6,43 @@ import { VendorStoreModel } from '../../../stores/vendor-store';
 import PrimaryButton from '../../../components/primary-button.js'
 import { Vendor } from '../../../components/temporary-mock-order';
 import { MenuScreenItem } from '../../../components/menu-item';
+import gql from 'graphql-tag'
+import { client } from '../../../../app/main'
+import { CartItem, CartItemModel, SKUAtributesModel, CartStoreModel } from '../../../stores/cart-store'
 
+// interface SingleVendorMenuState {
+//   vendor : Vendor
+// }
 
-interface SingleVendorMenuState {
-  vendor : Vendor
+const GET_MENU = gql`
+query getMenu($name: String!) {
+  vendor(name: $name) {
+    name
+    products {
+      id
+      name
+      active
+      skuItems {
+        id
+        price
+        product
+        attributes {
+          key
+          value
+        }
+      } 
+    }
+  }
 }
+`
 
-
-export class SingleVendorMenu extends React.Component<any, SingleVendorMenuState> {
+export class SingleVendorMenu extends React.Component<any, any> {
 
   constructor(props) {
     super(props)
     this.state = {
       vendor : this.props.navigation.getParam('vendor', 'no_order_retrieved'),
+      cartMap: new Map
     }
   }
 
@@ -26,6 +50,57 @@ export class SingleVendorMenu extends React.Component<any, SingleVendorMenuState
   viewCartPush = () => {
     this.props.navigation.navigate("Cart")
   }
+
+  // Parses the Json object into a mapping of 
+  // [Product, attribute, attribute] => CartItem
+  getProductMapping(products) {
+    for (let index = 0; index < products.length; index++) {
+      let product = products[index];
+      
+      for (let sku = 0; sku < product.skuItems.length; sku++) {
+        let skuItem = product.skuItems[sku]
+        let mapArray = [product.name, skuItem.attributes[0].value, skuItem.attributes[1].value ];
+
+        let attrOne = SKUAtributesModel.create({
+          key: skuItem.attributes[0].key,
+          value: skuItem.attributes[0].value
+        })
+
+        let attrTwo = SKUAtributesModel.create({
+          key: skuItem.attributes[1].key,
+          value: skuItem.attributes[1].value
+        })
+
+        let cartItem = CartItemModel.create({
+          productName: product.name, 
+          productID: product.id,
+          sku: skuItem.id, 
+          attributes: [attrOne, attrTwo]
+        })
+
+        // Set the cart map.
+        this.state.cartMap.set(mapArray, cartItem);
+      }
+
+    }
+  }
+  
+  async getMenu() {
+    const info : any = await client.query({
+      query: GET_MENU, 
+      variables: {
+        name: this.state.vendor.name
+      } 
+    })
+    let products = info.data.vendor[0].products;
+
+    // Parse East-West products and skuItems.
+    this.getProductMapping(products);
+  }
+
+  componentDidMount() {
+      this.getMenu();
+   }
 
   render() {
     var vendor = this.state.vendor;
