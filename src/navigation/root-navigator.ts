@@ -10,6 +10,7 @@ import { AccountScreen } from "../app/screens/accountStack/account-setting-scree
 import { AccountInfoScreen } from "../app/screens/accountStack/account-info-screen/account-info-screen";
 import { PaymentInfoScreen } from "../app/screens/accountStack/payment-info-screen/payment-info-screen";
 import { LocationInfoScreen } from "../app/screens/accountStack/location-info-screen/location-info-screen";
+import { ChangePasswordScreen } from "../app/screens/accountStack/change-password-screen/change-password-screen";
 
 // Menu Stack
 import { VendorsScreen } from "../app/screens/menuStack/vendors-screen/vendors-screen";
@@ -48,6 +49,12 @@ const accountStackNavigator = createStackNavigator({
             title: 'Location Info'
         }
     },
+    ChangePassword : {
+        screen: ChangePasswordScreen,
+        navigationOptions: {
+            title: 'Password'
+        }
+    }
 });
 
 // Stack Navigator for Menu Stack

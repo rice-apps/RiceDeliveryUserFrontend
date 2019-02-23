@@ -17,11 +17,17 @@ export const screen = StyleSheet.create({
         // alignItems: "center",
         width: "100%",
         height: "100%",
-        borderColor: "black",
-        borderWidth: 1,
+        // borderColor: "black",
+        // borderWidth: 1,
         backgroundColor: LIGHT_GRAY
     }, 
     paddedScreen: {
+        flex: 1, 
+        padding: 10,
+        backgroundColor: LIGHT_GRAY
+    }, 
+    accountScreenContainer: {
+        alignContent : "center",
         flex: 1, 
         padding: 10,
         backgroundColor: LIGHT_GRAY
@@ -42,6 +48,15 @@ export const screen = StyleSheet.create({
 
 //TEXT
 export const text = StyleSheet.create({
+    orderHistItemText : {
+            fontSize: 20, 
+            borderRadius : 5,
+            overflow : "hidden",
+            padding : 2,
+            margin : 2,
+            textAlign: "center",
+            backgroundColor: "grey",
+    },
     logo: {
         fontSize: 30,
         fontFamily: FONT_FAMILY,
@@ -57,6 +72,12 @@ export const text = StyleSheet.create({
         color: color.storybookTextColor,
         fontWeight: '800',
         fontSize: 40,
+      },
+      accountHeaderText: {
+        color: color.storybookTextColor,
+        fontWeight: '800',
+        fontSize: 40,
+        textAlign: "center"
       },
     menuHeaderText: {
         color: color.storybookTextColor,
@@ -96,6 +117,15 @@ export const text = StyleSheet.create({
 });
 
 export const container = StyleSheet.create({
+    iconHighlight : {
+        marginLeft : 2,
+        marginRight : 2,
+        paddingLeft : 5,
+        paddingRight : 5,
+        backgroundColor : "lightgrey",
+        overflow : "hidden",
+        borderRadius : 5,
+    },
     menu: {
         padding:10, 
         flex: 1,
@@ -104,9 +134,10 @@ export const container = StyleSheet.create({
     },
     menuItem: {
         backgroundColor: 'white',
-        flexDirection: 'row',  // main axis
-        justifyContent: 'flex-start', // main axis
-        alignItems: 'center', // cross axis
+        flex : 1,
+        flexDirection: 'row',  
+        justifyContent: 'space-between',
+        alignItems: 'center', 
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 10,
@@ -118,6 +149,19 @@ export const container = StyleSheet.create({
         borderRadius: 14,
         borderWidth: 1,
         borderColor: '#fff'    
+      },
+      orderHistItem: {
+        backgroundColor: 'white',
+        flex : 1,
+        flexDirection: 'row',  // main axis
+        justifyContent: 'space-between', // main axis
+        alignItems: 'center', // cross axis
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 5,
+        marginBottom: 5,
       },
       checkoutScreenContainer: {
         backgroundColor: 'white',

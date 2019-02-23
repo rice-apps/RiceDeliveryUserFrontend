@@ -40,7 +40,7 @@ export class CheckoutScreen extends React.Component<any, any> {
 				}
 			}>
 				<Picker
-					selectedValue={this.state.language}
+					selectedValue={this.state.location}
 					style={{
 						height: 1, 
 						width: 100, 
@@ -48,7 +48,7 @@ export class CheckoutScreen extends React.Component<any, any> {
 						margin: 0,
 					}}
 					onValueChange={(itemValue, itemIndex) =>
-					this.setState({language: itemValue})
+					this.setState({location: itemValue})
 					}>
 					<Picker.Item label="Jones" value="jones" />
 					<Picker.Item label="Martel" value="martel" />

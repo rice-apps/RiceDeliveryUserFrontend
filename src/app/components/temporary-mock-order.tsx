@@ -77,8 +77,8 @@ var order2 = {
     },
     status : {
       pending : "01/29/19 10:01PM",
-      onTheWay: "01/29/19 10:05PM", 
-      fulfilled: "01/29/19 10:40PM", 
+      onTheWay: "", 
+      fulfilled: "", 
       unfulfilled: false,
     }, 
     location : "Martel",
@@ -107,7 +107,7 @@ var order3 = {
   status : {
     pending : "01/29/19 10:01PM",
     onTheWay: "01/29/19 10:05PM", 
-    fulfilled: "01/29/19 10:40PM", 
+    fulfilled: "", 
     unfulfilled: false,
   }, 
   location : "Brown",

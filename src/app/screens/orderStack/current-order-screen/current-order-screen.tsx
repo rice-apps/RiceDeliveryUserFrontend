@@ -77,7 +77,7 @@ export class OrderScreen extends React.Component<any, any> {
       </View>
 
         <PrimaryButton
-            title ="Previous Orders"
+            title ="Order History"
             onPress = {this.previousOrdersPush}
           />
 
