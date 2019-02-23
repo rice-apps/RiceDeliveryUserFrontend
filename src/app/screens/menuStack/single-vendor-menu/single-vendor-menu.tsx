@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, Text, FlatList, ImageEditor } from 'react-native';
 import { Divider } from 'react-native-elements';
 import * as css from "../../style";
-import { VendorStoreModel } from '../../../stores/vendorStore';
+import { VendorStoreModel } from '../../../stores/vendor-store';
 import PrimaryButton from '../../../components/primary-button.js'
 import { Vendor } from '../../../components/temporary-mock-order';
 import { MenuScreenItem } from '../../../components/menu-item';
