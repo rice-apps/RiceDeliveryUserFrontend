@@ -5,17 +5,26 @@ import PrimaryButton from '../../../components/primary-button.js'
 import { CartItem, mockCart } from '../../../components/temporary-mock-order';
 import { Divider } from 'react-native-elements';
 import { CartScreenItem } from '../../../components/cart-item';
+import { inject, observer } from 'mobx-react';
+import { RootStore } from '../../../stores/root-store';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface CartScreenState {
   cart : CartItem[],
 }
 
-export class CartScreen extends React.Component<any, CartScreenState> {
+interface CartScreenProps {
+  rootStore: RootStore,
+  navigation: NavigationScreenProp<any, any>
+}
+@inject("rootStore")
+@observer
+export class CartScreen extends React.Component<CartScreenProps, CartScreenState> {
 
   constructor(props) {
     super(props) 
     this.state = {
-      cart: mockCart
+      cart: this.props.navigation.getParam('cart', 'no_order_retrieved'),
     }
   }
 
@@ -27,43 +36,41 @@ export class CartScreen extends React.Component<any, CartScreenState> {
 
   render() {
 
-    var { cart } = this.state;
+    let { rootStore } = this.props;
+    let map = rootStore.cartStore.cartMap
+    let subtotal = 0;
+    let deliveryCost = 1.99;
 
-    var subtotal = 0;
-    var deliveryCost = 1.99;
-
-    for ( let item of cart ) {
-      let { quantity, sku } = item;
-      let SKU = item.product.skuItems.filter((SKU, index, array) => SKU._id == sku)[0];
-      subtotal += SKU.price * quantity;
-    }
-
+    map.forEach((value, key, map) => {
+      subtotal += value.price / 100.0
+    })
     return (
       <View style={css.screen.defaultScreen}>
-        <FlatList 
+
+        {/* <FlatList 
             style={css.flatlist.container}
-            data= { cart }
-            keyExtractor={(item, index) => item.product._id}
+            data={ this.props.rootStore.cartStore.cartMap.entries() }
+            keyExtractor={(item, index) => item.}
             renderItem={({item}) => {
 
-              var { quantity, product, sku } = item;
-              var { name } = product;
-              // Finding corresponding skuItem with this cart item.
-              // Check if sku works? May index empty array.
-              var SKU = product.skuItems.filter((SKU, index, array) => SKU._id == sku)[0];
-              var price = SKU.price * quantity;
+              // var { quantity, productID, sku } = item;
+              // var { name } = product;
+              // // Finding corresponding skuItem with this cart item.
+              // // Check if sku works? May index empty array.
+              // var SKU = product.skuItems.filter((SKU, index, array) => SKU._id == sku)[0];
+              // var price = SKU.price * quantity;
 
               return (
               <CartScreenItem 
               text={{
-                left: quantity.toString(),
+                left: 
                 middle: name,
                 right: "$" + price.toString(),
               }}/>
               )
             }
             }
-        />
+        /> */}
 
         <Divider style={css.screen.divider} />
 

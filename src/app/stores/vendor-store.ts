@@ -1,4 +1,4 @@
-import {types, destroy} from "mobx-state-tree";
+import {types, destroy, getSnapshot} from "mobx-state-tree";
 import { Location } from "./location-store"
 import { client } from '../main';
 import gql from "graphql-tag";
