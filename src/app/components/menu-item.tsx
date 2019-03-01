@@ -4,25 +4,45 @@ import * as css from '../screens/style';
 import { Product } from '../components/temporary-mock-order';
 import { CartItem } from '../stores/cart-store'
 import { inject, observer } from 'mobx-react';
+import { client } from '../main';
+import gql from 'graphql-tag';
 interface MenuScreenItemProps {
     product : any
 }
 
-// Should we always define the input props/state for components instead of <any, any>???
-
+const SKU_QUERY = gql`
+    query getSKU($sku: String!, $vendorName: String!){
+        sku(sku: $sku, vendorName: $vendorName) {
+            inventory{
+            value
+            }
+        }
+        
+    }
+`
 @inject("rootStore")
 @observer
 export class MenuScreenItem extends React.Component<MenuScreenItemProps, any> {
     constructor(props) {
         super(props);
+        this.state = {
+            client: client
+        }
     }
-
-    onIncrementHandler = () => {
+    
+    onIncrementHandler = async() => {
+        // const inventory = await client.query({
+        //     query: SKU_QUERY,
+        //     variables: {
+        //         sku: this.props.product[1].sku,
+        //         vendorName: "East West Tea"
+        //     }
+        // })
         this.props.product[1].incrementQuantity()
 
     }
 
-    onDecrementHandler = () => {
+    onDecrementHandler = async() => {
         let quantity = this.props.product[1].quantity
         if (quantity > 0) {
             this.props.product[1].decrementQuantity()

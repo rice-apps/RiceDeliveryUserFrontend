@@ -54,10 +54,14 @@ const Vendor = types
 
 export const VendorStoreModel = types
 .model('VendorStoreModel', {
-    vendors: types.array(Vendor)
+    vendors: types.array(Vendor), 
+    activeVendor: ""
 }).actions(self => ({
     addVendor(vendor) {
         self.vendors.push(vendor)
+    },
+    setActiveVendor(vendor) {
+        self.activeVendor = vendor
     },
     initializeMenu(menuData) {
         const vendor = self.vendors.filter(vendor => vendor.name === menuData.name)

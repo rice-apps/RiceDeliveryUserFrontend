@@ -22,7 +22,6 @@ import { getSnapshot } from 'mobx-state-tree';
 
 interface SingleVendorMenuState {
   vendor : Vendor,
-  cartMap: any,
   isLoading: boolean
 }
 interface SingleVendorMenuProps {
@@ -71,7 +70,6 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
     super(props)
     this.state = {
       vendor : this.props.navigation.getParam('vendor', 'no_order_retrieved'),
-      cartMap: new Map,
       isLoading: true
     }
   }
@@ -79,6 +77,8 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   // Link to cart screen
   viewCartPush = () => {
     this.props.navigation.navigate("Cart")
+    console.log("Navigating")
+    console.log(Array.from(this.props.rootStore.cartStore.cartMap.toJS().entries()))
   }
 
   // Parses the Json object into a mapping of 
@@ -137,6 +137,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   };
 
   render() {
+    console.log("rendering single")
     // Test array
     if (this.state.isLoading) {
       return (<LoadingScreen />)
@@ -147,11 +148,6 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
             <Text style={css.text.menuHeaderText}>
                   { this.state.vendor.name }
               </Text>
-  
-              <Text style={css.text.bigBodyTextCentered}>
-                  Select Items
-              </Text>
-
               <FlatList
                   style={css.flatlist.container}
                   data= {Array.from(this.props.rootStore.cartStore.cartMap.toJS().entries())}
@@ -160,8 +156,8 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
                 />
           </View>
           <PrimaryButton
-              title ="View Cart"
-              onPress = {this.viewCartPush}
+            title ="View Cart"
+            onPress = {this.viewCartPush}
             />
         </View>
         )
