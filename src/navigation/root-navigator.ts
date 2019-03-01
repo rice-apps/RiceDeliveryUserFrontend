@@ -15,12 +15,13 @@ import { ChangePasswordScreen } from "../app/screens/accountStack/change-passwor
 // Menu Stack
 import { VendorsScreen } from "../app/screens/menuStack/vendors-screen/vendors-screen";
 import { SingleVendorMenu } from "../app/screens/menuStack/single-vendor-menu/single-vendor-menu";
+import { CartScreen } from "../app/screens/menuStack/cart-screen/cart-screen";
+import { CheckoutScreen } from "../app/screens/menuStack/checkout-screen/checkout-screen";
 
 // Order Stack
 import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen";
 import { OrderHistoryScreen } from "../app/screens/orderStack/order-history-screen/order-history-screen";
-import { CartScreen } from "../app/screens/menuStack/cart-screen/cart-screen";
-import { CheckoutScreen } from "../app/screens/menuStack/checkout-screen/checkout-screen";
+import { SingleOrderScreen } from "../app/screens/orderStack/single-order-screen/single-order-screen";
 
 
 // Stack Navigator for Account Stack
@@ -100,6 +101,12 @@ const orderStackNavigator = createStackNavigator({
             title: 'Order History'
         }
     },
+    SingleOrder : {
+        screen: SingleOrderScreen,
+        navigationOptions: {
+            title: 'Single Order'
+            }    
+    }
 });
 
 // Tab Navigator for App

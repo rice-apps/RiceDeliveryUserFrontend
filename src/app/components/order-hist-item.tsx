@@ -7,27 +7,29 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 
-interface OrderHistItemProps {
-    order : Order
-}
+// interface OrderHistItemProps {
+//     order : Order
+// }
 
 // Should we always define the input props/state for components instead of <any, any>???
-class OrderHistItem extends React.Component<OrderHistItemProps, any> {
+class OrderHistItem extends React.Component<any, any> {
     constructor(props) {
         super(props);
+        this.checkoutOrderPress = this.checkoutOrderPress.bind(this);
     }
     
     checkoutOrderPress() {
-
+        console.log(this.props.order);
+        this.props.navigation.navigate("SingleOrder", { order : this.props.order });
     }
 
     render() {
-        let {location, status} = this.props.order;
+        let {location, orderStatus} = this.props.order;
 
-        var statusDisplay = status.pending ? "pending" : "cancelled";
-        statusDisplay = status.onTheWay ? "on the way" : statusDisplay;
-        statusDisplay = status.fulfilled ? "fulfilled" : statusDisplay;
-        statusDisplay = status.unfulfilled ? "unfulfilled" : statusDisplay;
+        var statusDisplay = orderStatus.pending ? "pending" : "cancelled";
+        statusDisplay = orderStatus.onTheWay ? "on the way" : statusDisplay;
+        statusDisplay = orderStatus.fulfilled ? "fulfilled" : statusDisplay;
+        statusDisplay = orderStatus.unfulfilled ? "unfulfilled" : statusDisplay;
 
         var statusColor; 
         switch(statusDisplay) {
@@ -52,8 +54,8 @@ class OrderHistItem extends React.Component<OrderHistItemProps, any> {
         return (
             <View style={css.container.orderHistItem}>
                 <View>
-                    <Text style={css.text.bodyText}> {location} </Text>
-                    <Text style={css.text.smallText}> {status.pending} </Text>
+                    <Text style={css.text.bodyText}> {location.name} </Text>
+                    <Text style={css.text.smallText}> {orderStatus.pending} </Text>
                 </View>
                 <View>
                     <Text style={{
