@@ -23,14 +23,23 @@ export const CartItemModel = types.model("CartItemModel", {
   productName: "", 
   productID: "",
   sku: "", 
-  attributes: types.array(SKUAtributesModel)
-})
+  attributes: types.array(SKUAtributesModel), 
+  quantity: 0,
+  price: 0
+}).actions(self =>({
+  incrementQuantity() {    
+    self.quantity += 1
+  }, 
+  decrementQuantity() {
+    self.quantity -= 1
+  }
+}))
 
 
 export const CartStoreModel = types
 .model('CartStoreModel', {
     cart: types.optional(types.array(CartItemModel), []),
-    cartMap: types.map(CartItemModel)
+    cartMap: types.optional(types.map(CartItemModel), {})
 })
 .actions(
     (self) => ({

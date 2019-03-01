@@ -134,5 +134,9 @@ export const RootNavigator = createStackNavigator({
   {
     mode: 'modal', 
     initialRouteName: 'Login', 
-    headerMode: 'none'
-})
+    headerMode: 'none',
+    navigationOptions: {
+        gesturesEnabled: false
+    }
+}
+)

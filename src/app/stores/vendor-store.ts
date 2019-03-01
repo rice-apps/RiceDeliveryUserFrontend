@@ -1,4 +1,4 @@
-import {types, destroy} from "mobx-state-tree";
+import {types, destroy, getSnapshot} from "mobx-state-tree";
 import { Location } from "./location-store"
 import { client } from '../main';
 import gql from "graphql-tag";
@@ -54,10 +54,14 @@ const Vendor = types
 
 export const VendorStoreModel = types
 .model('VendorStoreModel', {
-    vendors: types.array(Vendor)
+    vendors: types.array(Vendor), 
+    activeVendor: ""
 }).actions(self => ({
     addVendor(vendor) {
         self.vendors.push(vendor)
+    },
+    setActiveVendor(vendor) {
+        self.activeVendor = vendor
     },
     initializeMenu(menuData) {
         const vendor = self.vendors.filter(vendor => vendor.name === menuData.name)

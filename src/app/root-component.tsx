@@ -8,6 +8,8 @@ import { BackButtonHandler } from "../navigation/back-button-handler"
 import { contains } from "ramda"
 import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
+import { RootNavigator } from "../navigation/root-navigator";
+import LoadingScreen from "./screens/LoadingScreen";
 
 interface RootComponentState {
   rootStore?: RootStore
@@ -62,7 +64,10 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
     return (
       <Provider rootStore={rootStore} userStore = {rootStore.userStore} navigationStore={rootStore.navigationStore} {...otherStores}>
         <BackButtonHandler canExit={this.canExit}>
-          <StatefulNavigator />
+          <RootNavigator 
+          persistenceKey={"NavigationState"}
+          renderLoadingExperimental={() => <LoadingScreen />}
+           />
         </BackButtonHandler>
       </Provider>
     )

@@ -11,6 +11,7 @@ import { CartItem, CartItemModel, SKUAtributesModel, CartStoreModel } from '../.
 import { client } from '../../../main';
 import LoadingScreen from '../../LoadingScreen';
 import { observer, inject } from 'mobx-react';
+import { Observer } from 'mobx-react/native'
 import { RootStore } from '../../../stores/root-store';
 import { NavigationScreenProp } from 'react-navigation';
 import { getSnapshot } from 'mobx-state-tree';
@@ -21,11 +22,8 @@ import { getSnapshot } from 'mobx-state-tree';
 
 interface SingleVendorMenuState {
   vendor : Vendor,
-  cartMap: any,
   isLoading: boolean
 }
-
-
 interface SingleVendorMenuProps {
   rootStore: RootStore,
   navigation: NavigationScreenProp<any, any>
@@ -72,7 +70,6 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
     super(props)
     this.state = {
       vendor : this.props.navigation.getParam('vendor', 'no_order_retrieved'),
-      cartMap: new Map,
       isLoading: true
     }
   }
@@ -87,81 +84,90 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   getProductMapping(products) {
     for (let index = 0; index < products.length; index++) {
       let product = products[index];
-      
       for (let sku = 0; sku < product.skuItems.length; sku++) {
-        let skuItem = product.skuItems[sku]
-        let mapArray = [product.name, skuItem.attributes[0].value, skuItem.attributes[1].value ];
-
+        let attributes = JSON.parse(JSON.stringify(product.skuItems[sku].attributes))
+        // sort skuItem.attributes to maintain consistency in display name
+        attributes.sort((a, b) => {
+          let nameA = a.key.toLowerCase();
+          let nameB = b.key.toLowerCase();
+          if (nameA< nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0;
+        })
+        let mapArray = `${product.name} ${attributes[0].value} ${attributes[1].value}`
         let attrOne = SKUAtributesModel.create({
-          key: skuItem.attributes[0].key,
-          value: skuItem.attributes[0].value
+          key: attributes[0].key,
+          value: attributes[0].value
         })
-
         let attrTwo = SKUAtributesModel.create({
-          key: skuItem.attributes[1].key,
-          value: skuItem.attributes[1].value
+          key: attributes[1].key,
+          value: attributes[1].value
         })
-
         let cartItem = CartItemModel.create({
           productName: product.name, 
           productID: product.id,
-          sku: skuItem.id, 
-          attributes: [attrOne, attrTwo]
+          sku: product.skuItems[sku].id, 
+          attributes: [attrOne, attrTwo], 
+          price: product.skuItems[sku].price,
+          quantity: 0
         })
-
-        // Set the cart map.
-        this.state.cartMap.set(mapArray, cartItem);
+        // Set the cart map in MobX store
+        this.props.rootStore.cartStore.addCartIem(mapArray, cartItem)
       }
 
     }
   }
   
-  async componentDidMount() {
+  renderIf = (condition, content) => {
+    console.log("IFF")
+    if (condition) {
+      return content
+    } else {
+      return null
+    }
+  }
 
-    const eastWest = this.props.rootStore.vendorStore.addVendor(EastWestTeaWithoutProducts)
+  async componentDidMount() {
+    this.props.rootStore.vendorStore.addVendor(EastWestTeaWithoutProducts)
     const menu = await client.query({
       query: GET_MENU, 
       variables: {
         vendorName: this.state.vendor.name
       }
     })
-    const products = this.props.rootStore.vendorStore.initializeMenu(menu.data.vendor[0])
+    this.getProductMapping(this.props.rootStore.vendorStore.initializeMenu(menu.data.vendor[0]))
     this.setState({isLoading: false})
-    this.getProductMapping(products)
   }
 
-  render() {
+  renderItem = ({item}) => {
+    return <MenuScreenItem product={item}/>
+  };
 
+  render() {
+    let arr = Array.from(this.props.rootStore.cartStore.cartMap.toJS().entries())
     if (this.state.isLoading) {
       return (<LoadingScreen />)
     } else {
       return (
         <View style={css.screen.defaultScreen}>
-  
           <View style={css.flatlist.container}>
-  
             <Text style={css.text.menuHeaderText}>
                   { this.state.vendor.name }
               </Text>
-  
-              <Text style={css.text.bigBodyTextCentered}>
-                  Select Items
-              </Text>
-  
               <FlatList
                   style={css.flatlist.container}
-                  data= { this.state.vendor.products }
-                  keyExtractor={(product, index) => product._id}
-                  renderItem={({item}) => 
-                      <MenuScreenItem product={item}/> 
-                  }
+                  data= {arr}
+                  keyExtractor={(item, index) => item[1].sku}
+                  renderItem={this.renderItem}
                 />
           </View>
-  
-          <PrimaryButton
-              title ="View Cart"
-              onPress = {this.viewCartPush}
-            />
+          {
+            this.renderIf(arr.filter(pair => pair[1].quantity > 0).length > 0, <PrimaryButton
+            title ="View Cart"
+            onPress = {this.viewCartPush}
+            />)
+          }
+
         </View>
         )
     }

@@ -1,21 +1,31 @@
 import * as React from 'react'
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, SectionList } from 'react-native';
 import * as css from "../../style";
 import PrimaryButton from '../../../components/primary-button.js'
 import { CartItem, mockCart } from '../../../components/temporary-mock-order';
 import { Divider } from 'react-native-elements';
 import { CartScreenItem } from '../../../components/cart-item';
+import { inject, observer } from 'mobx-react';
+import { RootStore } from '../../../stores/root-store';
+import { NavigationScreenProp } from 'react-navigation';
+import { Observer } from 'mobx-react/native';
 
 interface CartScreenState {
   cart : CartItem[],
 }
 
-export class CartScreen extends React.Component<any, CartScreenState> {
+interface CartScreenProps {
+  rootStore: RootStore,
+  navigation: NavigationScreenProp<any, any>
+}
+@inject("rootStore")
+@observer
+export class CartScreen extends React.Component<CartScreenProps, CartScreenState> {
 
   constructor(props) {
     super(props) 
     this.state = {
-      cart: mockCart
+      cart: this.props.navigation.getParam('cart', 'no_order_retrieved'),
     }
   }
 
@@ -24,65 +34,65 @@ export class CartScreen extends React.Component<any, CartScreenState> {
       this.props.navigation.navigate("Checkout")
     }
     
+  renderItems = ({item}) => {
+    return (
+    <Observer>
+      {() => 
+        <CartScreenItem 
+          text={{
+            left: item[1].quantity.toString(),
+            middle: item[0],
+            right: `$ ${(item[1].price / 100).toString()}`
+          }}
+        />
+        }
+    </Observer>
+    )
+  }
 
+  renderExtraInfo = ({ item, index, section }) => (
+    <CartScreenItem key={index} text={item} />
+  )
+  
   render() {
 
-    var { cart } = this.state;
-
-    var subtotal = 0;
-    var deliveryCost = 1.99;
-
-    for ( let item of cart ) {
-      let { quantity, sku } = item;
-      let SKU = item.product.skuItems.filter((SKU, index, array) => SKU._id == sku)[0];
-      subtotal += SKU.price * quantity;
+    let { rootStore } = this.props;
+    let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
+    let deliveryCost = 1.99;
+    let subtotalCost = arr.reduce((previous, item) => previous + (item[1].price / 100.0), 0)
+    let subtotalData = {
+      left: "",
+      middle: "Subtotal",
+      right: "$" + subtotalCost
     }
+    let deliveryData = {
+        left: "",
+        middle: "Delivery",
+        right: "$" + deliveryCost
+      }
+    console.log(arr)
 
     return (
-      <View style={css.screen.defaultScreen}>
-        <FlatList 
-            style={css.flatlist.container}
-            data= { cart }
-            keyExtractor={(item, index) => item.product._id}
-            renderItem={({item}) => {
-
-              var { quantity, product, sku } = item;
-              var { name } = product;
-              // Finding corresponding skuItem with this cart item.
-              // Check if sku works? May index empty array.
-              var SKU = product.skuItems.filter((SKU, index, array) => SKU._id == sku)[0];
-              var price = SKU.price * quantity;
-
-              return (
-              <CartScreenItem 
-              text={{
-                left: quantity.toString(),
-                middle: name,
-                right: "$" + price.toString(),
-              }}/>
-              )
-            }
-            }
+      
+      <View style={[css.screen.defaultScreen, {height: "100%"}]}>
+        <SectionList
+          style={css.flatlist.container}
+          renderItem={this.renderExtraInfo}
+          sections={[
+            { title: 'Title1', data: arr, renderItem: this.renderItems },
+            { title: 'Title2', data: [subtotalData, deliveryData], },
+          ]}
         />
+        {/* <FlatList 
+            style={css.flatlist.container}
+            data={arr}
+            keyExtractor={(item, index) => item[1].sku}
+            renderItem={this.renderItem}
+        /> */}
 
         <Divider style={css.screen.divider} />
-
-
-        <CartScreenItem 
-              text={{
-                left: "",
-                middle: "Subtotal",
-                right: "$" + subtotal.toString(),
-          }}/>
-          <CartScreenItem 
-              text={{
-                left: "",
-                middle: "Delivery",
-                right: "$" + deliveryCost.toString(),
-          }}/>
-        
         <PrimaryButton
-            title ="Checkout"
+            title ={`Checkout $${subtotalCost + deliveryCost}`}
             onPress = {this.checkoutPush}
           />
 

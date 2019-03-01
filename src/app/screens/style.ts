@@ -155,6 +155,8 @@ export const flatlist = StyleSheet.create({
       container: {
         padding:10, 
         flex: 1,
+        borderColor: "red", 
+        borderWidth: 2,
         width : "100%",
       },
       vendorView: {

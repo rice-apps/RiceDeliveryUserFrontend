@@ -21,10 +21,11 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
         var {left, middle, right} = this.props.text;
         return (
             <View style={{
-                paddingLeft: 20,
+                paddingLeft: 5,
                 paddingRight: 20,
                 width: "100%",
                 flex: 1,
+                backgroundColor: "white",
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
