@@ -77,8 +77,6 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   // Link to cart screen
   viewCartPush = () => {
     this.props.navigation.navigate("Cart")
-    console.log("Navigating")
-    console.log(Array.from(this.props.rootStore.cartStore.cartMap.toJS().entries()))
   }
 
   // Parses the Json object into a mapping of 
@@ -120,6 +118,15 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
     }
   }
   
+  renderIf = (condition, content) => {
+    console.log("IFF")
+    if (condition) {
+      return content
+    } else {
+      return null
+    }
+  }
+
   async componentDidMount() {
     this.props.rootStore.vendorStore.addVendor(EastWestTeaWithoutProducts)
     const menu = await client.query({
@@ -137,8 +144,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   };
 
   render() {
-    console.log("rendering single")
-    // Test array
+    let arr = Array.from(this.props.rootStore.cartStore.cartMap.toJS().entries())
     if (this.state.isLoading) {
       return (<LoadingScreen />)
     } else {
@@ -150,15 +156,18 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
               </Text>
               <FlatList
                   style={css.flatlist.container}
-                  data= {Array.from(this.props.rootStore.cartStore.cartMap.toJS().entries())}
+                  data= {arr}
                   keyExtractor={(item, index) => item[1].sku}
                   renderItem={this.renderItem}
                 />
           </View>
-          <PrimaryButton
+          {
+            this.renderIf(arr.filter(pair => pair[1].quantity > 0).length > 0, <PrimaryButton
             title ="View Cart"
             onPress = {this.viewCartPush}
-            />
+            />)
+          }
+
         </View>
         )
     }

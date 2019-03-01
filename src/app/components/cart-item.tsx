@@ -25,6 +25,7 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
                 paddingRight: 20,
                 width: "100%",
                 flex: 1,
+                backgroundColor: "white",
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
