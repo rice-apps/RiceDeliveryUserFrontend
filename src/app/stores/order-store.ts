@@ -9,9 +9,9 @@ export const OrderItem = types.model("OrderItem", {
 })
 
 export const OrderStatus = types.model("OrderStatus", {
-  pending: types.Date, //Might not convert int to date.
-  onTheWay: types.Date, //Might not convert int to date.
-  fulfilled: types.Date, //Might not convert int to date.
+  pending: types.Date, 
+  onTheWay: types.Date, 
+  fulfilled: types.Date, 
   unfulfilled: types.boolean
 })
 

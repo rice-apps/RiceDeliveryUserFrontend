@@ -5,7 +5,7 @@ import PrimaryButton from '../../../components/primary-button.js'
 import { CartItem, mockCart } from '../../../components/temporary-mock-order';
 import { Divider } from 'react-native-elements';
 import { CartScreenItem } from '../../../components/cart-item';
-import { inject, observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react'; 
 import { RootStore } from '../../../stores/root-store';
 import { NavigationScreenProp } from 'react-navigation';
 import { Observer } from 'mobx-react/native';
@@ -70,7 +70,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
         middle: "Delivery",
         right: "$" + deliveryCost
       }
-    console.log(arr)
+    
 
     return (
       
@@ -83,12 +83,6 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
             { title: 'Title2', data: [subtotalData, deliveryData], },
           ]}
         />
-        {/* <FlatList 
-            style={css.flatlist.container}
-            data={arr}
-            keyExtractor={(item, index) => item[1].sku}
-            renderItem={this.renderItem}
-        /> */}
 
         <Divider style={css.screen.divider} />
         <PrimaryButton
