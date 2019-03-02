@@ -4,6 +4,7 @@ import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIc
 
 // Login Screen
 import LoginScreen  from "../app/screens/login-screen/login-screen";
+import { CreateAccountScreen } from "../app/screens/login-screen/create-account-screen";
 
 // Account Stack
 import { AccountScreen } from "../app/screens/accountStack/account-setting-screen";
@@ -141,6 +142,9 @@ export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
     }, 
+    CreateAccount: {
+      screen: CreateAccountScreen
+    },
     Tabs: {
       screen: TabNavigator, 
     }
@@ -148,5 +152,9 @@ export const RootNavigator = createStackNavigator({
   {
     mode: 'modal', 
     initialRouteName: 'Login', 
-    headerMode: 'none'
-})
+    headerMode: 'none',
+    navigationOptions: {
+        gesturesEnabled: false
+    }
+}
+)

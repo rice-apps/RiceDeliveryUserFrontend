@@ -28,7 +28,8 @@ const AUTHENTICATION = gql`
 export const UserStoreModel = types
 .model('UserStoreModel', {
     user : User,
-    authenticated: types.optional(types.boolean, false)
+    authenticated: types.optional(types.boolean, false),
+    hasAccount: types.optional(types.boolean, false)
 })
 .actions(
     (self) => ({
@@ -43,10 +44,13 @@ export const UserStoreModel = types
             console.log(user.data.authenticator);
 
             console.log("Almost authenticated");
-            
-            if (user.data.authenticator) {
+            self.setAuth(true);
+            if (user.data.authenticator.firstName != null) {
                 self.setUser(user.data.authenticator);
-                self.setAuth(true);
+                self.setAccountState(true);
+            } else {
+                self.setUser({ netID: user.data.authenticator.netID });
+                self.setAccountState(false);
             }
 
             // api
@@ -75,9 +79,12 @@ export const UserStoreModel = types
         setUser(user) {
             self.user = user;
         },
-        loggedIn() {
-            return self.authenticated ? true : false
+        setAccountState(accountState) {
+            self.hasAccount = accountState;
         },
+        // loggedIn() {
+        //     return self.authenticated ? true : false
+        // },
         setAuth(authState) {
             self.authenticated = authState;
         }

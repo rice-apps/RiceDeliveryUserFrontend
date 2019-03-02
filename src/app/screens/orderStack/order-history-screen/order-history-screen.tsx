@@ -128,10 +128,8 @@ export class OrderHistoryScreen extends React.Component<any, any> {
 	//   active_orders = [];
 
 	  let pendingOrders = 
-		<View style={{flex: 1, flexDirection : "column"}}>
-			<View style={{
-				margin: 10
-			}}>
+		<View style={css.screen.defaultScreen}>
+			<View style={{margin: 10}}>
 				<Text style={css.text.bigBodyText}>
 					Active Orders
 				</Text>
@@ -152,12 +150,8 @@ export class OrderHistoryScreen extends React.Component<any, any> {
           {/* If there are no active orders, do not display the flatlist */}
           {active_orders.length > 0 ? pendingOrders : null}
 
-
-
 			{/* Always displaying previous orders */}
-			<View style={{
-				margin: 10
-			}}>
+			<View style={{margin: 10}}>
 				<Text style={css.text.bigBodyText}>
 					Previous Orders
 				</Text>

@@ -1,0 +1,8 @@
+# Use iOS 9 and above
+platform :ios, '10.0'
+# Specify Workspace
+workspace 'testIgniteProject'
+target 'testIgniteProject' do
+  # Stripe
+  pod 'Stripe', '~> 13.2.0'
+end

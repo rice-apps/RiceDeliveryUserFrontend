@@ -3,7 +3,8 @@ import { Text, ScrollView, View, StyleSheet, FlatList} from 'react-native';
 import SingleVendorButton from '../../../components/single-vendor-button';
 import * as css from '../../style';
 import { EastWestTea, realVendors } from '../../../components/temporary-mock-order';
-
+import { client } from '../../../main';
+import gql from 'graphql-tag';
 
 export class VendorsScreen extends React.Component<any, any> {
 

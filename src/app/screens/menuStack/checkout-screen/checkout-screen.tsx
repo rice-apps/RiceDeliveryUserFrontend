@@ -2,8 +2,14 @@ import * as React from 'react'
 import { View, Text, Picker } from 'react-native';
 import * as css from "../../style";
 import { Divider } from 'react-native-elements';
+import PrimaryButton from '../../../components/primary-button.js'
+import { inject, observer } from 'mobx-react';
+import { toJS } from "mobx"
+import { CartStoreModel } from "../../../stores/cart-store"
 
-
+console.disableYellowBox = true;
+@inject("rootStore")
+@observer
 export class CheckoutScreen extends React.Component<any, any> {
 
   constructor(props) {
@@ -17,7 +23,19 @@ export class CheckoutScreen extends React.Component<any, any> {
     }
   }
 
+  createOrder(netID, defaultLocation, vendorName, data) {
+    this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
+  };
+
+
   render() {
+
+  let { rootStore } = this.props;
+  let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0);
+  let mockNetID = "jl23";
+  let defaultLocation = "Weiss";
+  let vendorName = "East West Tea";
+  let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}));
 
 	let {name, email, phone, card} = this.state;
 
@@ -25,6 +43,8 @@ export class CheckoutScreen extends React.Component<any, any> {
       <View style={css.screen.defaultScreen}>
 
         <View style={css.screen.singleOrderDisplay}>
+          
+
             <Text style={css.text.headerText}>
                 Delivery details
             </Text> 
@@ -78,6 +98,14 @@ export class CheckoutScreen extends React.Component<any, any> {
                 </Text>
             </View>
 
+            <View>   
+
+             <PrimaryButton
+                        title = "Place Order"
+                        onPress = {this.createOrder(mockNetID, defaultLocation, vendorName, data)}
+                    />
+            </View>
+            
         </View>
 
       </View>
