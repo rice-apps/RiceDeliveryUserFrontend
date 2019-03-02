@@ -8,17 +8,23 @@ export default class PaymentRequest extends React.Component {
                 stripe.setOptions({
                         publishableKey: 'pk_test_AFqSBwnwrS3AInWfxCylFcyk'
                 });
+                this.state = {
+                        isFirstTime: true,
+                }  
         }
 
         async pullUpForm() {
                 const {onCreditInput} = this.props;
-                const token = await stripe.paymentRequestWithCardForm(); // Modal doesn't close by itself?
+                const token = await stripe.paymentRequestWithCardForm();
+                this.setState({isFirstTime: false})
                 console.log(token);
                 onCreditInput(token);
         }
 
         render() {
-                this.pullUpForm();
+                if (this.state.isFirstTime) {
+                        this.pullUpForm();
+                }
                 return (
                         <View />
                 )
