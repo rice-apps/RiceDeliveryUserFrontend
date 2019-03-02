@@ -33,8 +33,7 @@ export class AuthModal extends React.Component<AuthModalProps, {}> {
                         </Modal>
                         </View>
                 );
-        }
-                           
+        }       
 }
 
 export default AuthModal

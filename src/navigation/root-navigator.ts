@@ -20,6 +20,7 @@ import { OrderScreen } from "../app/screens/orderStack/current-order-screen/curr
 import { OrderHistoryScreen } from "../app/screens/orderStack/order-history-screen/order-history-screen";
 import { CartScreen } from "../app/screens/menuStack/cart-screen/cart-screen";
 import { CheckoutScreen } from "../app/screens/menuStack/checkout-screen/checkout-screen";
+import { CreateAccountScreen } from "../app/screens/login-screen/create-account-screen";
 
 
 // Stack Navigator for Account Stack
@@ -127,6 +128,9 @@ export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
     }, 
+    CreateAccount: {
+      screen: CreateAccountScreen
+    },
     Tabs: {
       screen: TabNavigator, 
     }
