@@ -3,11 +3,9 @@ import { View, StyleSheet, FlatList, Text } from 'react-native';
 import * as css from "../../style";
 import { Divider } from 'react-native-elements';
 import PrimaryButton from '../../../components/primary-button.js'
-
-import { mock_orders } from '../../../components/temporary-mock-order';
-// Using mock order data again
-
+import SecondaryButton from '../../../components/secondary-button.js'
 import { inject, observer } from 'mobx-react';
+import { getStatusDisplayColor, getOrderTime } from '../../util';
 
 @inject("rootStore")
 @observer
@@ -21,32 +19,52 @@ export class SingleOrderScreen extends React.Component<any, any> {
     }
   }
 
-  // Link to order history screen
-  previousOrdersPush = () => {
-    this.props.navigation.navigate("OrderHistory")
-  }
+  	cancelOrderPush() {
+	//   Call some query
+}
+
+	refundOrderPush() {
+	//   Call some query	  
+	}
 
   render() {
     var order = this.state.order;
     if (order == 'no_order_retrieved') {
-      console.log("Didn't find passed in order prop!");
-    }
-    console.log(this.state.order);
-
-    // var { firstName, lastName } = order.user;
-    var {firstName, lastName } = this.state.user;
-    var { location, id } = this.state.order;
-    console.log("PRINT LOCATION: " +JSON.stringify(location) + " PRINT ID: " + id)
-    var location = location.name;
-    var { pending, onTheWay, fulfilled } = this.state.order.orderStatus;
-
-    return (
+	  console.log("Didn't find passed in order prop!");
+	  return (
       <View style={css.screen.defaultScreen}>
+		<View style={css.screen.singleOrderDisplay}>
+				<Text>Oops! Order did not load correctly.</Text>
+		</View>
+	  </View>);
+    }
+
+	var {firstName, lastName } = this.state.user;
+    var { location, id } = this.state.order;
+    var location = location.name;
+	var { pending, onTheWay, fulfilled } = this.state.order.orderStatus;
+	var { status } = getStatusDisplayColor(this.state.order);
+
+    let orderOptions = 
+    <View>
+        <PrimaryButton
+            title ="Cancel Order"
+            onPress = {this.cancelOrderPush}
+          />
+        <SecondaryButton
+            title ="Refund Order"
+            onPress = {this.refundOrderPush}
+          />
+    </View>
+
+	var count = 0;
+    return (
+		<View style={css.screen.defaultScreen}>
     
       <View style={css.screen.singleOrderDisplay}>
         <Text style={css.text.headerText}>Active Order</Text>
         <Text style={css.text.smallText}>
-          {'Placed at : ' + pending}
+          {'Placed at : ' + status}
         </Text>
         <Text style={css.text.headerText}>
           Order ID: #{id}
@@ -61,7 +79,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
           {'Location : ' + location}
         </Text>
         <Text style={css.text.bodyText}>
-          {'Status : ' + 'pending'}
+          {'Status : ' + status}
         </Text>
 
         <Divider style={css.screen.divider} />
@@ -77,9 +95,8 @@ export class SingleOrderScreen extends React.Component<any, any> {
                     return (item.quantity != null);
                 })}
                 keyExtractor={(item, index) => {
-                    console.log("item:");
-                    console.log(item);
-                    return 1;
+					count++;
+                    return count.toString();
                 }}
                 renderItem={({item}) => 
                     <Text style={css.text.itemText}> 
@@ -88,13 +105,8 @@ export class SingleOrderScreen extends React.Component<any, any> {
                 }
               />
         </View>
+        {!fulfilled ? orderOptions : null}
       </View>
-
-        <PrimaryButton
-            title ="Order History"
-            onPress = {this.previousOrdersPush}
-          />
-
       </View>
     )
   }

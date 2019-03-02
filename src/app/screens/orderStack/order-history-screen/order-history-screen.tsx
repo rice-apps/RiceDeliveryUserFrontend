@@ -1,14 +1,13 @@
 import * as React from 'react'
-import { Button, View, FlatList } from 'react-native';
+import { Text, Button, View, FlatList } from 'react-native';
 import * as css from "../../style";
-import { NavigationScreenProps } from 'react-navigation'
-import Order, { mock_orders } from '../../../components/temporary-mock-order';
+// import Order, { mock_orders } from '../../../components/temporary-mock-order';
 import OrderHistItem from '../../../components/order-hist-item';
-import PrimaryButton from '../../../components/primary-button.js';
 import gql from 'graphql-tag'
 import { inject, observer } from 'mobx-react';
 import { client } from "../../../main";
 import LoadingScreen from '../../loading-screen';
+import { getOrderTime } from '../../util';
 
 export const GET_ACTIVE_ORDERS = gql`
   query getUserOrder($user_netid: String) {
@@ -60,21 +59,6 @@ export const GET_ORDERS = gql`
   }
 `
 
-// List of orders for each page
-const orders = [
-  [
-    mock_orders.order3,
-    mock_orders.order1,
-    mock_orders.order2,
-  ],
-  [
-    mock_orders.order2,
-    mock_orders.order3,
-  ],
-  [
-    mock_orders.order1,
-  ],
-]
 
 @inject("rootStore")
 @observer
@@ -101,64 +85,77 @@ export class OrderHistoryScreen extends React.Component<any, any> {
   }
 
   async getOrders() {
-    return await client.query({
-      query: GET_ORDERS,
-      // variables: {$user_netid: this.props.rootStore.userStore.user.netID}
-      variables: {
-        "user_netid": "jl23"
-      }
-    })
+	return await client.query({
+		query: GET_ORDERS,
+		// variables: {$user_netid: this.props.rootStore.userStore.user.netID}
+		variables: {
+		  "user_netid": "jl23"
+		}
+	  })
   }
-
-  // // Handle older orders button
-  // olderOrdersPush = () => {
-  //   this.setState((state, props) => {
-  //     if (state.idx < orders.length - 1) {
-  //       ++state.idx;
-  //       return {
-  //         orders: orders[state.idx],
-  //         idx: state.idx
-  //       };
-  //     }
-  //   });
-  // }
-
-  // // Handle recent orders button
-  // recentOrdersPush = () => {
-  //   this.setState((state, props) => {
-  //     if (state.idx > 0) {
-  //       --state.idx;
-  //       return {
-  //         orders: orders[state.idx],
-  //         idx: state.idx
-  //       };
-  //     }
-  //   });
-  // }
-
   
-  
-  async componentWillMount() {
-    const info = await this.activeOrders();
-    const info2 = await this.getOrders();
-    console.log("pringing email of order: " + JSON.stringify(info2.data.user[0].orders));
+   async componentWillMount() {
+    // const info = await this.activeOrders();
+	const info = await this.getOrders();
+
+	var orders = info.data.user[0].orders;
+
+	// console.log("BEFORE SHUFFLE ------------------------------")
+    // for (var order of orders) {
+	// 	var time = getOrderTime(order)
+    // 	console.log(time.toLocaleDateString() + " - " + time.toLocaleTimeString());
+    // }
+
+	// orders.sort(function(a, b){return 0.5 - Math.random()});
+
+    // console.log("BEFORE SORTING ------------------------------")
+    // for (var order of orders) {
+	// 	var time = getOrderTime(order)
+    // 	console.log(time.toLocaleDateString() + " - " + time.toLocaleTimeString());
+    // }
+
+    // orders.sort((o1, o2) => {
+	// 	return getOrderTime(o2).getTime() - getOrderTime(o1).getTime();
+    // })
+
+    // console.log("AFTER SORTING ------------------------------")
+    // for (var order of orders) {
+	// 	var time = getOrderTime(order)
+    // 	console.log(time.toLocaleDateString() + " - " + time.toLocaleTimeString());
+    // }
+	
     this.setState({
       loading: false,
-      // activeOrders: info.data.user[0].activeOrders
-      active_orders:   info2.data.user[0].orders.filter(item => !item.orderStatus.fulfilled && !item.orderStatus.fulfilled),
-      finished_orders: info2.data.user[0].orders.filter(item => item.orderStatus.fulfilled || item.orderStatus.unfulfilled)
+      active_orders: orders.filter(item => !item.orderStatus.fulfilled),
+      previous_orders: orders.filter(item => item.orderStatus.fulfilled)
     })
   }
-  
+
+
 
   render() {
     if (this.state.loading) {
-      return <LoadingScreen />
+      return(
+		<View style={css.screen.defaultScreen}>
+			<View style={css.screen.accountScreenContainer}>
+				<LoadingScreen />
+			</View>
+		</View>)
     } else {
-      let { finished_orders, active_orders } = this.state;
-      return (
-        <View style={css.screen.defaultScreen}>
-          <FlatList
+	  let { previous_orders, active_orders } = this.state;
+
+	//   active_orders = [];
+
+	  let pendingOrders = 
+		<View style={{flex: 1, flexDirection : "column"}}>
+			<View style={{
+				margin: 10
+			}}>
+				<Text style={css.text.bigBodyText}>
+					Active Orders
+				</Text>
+			</View>
+			<FlatList
             style={css.flatlist.container}
             data={active_orders}
             keyExtractor={(item, index) => item.id.toString()}
@@ -166,26 +163,33 @@ export class OrderHistoryScreen extends React.Component<any, any> {
               <OrderHistItem style={css.text.itemText} order={item} />
             }
           />
+		</View> 
+
+      return (
+        <View style={css.screen.defaultScreen}>
+
+          {/* If there are no active orders, do not display the flatlist */}
+          {active_orders.length > 0 ? pendingOrders : null}
 
 
+
+			{/* Always displaying previous orders */}
+			<View style={{
+				margin: 10
+			}}>
+				<Text style={css.text.bigBodyText}>
+					Previous Orders
+				</Text>
+			</View>
+			
           <FlatList
             style={css.flatlist.container}
-            data={finished_orders}
+            data={previous_orders}
             keyExtractor={(item, index) => item.id.toString()}
             renderItem={({ item }) =>
               <OrderHistItem style={css.text.itemText} order={item} />
             }
           />
-          {/* <View>
-            <PrimaryButton
-              title={"Older Orders"}
-              onPress={this.olderOrdersPush}
-            />
-            <PrimaryButton
-              title={"More Recent Orders"}
-              onPress={this.recentOrdersPush}
-            />
-          </View> */}
         </View>
       )
     }

@@ -196,6 +196,12 @@ export const flatlist = StyleSheet.create({
         paddingTop : 5,
         paddingBottom : 5,
       },
+      orderHistList: {
+        
+        padding:10, 
+        flex: 1,
+        width : "100%",
+      },
       container: {
         padding:10, 
         flex: 1,
