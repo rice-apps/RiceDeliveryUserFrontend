@@ -75,7 +75,6 @@ export const VendorStoreModel = types
     }
 })).views(self => ({
     vendor(vendorName) {
-        console.log(self.vendors.filter(vendor => vendor.name === vendorName)[0])
         return self.vendors.filter(vendor => vendor.name === vendorName)[0]
     }
 }))
