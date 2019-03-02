@@ -100,29 +100,10 @@ export class OrderHistoryScreen extends React.Component<any, any> {
 
 	var orders = info.data.user[0].orders;
 
-	// console.log("BEFORE SHUFFLE ------------------------------")
-    // for (var order of orders) {
-	// 	var time = getOrderTime(order)
-    // 	console.log(time.toLocaleDateString() + " - " + time.toLocaleTimeString());
-    // }
-
-	// orders.sort(function(a, b){return 0.5 - Math.random()});
-
-    // console.log("BEFORE SORTING ------------------------------")
-    // for (var order of orders) {
-	// 	var time = getOrderTime(order)
-    // 	console.log(time.toLocaleDateString() + " - " + time.toLocaleTimeString());
-    // }
-
-    // orders.sort((o1, o2) => {
-	// 	return getOrderTime(o2).getTime() - getOrderTime(o1).getTime();
-    // })
-
-    // console.log("AFTER SORTING ------------------------------")
-    // for (var order of orders) {
-	// 	var time = getOrderTime(order)
-    // 	console.log(time.toLocaleDateString() + " - " + time.toLocaleTimeString());
-    // }
+	// Sort the orders by time
+    orders.sort((o1, o2) => {
+		return getOrderTime(o2).getTime() - getOrderTime(o1).getTime();
+    })
 	
     this.setState({
       loading: false,

@@ -44,6 +44,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
     var location = location.name;
 	var { pending, onTheWay, fulfilled } = this.state.order.orderStatus;
 	var { status } = getStatusDisplayColor(this.state.order);
+	var time = getOrderTime(this.state.order);
 
     let orderOptions = 
     <View>
@@ -64,7 +65,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
       <View style={css.screen.singleOrderDisplay}>
         <Text style={css.text.headerText}>Active Order</Text>
         <Text style={css.text.smallText}>
-          {'Placed at : ' + status}
+          {'Time: ' + time.toDateString()}
         </Text>
         <Text style={css.text.headerText}>
           Order ID: #{id}
