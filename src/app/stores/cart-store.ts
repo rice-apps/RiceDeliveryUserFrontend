@@ -50,16 +50,25 @@ export const CartItemModel = types.model("CartItemModel", {
   }
 }))
 
+export const ProductModel = types.model("ProductModel", {
+  productName: "", 
+  cartItems: types.array(CartItemModel),
+}).actions(self => ({
+  addToCartItems(cartItem) {
+    self.cartItems.push(cartItem);
+    },
+}))
+
 
 export const CartStoreModel = types
 .model('CartStoreModel', {
-    cart: types.optional(types.array(CartItemModel), []),
-    cartMap: types.optional(types.map(CartItemModel), {})
+    cart: types.optional(types.array(ProductModel), []),
+    // cartMap: types.optional(types.map(ProductModel), {})
 })
 .actions(
     (self) => ({
-        addCartIem(name, CartItemModel) {
-          self.cartMap.set(name, CartItemModel)
+        addCartIem(ProductModel) {
+          self.cart.push(ProductModel)
         },
         addToCart() {
             

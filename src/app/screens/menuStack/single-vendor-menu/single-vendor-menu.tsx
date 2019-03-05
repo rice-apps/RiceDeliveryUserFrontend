@@ -7,7 +7,7 @@ import PrimaryButton from '../../../components/primary-button.js'
 import { Vendor, EastWestTea, EastWestTeaWithoutProducts } from '../../../components/temporary-mock-order';
 import { MenuScreenItem } from '../../../components/menu-item';
 import gql from 'graphql-tag'
-import { CartItem, CartItemModel, SKUAtributesModel, CartStoreModel } from '../../../stores/cart-store'
+import { CartItem, CartItemModel, SKUAtributesModel, CartStoreModel, ProductModel } from '../../../stores/cart-store'
 import { client } from '../../../main';
 import LoadingScreen from '../../LoadingScreen';
 import { observer, inject } from 'mobx-react';
@@ -15,6 +15,7 @@ import { Observer } from 'mobx-react/native'
 import { RootStore } from '../../../stores/root-store';
 import { NavigationScreenProp } from 'react-navigation';
 import { getSnapshot } from 'mobx-state-tree';
+import { BigMenuScreenItem } from '../../../components/big-menu-item';
 
 // interface SingleVendorMenuState {
 //   vendor : Vendor
@@ -82,8 +83,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   // Parses the Json object into a mapping of 
   // [Product, attribute, attribute] => CartItem
   getProductMapping(products) {
-    for (let index = 0; index < products.length; index++) {
-      let product = products[index];
+    for (var product of products) {
       for (let sku = 0; sku < product.skuItems.length; sku++) {
         let attributes = JSON.parse(JSON.stringify(product.skuItems[sku].attributes))
         // sort skuItem.attributes to maintain consistency in display name
@@ -112,7 +112,16 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
           quantity: 0
         })
         // Set the cart map in MobX store
-        this.props.rootStore.cartStore.addCartIem(mapArray, cartItem)
+        var targetProduct = this.props.rootStore.cartStore.cart.find((elem) => elem.productName == product.name);
+        if (targetProduct != null) {
+          targetProduct.addToCartItems(cartItem);
+        } else {
+          let productItem = ProductModel.create({
+            productName : product.name,
+            cartItems : [cartItem]
+          })
+          this.props.rootStore.cartStore.addCartIem(productItem);
+        }
       }
 
     }
@@ -140,11 +149,13 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   }
 
   renderItem = ({item}) => {
-    return <MenuScreenItem product={item}/>
+    // return <MenuScreenItem product={item}/>
+    return <BigMenuScreenItem product={item}/>
   };
 
   render() {
-    let arr = Array.from(this.props.rootStore.cartStore.cartMap.toJS().entries())
+    let arr = this.props.rootStore.cartStore.cart;
+    console.log(arr);
     if (this.state.isLoading) {
       return (<LoadingScreen />)
     } else {
@@ -157,16 +168,16 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
               <FlatList
                   style={css.flatlist.container}
                   data= {arr}
-                  keyExtractor={(item, index) => item[1].sku}
+                  keyExtractor={(item, index) => item.productName}
                   renderItem={this.renderItem}
                 />
           </View>
-          {
+          {/* {
             this.renderIf(arr.filter(pair => pair[1].quantity > 0).length > 0, <PrimaryButton
             title ="View Cart"
             onPress = {this.viewCartPush}
             />)
-          }
+          } */}
 
         </View>
         )

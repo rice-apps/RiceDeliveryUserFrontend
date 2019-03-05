@@ -150,6 +150,37 @@ export const container = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#fff'    
       },
+      bigMenuItem: {
+        backgroundColor: 'white',
+        flex : 1,
+        flexDirection: 'row',  
+        // justifyContent: 'f',
+        alignItems: 'center', 
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        // marginLeft: 6,
+        // marginRight: 6,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
+      smallMenuItem: {
+        backgroundColor: 'white',
+        flex : 1,
+        flexDirection: 'row',  
+        // justifyContent: 'f',
+        alignItems: 'center', 
+        padding : 10,
+        // marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
       orderHistItem: {
         backgroundColor: 'white',
         flex : 1,
