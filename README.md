@@ -2,6 +2,21 @@
 - What is react-native? http://www.reactnativeexpress.com/environment
 - What is mobx state tree? https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
 - Don't want to use your typical terminal on your mac? Upgrade to Fish! Fish is a shell with really cool features that you can customize on a web interface: https://lobster1234.github.io/2017/04/08/setting-up-fish-and-iterm2/
+
+# How to setup project
+
+### Step 1: Pull from Github
+
+### Step 2: Yarn install
+
+### Step 3: Podfile Install
+
+### Step 4: Link with `react-native link`
+
+### Step 5: Go to Xcode Workspace & Add Tipsi-Stripe into Libraries, following instructions from their site
+
+### Step 6: Click on Link Binaries w/ Libraries and drag libTPSStripe.a
+
 # Developer workflow:
 
 
