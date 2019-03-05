@@ -14,30 +14,69 @@ const POST_CART = gql`
   }
 `;
 
-const SKUAtributesModel = types.model("SKUAttributeModel", {
+const CREATE_ORDER = gql
+`mutation createOrderShort ($netID: String!, $defaultLocationName: String!, $vendorName: String!, $data: [CreateOrderInput!]!) {
+  createOrder(
+    netID: $netID,
+    defaultLocationName: $defaultLocationName,
+    vendorName: $vendorName,
+    data: $data) 
+    {
+    id
+  }
+ }
+ `;
+ 
+
+
+export const SKUAtributesModel = types.model("SKUAttributeModel", {
   key: "",
   value: ""
 })
-const CartItemModel = types.model("CartItemModel", {
+
+export const CartItemModel = types.model("CartItemModel", {
   productName: "", 
   productID: "",
   sku: "", 
-  attributes: types.array(SKUAtributesModel)
-})
+  attributes: types.array(SKUAtributesModel), 
+  quantity: 0,
+  price: 0
+}).actions(self =>({
+  incrementQuantity() {    
+    self.quantity += 1
+  }, 
+  decrementQuantity() {
+    self.quantity -= 1
+  }
+}))
+
+
 export const CartStoreModel = types
 .model('CartStoreModel', {
-    cart: types.optional(types.array(CartItemModel), [])
+    cart: types.optional(types.array(CartItemModel), []),
+    cartMap: types.optional(types.map(CartItemModel), {})
 })
 .actions(
     (self) => ({
+        addCartIem(name, CartItemModel) {
+          self.cartMap.set(name, CartItemModel)
+        },
         addToCart() {
             
         },
         removeFromCart() {
 
         },
-        async createOrder() {
-            
+        async createOrder(netID, defaultLocationName, vendorName, data) {
+          let order = await client.mutate({
+            mutation: CREATE_ORDER,
+            variables: {
+                netID: netID,
+                defaultLocationName: defaultLocationName,
+                vendorName: vendorName,
+                data: data
+            }
+          });
         }
     }),
 )

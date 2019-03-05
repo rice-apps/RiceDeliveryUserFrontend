@@ -17,6 +17,7 @@ import { VendorsScreen } from "../app/screens/menuStack/vendors-screen/vendors-s
 import { SingleVendorMenu } from "../app/screens/menuStack/single-vendor-menu/single-vendor-menu";
 import { CartScreen } from "../app/screens/menuStack/cart-screen/cart-screen";
 import { CheckoutScreen } from "../app/screens/menuStack/checkout-screen/checkout-screen";
+import { CreateAccountScreen } from "../app/screens/login-screen/create-account-screen";
 
 // Order Stack
 import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen";
@@ -141,6 +142,9 @@ export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
     }, 
+    CreateAccount: {
+        screen: CreateAccountScreen
+    },
     Tabs: {
       screen: TabNavigator, 
     }

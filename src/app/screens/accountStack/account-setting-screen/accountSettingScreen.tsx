@@ -60,7 +60,7 @@ export class AccountScreen extends React.Component<any, any> {
               CookieManager.clearAll()
                 .then((res) => console.log('CookieManager.clearAll =>', res));
               AsyncStorage.removeItem("Authenticated");
-              this.props.navigation.popToTop();
+              this.props.navigation.reset({ index: 0, actions: [this.props.navigation.navigate("Login")]})
             }}
           />
         </View>
