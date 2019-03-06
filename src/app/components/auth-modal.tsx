@@ -15,15 +15,14 @@ export class AuthModal extends React.Component<AuthModalProps, {}> {
         render() {
                 return (
                         <View style={{marginTop: 22}}>
-                        <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={this.props.visible}
-                        onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        }}>
-                        <AuthenticationComponent onSuccess = {this.props.onSuccess} onFailure={this.props.onFailure}>
-                        </AuthenticationComponent>
+                                <Modal
+                                        animationType="slide"
+                                        transparent={false}
+                                        visible={this.props.visible}
+                                        onRequestClose={() => {
+                                        Alert.alert('Modal has been closed.');
+                                }}>
+                        <AuthenticationComponent onSuccess = {this.props.onSuccess} onFailure={this.props.onFailure} />
                         <PrimaryButton
                                 title ="Cancel"
                                 onPress={() => {

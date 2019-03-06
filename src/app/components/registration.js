@@ -10,17 +10,19 @@ import PrimaryButton from "./primary-button";
                 console.log(netID);
                 return (
                         <View style={css.screen.defaultScreen}>
-                                <View margin={20} >
                                         <Input placeholder="netID" editable={false}>
                                                 {netID}
-                                        </Input> */}
-                                        <Input placeholder="First Name" onChangeText={(text) => onTextChanged(text, "firstName")}>
                                         </Input>
-                                        <Input placeholder="Last Name" onChangeText={(text) => onTextChanged(text, "lastName")}>
-                                        </Input>
-                                        <Input placeholder="Phone Number" autoComplete={'tel'} keyboardType={'phone-pad'} onChangeText={(text) => onTextChanged(text, "phoneNumber")}>
-                                        </Input>
-                                </View>
+                                        <Input 
+                                                placeholder="First Name" 
+                                                onChangeText={(text) => onTextChanged(text, "firstName")} />
+                                        <Input placeholder="Last Name" 
+                                                onChangeText={(text) => onTextChanged(text, "lastName")} />
+                                        <Input placeholder="Phone Number" 
+                                                autoComplete={'tel'} 
+                                                keyboardType={'phone-pad'} 
+                                                onChangeText={(text) => onTextChanged(text, "phoneNumber")} />
+
                                 <PrimaryButton
                                         title="Continue"
                                         onPress={continueHandler}
