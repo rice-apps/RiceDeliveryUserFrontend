@@ -23,6 +23,7 @@ import { CreateAccountScreen } from "../app/screens/login-screen/create-account-
 // import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen";
 import { OrderHistoryScreen } from "../app/screens/orderStack/order-history-screen/order-history-screen";
 import { SingleOrderScreen } from "../app/screens/orderStack/single-order-screen/single-order-screen";
+import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen";
 
 
 // Stack Navigator for Account Stack
@@ -90,12 +91,12 @@ const menuStackNavigator = createStackNavigator({
 
 // Stack Navigator for Order Stack
 const orderStackNavigator = createStackNavigator({
-    // Order: {
-    //   screen: OrderScreen,
-    //   navigationOptions: {
-    //     title: 'Order'
-    //     }
-    // },
+    Order: {
+      screen: OrderScreen,
+      navigationOptions: {
+        title: 'Order'
+        }
+    },
     OrderHistory : {
         screen: OrderHistoryScreen,
         navigationOptions: {
