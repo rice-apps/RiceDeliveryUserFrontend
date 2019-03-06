@@ -9,13 +9,17 @@
 
 ### Step 2: Yarn install
 
-### Step 3: Podfile Install
+### Step 3: Install the Podfiles. 
+- First change your current directory to the ios directory: cd ios
+- Then run Pod Install
 
-### Step 4: Link with `react-native link`
 
-### Step 5: Go to Xcode Workspace & Add Tipsi-Stripe into Libraries, following instructions from their site
+### Step 4a: For automatic linking: 
+- link with `react-native link tipsi-stripe`
+### Step 4b: Manual linking: 
+- Open testIgniteProject.xcworkspace.
+- Follow tutorial to manually link the tipsi stripe library: [tipsi stripe](https://tipsi.github.io/tipsi-stripe/docs/linking.html) , using [this](https://facebook.github.io/react-native/docs/linking-libraries-ios) as a reference.
 
-### Step 6: Click on Link Binaries w/ Libraries and drag libTPSStripe.a
 
 # Developer workflow:
 
