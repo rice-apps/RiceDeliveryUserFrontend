@@ -284,6 +284,30 @@ export var mockCart = [
 // --------------------- MOCK VENDORS ---------------------
 
 
+export var EastWestTeaWithoutProducts = {
+  name : "East West Tea",
+  hours : [[10, 12], [11, 1], [10, 2], [9, 12], [10, 12], [11, 1], [10, 2]],
+  phone : "123-456-7890",
+  locationOptions: [
+    {
+      _id : "1",
+      name : "Jones",
+    },
+    {
+      _id : "2",
+      name : "Martel",
+    },
+    {
+      _id : "3",
+      name : "Brown",
+    },
+    {
+      _id : "4",
+      name : "Sid",
+    },
+  ],
+  products : []
+}
 export var EastWestTea = {
   _id : 10,
   name : "East West Tea",

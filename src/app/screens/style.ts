@@ -13,8 +13,8 @@ const FONT_FAMILY = "Verdana"
 export const screen = StyleSheet.create({
     defaultScreen: {
         flex: 1, 
-        // justifyContent: "center", 
-        // alignItems: "center",
+        justifyContent: "center", 
+        alignItems: "center",
         width: "100%",
         height: "100%",
         backgroundColor: LIGHT_GRAY
@@ -194,9 +194,17 @@ export const flatlist = StyleSheet.create({
         paddingTop : 5,
         paddingBottom : 5,
       },
+      orderHistList: {
+        
+        padding:10, 
+        flex: 1,
+        width : "100%",
+      },
       container: {
         padding:10, 
         flex: 1,
+        // borderColor: "red", 
+        // borderWidth: 2,
         width : "100%",
       },
       vendorView: {

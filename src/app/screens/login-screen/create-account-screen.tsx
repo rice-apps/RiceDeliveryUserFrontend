@@ -79,7 +79,8 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                                         lastName: this.state.lastName,
                                         phone: this.state.phoneNumber,
                                         defaultLocationName: "Brown Commons", // TODO change this because we don't have default location
-                                        creditToken: "tok_mastercard" // TODO change this because doesn't actually accept token
+                                        // creditToken: "tok_mastercard" // TODO change this because doesn't actually accept token
+                                        creditToken: this.state.token.tokenId,
                                 }
                         }
                 });
