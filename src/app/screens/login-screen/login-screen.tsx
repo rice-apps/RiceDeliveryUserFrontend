@@ -58,7 +58,7 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
         // this.props.navigation.navigate("Tabs")
         const authenticated = await AsyncStorage.getItem("Authenticated");
         console.log(this.state.rootStore.userStore.hasAccount);
-        if (!this.state.rootStore.userStore.hasAccount) {
+        if (!authenticated) {
             this.setModalVisible(!this.state.modalVisible);
         } else {
             this.props.navigation.navigate("Menu");
@@ -76,14 +76,17 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
                 <View style={{flex : 1, flexDirection: "column"}}>
 
                     <View style={{width: "50%", height: 300}}>
-
                     </View>
                     <PrimaryButton
                         title ="Sign In"
                         onPress={this.loginHandler}
                     />
                 </View>
-                <AuthModal visible={this.state.modalVisible} setVisible={this.setModalVisible.bind(this)} onSuccess={this.onSuccess.bind(this)} onFailure={this.onFailure.bind(this)}>
+                <AuthModal 
+                    visible={this.state.modalVisible} 
+                    setVisible={this.setModalVisible.bind(this)} 
+                    onSuccess={this.onSuccess.bind(this)} 
+                    onFailure={this.onFailure.bind(this)}>
                 </AuthModal>
 
             </View>
