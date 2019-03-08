@@ -35,19 +35,27 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
     }
     
   renderItems = ({item}) => {
+
+    var cartItemAttributes = this.parseCartItemAttributes(item);
+    var cartItemAttributesStr = cartItemAttributes.join(',\xa0') + " " + item.productName.toString(); 
     return (
     <Observer>
       {() => 
         <CartScreenItem 
           text={{
-            left: item[1].quantity.toString(),
-            middle: item[0],
-            right: `$ ${(item[1].price / 100).toString()}`
+            left: item.quantity.toString(),
+            middle: cartItemAttributesStr,
+            right: `$${(item.price / 100).toString()}`
           }}
         />
         }
     </Observer>
     )
+  }
+
+  // Returns the array of the attribute values for a cartItem
+  parseCartItemAttributes = (cartItem) => {
+      return [cartItem.attributes.map((attr) => attr.value)];
   }
 
   renderExtraInfo = ({ item, index, section }) => (
@@ -57,9 +65,12 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
   render() {
 
     let { rootStore } = this.props;
-    let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
+    // let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
+    let arr = Array.from(rootStore.cartStore.cart.flatMap((product) => {
+        return product.cartItems.filter((cartItem) => cartItem.quantity > 0);
+    }))
     let deliveryCost = 1.99;
-    let subtotalCost = arr.reduce((previous, item) => previous + (item[1].price / 100.0), 0)
+    let subtotalCost = arr.reduce((previous, item) => previous + (item.quantity * (item.price / 100.0)), 0)
     let subtotalData = {
       left: "",
       middle: "Subtotal",

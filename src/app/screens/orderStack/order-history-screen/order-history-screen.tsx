@@ -9,31 +9,6 @@ import { client } from "../../../main";
 import LoadingScreen from '../../loading-screen';
 import { getOrderTime } from '../../util';
 
-export const GET_ACTIVE_ORDERS = gql`
-  query getUserOrder($user_netid: String) {
-    user(netID: $user_netid){
-      activeOrders{
-        id
-        orderStatus{
-          pending
-          onTheWay
-          fulfilled
-          unfulfilled
-        }
-        location{
-          name 
-        }
-        items{
-          amount
-          description
-          parent
-          quantity
-        }
-      }
-    }
-  }
-`
-
 export const GET_ORDERS = gql`
   query getUserOrder($user_netid: String) {
     user(netID: $user_netid){
@@ -45,8 +20,9 @@ export const GET_ORDERS = gql`
           fulfilled
           unfulfilled
         }
-        location{
-          name 
+        metadata {
+          location
+          netID
         }
         items{
           amount
@@ -58,7 +34,6 @@ export const GET_ORDERS = gql`
     }
   }
 `
-
 
 @inject("rootStore")
 @observer
@@ -72,16 +47,6 @@ export class OrderHistoryScreen extends React.Component<any, any> {
       idx: 0,
       activeOrders:{}
     }
-  }
-
-  async activeOrders() {
-    return await client.query({
-      query: GET_ACTIVE_ORDERS,
-      // variables: {$user_netid: this.props.rootStore.userStore.user.netID}
-      variables: {
-        "user_netid": "jl23"
-      }
-    })
   }
 
   async getOrders() {
@@ -142,21 +107,16 @@ export class OrderHistoryScreen extends React.Component<any, any> {
               <OrderHistItem style={css.text.itemText} order={item} />
             }
           />
-		</View> 
-
-      return (
-        <View style={css.screen.defaultScreen}>
-
-          {/* If there are no active orders, do not display the flatlist */}
-          {active_orders.length > 0 ? pendingOrders : null}
-
-			{/* Always displaying previous orders */}
-			<View style={{margin: 10}}>
-				<Text style={css.text.bigBodyText}>
-					Previous Orders
-				</Text>
-			</View>
-			
+    </View> 
+    
+    let previousOrders = 
+        <View>
+            <View style={{margin: 10}}>
+            <Text style={css.text.bigBodyText}>
+              Previous Orders
+            </Text>
+          </View>
+      
           <FlatList
             style={css.flatlist.container}
             data={previous_orders}
@@ -165,6 +125,17 @@ export class OrderHistoryScreen extends React.Component<any, any> {
               <OrderHistItem style={css.text.itemText} order={item} />
             }
           />
+        </View>
+
+      return (
+        <View style={css.screen.defaultScreen}>
+
+          {/* If there are no active orders, do not display the flatlist */}
+          {active_orders.length > 0 ? pendingOrders : null}
+
+          {/* If there are no previous orders, do not display the flatlist */}
+		{previous_orders.length > 0 ? previousOrders : null}
+      
         </View>
       )
     }

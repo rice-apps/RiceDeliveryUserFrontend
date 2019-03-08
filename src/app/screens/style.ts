@@ -244,7 +244,7 @@ export const flatlist = StyleSheet.create({
         backgroundColor: 'white',
         // flex: 1,
         flexDirection: 'row',  // main axis
-        justifyContent: 'flex-start', // main axis
+        justifyContent: 'center', // main axis
         alignItems: 'center', // cross axis
         paddingTop: 70,
         paddingBottom: 10,

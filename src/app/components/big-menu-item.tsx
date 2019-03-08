@@ -22,8 +22,8 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             toggleDrop : false,
             client: client
         }
-        console.log("this.props.product");
-        console.log(this.props.product);
+        // console.log("this.props.product");
+        // console.log(this.props.product);
         this.onTouchablePress = this.onTouchablePress.bind(this);
     }
     

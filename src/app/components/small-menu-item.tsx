@@ -19,8 +19,8 @@ export class SmallMenuScreenItem extends React.Component<SmallMenuScreenItemProp
         this.state = {
             client: client
         }
-        console.log("this.props.product");
-        console.log(this.props.product);
+        // console.log("this.props.product");
+        // console.log(this.props.product);
     }
     
     onIncrementHandler = async() => {

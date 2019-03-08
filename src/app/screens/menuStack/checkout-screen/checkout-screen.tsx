@@ -4,8 +4,9 @@ import * as css from "../../style";
 import { Divider } from 'react-native-elements';
 import PrimaryButton from '../../../components/primary-button.js'
 import { inject, observer } from 'mobx-react';
-import { toJS } from "mobx"
-import { CartStoreModel } from "../../../stores/cart-store"
+import { toJS } from "mobx";
+import { CartStoreModel } from "../../../stores/cart-store";
+import { Dropdown } from 'react-native-material-dropdown';
 
 console.disableYellowBox = true;
 @inject("rootStore")
@@ -20,22 +21,69 @@ export class CheckoutScreen extends React.Component<any, any> {
 	  email : "coolguy@gmail.com",
 	  phone : "(123)456-789",
 	  card : "123456789",
-    }
+	  locationOptions : [],
+	}
+	this.createOrder = this.createOrder.bind(this);
   }
 
-  createOrder(netID, defaultLocation, vendorName, data) {
+  createOrder = (netID, defaultLocation, vendorName, data) => {
     this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
+    this.props.navigation.popToTop();
   };
+
+  onPlaceOrderPress = () => {
+
+  }
+
+	componentDidMount() {
+	var x = this.props.rootStore.vendorStore.vendors[0];
+	console.log(x.locationOptions); 
+	this.setState({
+		locationOptions : x.locationOptions
+	})
+  }
 
 
   render() {
 
   let { rootStore } = this.props;
-  let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0);
-  let mockNetID = "jl23";
-  let defaultLocation = "Weiss";
-  let vendorName = "East West Tea";
-  let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}));
+  // Just grabbing the first vendor right now
+  let locationOptions = this.state.locationOptions.map(({name}) => {
+	  return {
+		  value : name 
+		}
+  });
+//   console.log(locationOptions);
+  
+  var productItems = rootStore.cartStore.cart;
+  // Get product items that have cart items with quantity > 0
+  var nonEmptyProductItems = productItems.filter((productItem) => {
+    return productItem.cartItems.filter((cartItem) => {
+      return cartItem.quantity > 0;
+    }).length > 0;
+  });
+  // Get cart items with quantity > 0
+  var nonEmptyCartItems = nonEmptyProductItems.flatMap((productItem) => {
+    return productItem.cartItems.filter((cartItem) => {
+      return cartItem.quantity > 0;
+    })
+  });
+
+  var orderInputs = nonEmptyCartItems.map((cartItem) => {
+    return ({
+      SKU : cartItem.sku,
+      quantity : cartItem.quantity
+    });
+  });
+
+//   console.log(orderInputs);
+
+	let mockNetID = "jl23";
+	let defaultLocation = "Wiess";
+	let vendorName = "East West Tea";
+	let data = orderInputs;
+
+	let dropDownData = locationOptions;
 
 	let {name, email, phone, card} = this.state;
 
@@ -49,34 +97,27 @@ export class CheckoutScreen extends React.Component<any, any> {
                 Delivery details
             </Text> 
 
-            <Text style={css.text.bigBodyText}>
-              Location
-            </Text>
+			<View style= {{
+				justifyContent : "space-between",
+				flex : .3,
+				flexDirection : "row",
+				// borderWidth : 4,
+				// borderColor : "red",
+			}}>
 
-            <View style={
-				{flex : 1,
-					height: 10, 
-					width: 110, 
-				}
-			}>
-				<Picker
-					selectedValue={this.state.location}
-					style={{
-						height: 1, 
-						width: 100, 
-						padding: 0, 
-						margin: 0,
-					}}
-					onValueChange={(itemValue, itemIndex) =>
-					this.setState({location: itemValue})
-					}>
-					<Picker.Item label="Jones" value="jones" />
-					<Picker.Item label="Martel" value="martel" />
-					<Picker.Item label="Brown" value="brown" />
-					<Picker.Item label="McMurtry" value="mcmurtry" />
-					<Picker.Item label="Duncan" value="duncan" />
-				</Picker>
-            </View>
+				<Text style={css.text.bigBodyText}>
+				Location
+				</Text>
+
+					<Dropdown
+						containerStyle = {{
+							width : 150,
+							// height : 10
+						}}
+						// label='Location'
+					data={dropDownData}
+					/>
+			</View>
 
             <Divider style={css.screen.divider} />
 
@@ -98,12 +139,12 @@ export class CheckoutScreen extends React.Component<any, any> {
                 </Text>
             </View>
 
-            <View>   
+            <View>
 
-             <PrimaryButton
-                        title = "Place Order"
-                        onPress = {this.createOrder(mockNetID, defaultLocation, vendorName, data)}
-                    />
+              <PrimaryButton
+                    title = "Place Order"
+                    onPress = {this.onPlaceOrderPress}
+                />
             </View>
             
         </View>

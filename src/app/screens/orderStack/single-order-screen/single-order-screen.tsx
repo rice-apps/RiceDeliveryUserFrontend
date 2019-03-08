@@ -40,8 +40,8 @@ export class SingleOrderScreen extends React.Component<any, any> {
     }
 
 	var {firstName, lastName } = this.state.user;
-    var { location, id } = this.state.order;
-    var location = location.name;
+    var { id } = this.state.order;
+    var { location } = this.state.order.metadata;
 	var { pending, onTheWay, fulfilled } = this.state.order.orderStatus;
 	var { status } = getStatusDisplayColor(this.state.order);
 	var time = getOrderTime(this.state.order);
