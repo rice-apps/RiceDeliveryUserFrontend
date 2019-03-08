@@ -2,6 +2,25 @@
 - What is react-native? http://www.reactnativeexpress.com/environment
 - What is mobx state tree? https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
 - Don't want to use your typical terminal on your mac? Upgrade to Fish! Fish is a shell with really cool features that you can customize on a web interface: https://lobster1234.github.io/2017/04/08/setting-up-fish-and-iterm2/
+
+# How to setup project
+
+### Step 1: Pull from Github
+
+### Step 2: Yarn install
+
+### Step 3: Install the Podfiles. 
+- First change your current directory to the ios directory: cd ios
+- Then run Pod Install
+
+
+### Step 4a: For automatic linking: 
+- link with `react-native link tipsi-stripe`
+### Step 4b: Manual linking: 
+- Open testIgniteProject.xcworkspace.
+- Follow tutorial to manually link the tipsi stripe library: [tipsi stripe](https://tipsi.github.io/tipsi-stripe/docs/linking.html) , using [this](https://facebook.github.io/react-native/docs/linking-libraries-ios) as a reference.
+
+
 # Developer workflow:
 
 

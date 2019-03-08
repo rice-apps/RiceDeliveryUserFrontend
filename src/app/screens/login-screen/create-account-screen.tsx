@@ -15,7 +15,7 @@ export interface CreateAccountScreenProps extends NavigationScreenProps<{}> {
 
 @inject("rootStore")
 @observer
-export class CreateAccountScreen extends React.Component<CreateAccountScreenProps, { firstName: String, lastName: String, phoneNumber: String, display: Boolean, token: any }> {
+export class CreateAccountScreen extends React.Component<CreateAccountScreenProps, { firstName: String, lastName: String, phoneNumber: String, display: Boolean, token: Object }> {
 
         constructor(props) {
                 super(props);
@@ -41,8 +41,8 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                 //TODO: Check if token is valid or no?
                 if (this.state.token.tokenId != null) {
                         this.setState({ display : false});
-                        this.props.navigation.navigate("Menu");
                         this.createUserHandler();
+                        this.props.navigation.navigate("Menu");
                 }
         }
         
@@ -64,9 +64,6 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                                   firstName
                                   lastName
                                   phone
-                                  defaultLocation{
-                                    name
-                                  }
                                   creditToken
                                 }
                               }

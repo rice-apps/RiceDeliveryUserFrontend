@@ -11165,7 +11165,11 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+<<<<<<< HEAD
 tipsi-stripe@^7.3.0:
+=======
+tipsi-stripe@^7.4.0:
+>>>>>>> 732652961e4cbd1da53d43d8bcc1d01671c23927
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-7.4.0.tgz#ddea184becad2e72b163f38ece561e87cd65cb70"
   integrity sha512-GM9K10ahkcw42awSFsF/CHJnzmqEwzpR2Rr4ejy6g4TChYp+w2q0UNmPowvK+OmdPFNFK75D1SWJHTjsouS+pg==

@@ -81,7 +81,6 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
         middle: "Delivery",
         right: "$" + deliveryCost
       }
-    
 
     return (
       

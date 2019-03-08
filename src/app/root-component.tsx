@@ -65,8 +65,8 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
       <Provider rootStore={rootStore} userStore = {rootStore.userStore} navigationStore={rootStore.navigationStore} {...otherStores}>
         <BackButtonHandler canExit={this.canExit}>
           <RootNavigator 
-          persistenceKey={"NavigationState"}
-          renderLoadingExperimental={() => <LoadingScreen />}
+            // persistenceKey={"NavigationState"}
+            // renderLoadingExperimental={() => <LoadingScreen />}
            />
         </BackButtonHandler>
       </Provider>
