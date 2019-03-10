@@ -239,6 +239,17 @@ export const touchableopacity = StyleSheet.create({
 
 });
 
+
+//PCIKER
+export const picker = StyleSheet.create({
+    locationPicker: {
+        height: 1, 
+        width: 100, 
+        padding: 0, 
+        margin: 0,
+    }
+});
+
 //DATEPICKERIOS
 export const datepickerios = StyleSheet.create({
     timescroller : { 

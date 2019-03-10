@@ -4,47 +4,63 @@ import * as css from "../../style";
 import { Divider } from 'react-native-elements';
 import PrimaryButton from '../../../components/primary-button.js'
 import { inject, observer } from 'mobx-react';
-import { toJS } from "mobx"
-import { CartStoreModel } from "../../../stores/cart-store"
+import { RootStore } from '../../../stores/root-store'
+console.disableYellowBox = true; 
 
-console.disableYellowBox = true;
+interface CheckoutScreenProps {
+  rootStore: RootStore,
+}
 @inject("rootStore")
 @observer
-export class CheckoutScreen extends React.Component<any, any> {
+export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 
   constructor(props) {
     super(props) 
     this.state = {
-	  location : "Nowhere",
-	  name : "Jonathan Cai",
-	  email : "coolguy@gmail.com",
-	  phone : "(123)456-789",
-	  card : "123456789",
+      name: "Johnny Cai",
+      defaultLocation : "Nowhere",
+      email : "coolguy@gmail.com",
+      phone : "(123)456-789",
+      card : "123456789",
+      language: "Martel Commons" //field must be called language due to Picker's requirements.
     }
   }
 
-  createOrder(netID, defaultLocation, vendorName, data) {
-    this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
+  payOrder(UpdateOrderInput, creditToken){
+    this.props.rootStore.cartStore.payOrder(UpdateOrderInput, creditToken);
+  }
+
+  async createOrder(netID, defaultLocation, vendorName, data) {
+    // Retrieve the order (to get the order_id for pay order).
+    let order = await this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
+
+    // Used for paying the order.
+    let UpdateOrderInput = {netID: netID, vendorName: vendorName, orderID: order.data.createOrder.id}
+    let creditToken = "tok_visa"; // Should be able to retrieve credit from individual user.
+    
+    this.payOrder(UpdateOrderInput, creditToken);
+
   };
 
-
+  
+ 
   render() {
 
   let { rootStore } = this.props;
+  let {name, email, phone, card} = this.state;
+
+  //For Creating Order.
   let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0);
-  let mockNetID = "jl23";
-  let defaultLocation = "Weiss";
+  let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID; //Backend doesn't create customer id-pair for some netid's yet.
+  let location = this.state.language;
   let vendorName = "East West Tea";
   let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}));
-
-	let {name, email, phone, card} = this.state;
-
+  
     return (
       <View style={css.screen.defaultScreen}>
 
         <View style={css.screen.singleOrderDisplay}>
           
-
             <Text style={css.text.headerText}>
                 Delivery details
             </Text> 
@@ -61,20 +77,18 @@ export class CheckoutScreen extends React.Component<any, any> {
 			}>
 				<Picker
 					selectedValue={this.state.language}
-					style={{
-						height: 1, 
-						width: 100, 
-						padding: 0, 
-						margin: 0,
-					}}
+          style={css.picker.locationPicker}
 					onValueChange={(itemValue, itemIndex) =>
 					this.setState({language: itemValue})
 					}>
-					<Picker.Item label="Jones" value="jones" />
-					<Picker.Item label="Martel" value="martel" />
-					<Picker.Item label="Brown" value="brown" />
-					<Picker.Item label="McMurtry" value="mcmurtry" />
-					<Picker.Item label="Duncan" value="duncan" />
+
+					<Picker.Item label="Wiess" value="Wiess Commons" />
+					<Picker.Item label="Martel" value="Martel Commons" />
+					<Picker.Item label="Brown" value="Brown Commons" />
+					<Picker.Item label="Sid Rich" value="Sid Rich Commons" />
+					<Picker.Item label="McMurtry" value="McMurtry Commons" />
+					<Picker.Item label="Shepherd" value="Shepherd School" />
+
 				</Picker>
             </View>
 
@@ -102,7 +116,8 @@ export class CheckoutScreen extends React.Component<any, any> {
 
              <PrimaryButton
                         title = "Place Order"
-                        onPress = {this.createOrder(mockNetID, defaultLocation, vendorName, data)}
+                        onPress = {() => this.createOrder(netID, location, vendorName, data)
+                        }
                     />
             </View>
             

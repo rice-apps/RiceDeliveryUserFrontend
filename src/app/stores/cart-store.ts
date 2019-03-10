@@ -15,17 +15,59 @@ const POST_CART = gql`
 `;
 
 const CREATE_ORDER = gql
-`mutation createOrderShort ($netID: String!, $defaultLocationName: String!, $vendorName: String!, $data: [CreateOrderInput!]!) {
+`mutation createOrder ($netID: String!, $locationName: String!, $vendorName: String!, $data: [CreateOrderInput!]!) {
   createOrder(
     netID: $netID,
-    defaultLocationName: $defaultLocationName,
+    locationName: $locationName,
     vendorName: $vendorName,
     data: $data) 
     {
     id
+    amount
+    charge
+    created
+    items {
+      parent
+      amount
+    }
+    orderStatus{
+      _id
+      pending
+      onTheWay
+      fulfilled
+      unfulfilled
+      refunded
+    }
   }
  }
  `;
+
+const PAY_ORDER = gql`
+mutation payOrder ($data: UpdateOrderInput!, $creditToken: String!) {
+  payOrder(
+   	data: $data, 
+    creditToken: $creditToken
+  ) 
+    {
+    id
+    amount
+    charge
+    created
+    items {
+      parent
+      amount
+    }
+    orderStatus{
+      _id
+      pending
+      onTheWay
+      fulfilled
+      unfulfilled
+      refunded
+    }
+  }
+ }
+ `
  
 
 
@@ -67,14 +109,25 @@ export const CartStoreModel = types
         removeFromCart() {
 
         },
-        async createOrder(netID, defaultLocationName, vendorName, data) {
+        async createOrder(netID, locationName, vendorName, data) {
           let order = await client.mutate({
             mutation: CREATE_ORDER,
             variables: {
                 netID: netID,
-                defaultLocationName: defaultLocationName,
+                locationName: locationName,
                 vendorName: vendorName,
                 data: data
+            }
+          })
+          return order;
+        },
+        
+        async payOrder(data, creditToken) {
+          let order = await client.mutate({
+            mutation: PAY_ORDER,
+            variables: {
+                data: data,
+                creditToken: creditToken
             }
           });
         }
