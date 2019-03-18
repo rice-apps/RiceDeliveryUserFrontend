@@ -51,12 +51,6 @@ const accountStackNavigator = createStackNavigator({
         navigationOptions: {
             title: 'Location Info'
         }
-    },
-    ChangePassword : {
-        screen: ChangePasswordScreen,
-        navigationOptions: {
-            title: 'Password'
-        }
     }
 });
 

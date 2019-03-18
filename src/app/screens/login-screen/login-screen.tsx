@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Alert, AsyncStorage} from 'react-native'
+import {View, AsyncStorage} from 'react-native'
 import PrimaryButton from '../../components/primary-button.js'
 import * as css from '../style';
 import AuthModal from '../../components/auth-modal'

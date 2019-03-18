@@ -11,12 +11,12 @@ export class AccountScreen extends React.Component<any, any> {
   list = [
     {
       name: 'Your Name',
-      subtitle: 'Change your account information',
+      subtitle: 'Update your account information',
       navigateTo: 'AccountInfo'
     },
     {
       name: 'Default Location',
-      subtitle: 'Change default delivery location',
+      subtitle: 'Update your default delivery location',
       navigateTo: 'LocationInfo'
     },
     {

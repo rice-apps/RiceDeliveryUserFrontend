@@ -5,9 +5,11 @@ import { color } from "../../theme";
 // https://www.w3schools.com/colors/colors_rgb.asp
 
 
-const GRAY = "#696969";
-const LIGHT_GRAY = "#DCDCDC"
-const FONT_FAMILY = "Verdana"
+export const GRAY = "#696969";
+export const LIGHT_GRAY = "#DCDCDC"
+export const FONT_FAMILY = "Verdana"
+export const LIGHTEST_GRAY = "#808080"
+export const SILVER = "#C0C0C0"
 
 //SCREENS
 export const screen = StyleSheet.create({
@@ -27,12 +29,13 @@ export const screen = StyleSheet.create({
     accountScreenContainer: {
         alignContent : "center",
         flex: 1, 
-        padding: 10,
-        backgroundColor: LIGHT_GRAY
+        padding: 2,
     }, 
     divider : {
-        backgroundColor : color.storybookDarkBg,
+        backgroundColor : SILVER,
         height : 1,
+        width: "100%",
+        alignContent: "flex-start"
     },
     singleOrderDisplay : {
         width : "100%",
