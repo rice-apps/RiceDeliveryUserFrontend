@@ -32,8 +32,8 @@ export const UserStoreModel = types
     hasAccount: types.optional(types.boolean, false)
 })
 .actions(
-    (self) => ({
-        async authenticate(ticket) {
+    (self) => {
+        async function authenticate(ticket) {
             console.log("HERE");
             let user = await client.mutate({
                 mutation: AUTHENTICATION,
@@ -44,13 +44,13 @@ export const UserStoreModel = types
             console.log(user.data.authenticator);
 
             console.log("Almost authenticated");
-            self.setAuth(true);
+            setAuth(true);
             if (user.data.authenticator.firstName != null) {
-                self.setUser(user.data.authenticator);
-                self.setAccountState(true);
+                setUser(user.data.authenticator);
+                setAccountState(true);
             } else {
-                self.setUser({ netID: user.data.authenticator.netID });
-                self.setAccountState(false);
+                setUser({ netID: user.data.authenticator.netID });
+                setAccountState(false);
             }
 
             // api
@@ -75,20 +75,31 @@ export const UserStoreModel = types
             // console.log(user);
             // console.log(res);
             // });
-        },
-        setUser(user) {
-            self.user = user;
-        },
-        setAccountState(accountState) {
+        }
+        async function setUser(new_user) {
+            console.log("THIS IS THE NEW USER OBJECT: " + JSON.stringify(new_user));
+            console.log("THIS IS THE OLD USER OBJECT: " + JSON.stringify(self.user));
+            self.user = new_user;
+            
+            console.log("THIS IS THE UPDATED USER OBJECT: " + JSON.stringify(self.user));
+
+        }
+        function setAccountState(accountState) {
             self.hasAccount = accountState;
-        },
+        }
         // loggedIn() {
         //     return self.authenticated ? true : false
         // },
-        setAuth(authState) {
+        function setAuth(authState) {
             self.authenticated = authState;
         }
-    })
+        return {
+            authenticate,
+            setUser,
+            setAccountState,
+            setAuth
+        }
+    }
 )
 
 // .create({
