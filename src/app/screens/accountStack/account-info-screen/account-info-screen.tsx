@@ -57,7 +57,7 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
     console.log(userInfo);
     const user = userInfo.data.user[0];
     console.log(user);
-    await this.props.rootStore.userStore.setUser(user);
+    // await this.props.rootStore.userStore.setUser(user);
     console.log(this.props.rootStore.userStore.user);
     this.setState({firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phone})
   }
