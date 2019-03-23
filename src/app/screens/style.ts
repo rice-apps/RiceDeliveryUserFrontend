@@ -74,12 +74,12 @@ export const text = StyleSheet.create({
         fontWeight: '800',
         fontSize: 40,
       },
-      accountHeaderText: {
+    accountHeaderText: {
         color: color.storybookTextColor,
         fontWeight: '800',
-        fontSize: 40,
+        fontSize: 20,
         textAlign: "center"
-      },
+    },
     menuHeaderText: {
         color: color.storybookTextColor,
         fontWeight: '800',
