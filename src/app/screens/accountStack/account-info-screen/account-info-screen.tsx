@@ -57,9 +57,9 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
     console.log(userInfo);
     const user = userInfo.data.user[0];
     console.log(user);
-    // await this.props.rootStore.userStore.setUser(user);
+    await this.props.rootStore.userStore.setUser(user);
     console.log(this.props.rootStore.userStore.user);
-    this.setState({firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phone})
+    // this.setState({firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phone})
   }
 
 	async updateAccount() {
@@ -100,13 +100,13 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
             flex : 0.3,
             flexDirection : "column",
             justifyContent : "space-evenly",
-            alignItems: "flex-start"
+            alignItems: "flex-start",
           }}>
 
             <Text style={{fontSize:10, color:css.LIGHTEST_GRAY}}>
               First Name
             </Text>
-            <TextInput style={{fontSize:20}} onChangeText={(name) => this.setState({firstName: name})}>
+            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(name) => this.setState({firstName: name})}>
               {this.props.rootStore.userStore.user.firstName}
             </TextInput>
             <Divider style={css.screen.divider} />            
@@ -114,7 +114,7 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
             <Text style={{fontSize:10, color:css.LIGHTEST_GRAY}}>
               Last Name
             </Text>
-            <TextInput style={{fontSize:20}} onChangeText={(name) => this.setState({lastName: name})}>
+            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(name) => this.setState({lastName: name})}>
               {this.props.rootStore.userStore.user.lastName}
             </TextInput>
             <Divider style={css.screen.divider} />
@@ -122,8 +122,8 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
             <Text style={{fontSize:10, color:css.LIGHTEST_GRAY}}>
               Phone Number
             </Text>
-            <TextInput style={{fontSize:20}} onChangeText={(phone) => this.setState({phoneNumber: phone})}>
-              {this.state.phoneNumber}
+            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(phone) => this.setState({phoneNumber: phone})}>
+              {this.props.rootStore.userStore.user.phone}
             </TextInput>
             <Divider style={css.screen.divider} />
 
