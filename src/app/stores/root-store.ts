@@ -14,7 +14,7 @@ export const RootStoreModel = types.model("RootStore").props({
     user: {}
   }),
   vendorStore: types.optional(VendorStoreModel, {vendors : []}),
-  orderStore: types.optional(OrderModel, {pending : []}),
+  orderStore: types.optional(OrderModel, {active : [], previous: []}),
   cartStore: types.optional(CartStoreModel, {})
 })
 

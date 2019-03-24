@@ -11,26 +11,25 @@ export interface AuthModalProps {
 }
 
 export class AuthModal extends React.Component<AuthModalProps, {}> {
-        
         render() {
+                console.log("Hit auth");
                 return (
                         <View style={{marginTop: 22}}>
-                        <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={this.props.visible}
-                        onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        }}>
-                        <AuthenticationComponent onSuccess = {this.props.onSuccess} onFailure={this.props.onFailure}>
-                        </AuthenticationComponent>
-                        <PrimaryButton
-                                title ="Cancel"
-                                onPress={() => {
-                                        this.props.setVisible(!this.props.visible);
-                                        }}>                       
-                        </PrimaryButton>
-                        </Modal>
+                                <Modal
+                                animationType="slide"
+                                transparent={false}
+                                visible={this.props.visible}
+                                onRequestClose={() => {
+                                Alert.alert('Modal has been closed.');
+                                }}>
+                                        <AuthenticationComponent onSuccess = {this.props.onSuccess} onFailure={this.props.onFailure} />
+                                        <PrimaryButton
+                                                title ="Cancel"
+                                                onPress={() => {
+                                                        this.props.setVisible(!this.props.visible);
+                                                        }}>                       
+                                        </PrimaryButton>
+                                </Modal>
                         </View>
                 );
         }       

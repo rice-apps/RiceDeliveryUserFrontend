@@ -1,32 +1,63 @@
 import * as React from 'react'
-import { View, Text, Picker } from 'react-native';
+import { View, Text, Picker, AsyncStorage } from 'react-native';
 import * as css from "../../style";
 import { Divider } from 'react-native-elements';
 import PrimaryButton from '../../../components/primary-button.js'
 import { inject, observer } from 'mobx-react';
+import {NavigationScreenProps} from 'react-navigation'
 import { toJS } from "mobx"
 import { CartStoreModel } from "../../../stores/cart-store"
+import { RootStore } from '../../../stores/root-store';
 
 console.disableYellowBox = true;
+
+export interface CheckoutScreenProps extends NavigationScreenProps<{}> {
+  rootStore?: RootStore
+}
+
 @inject("rootStore")
 @observer
-export class CheckoutScreen extends React.Component<any, any> {
+export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 
   constructor(props) {
-    super(props) 
+    super(props);
     this.state = {
-	  location : "Nowhere",
-	  name : "Jonathan Cai",
-	  email : "coolguy@gmail.com",
-	  phone : "(123)456-789",
-	  card : "123456789",
+      location : "Jones",
+      name : "",
+      netID : "",
+      phone : "",
+      customerID : "",
+      rootStore: props.rootStore
     }
   }
 
-  createOrder(netID, defaultLocation, vendorName, data) {
-    this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
-  };
+  async componentWillMount() {
+      // Ensure that user is in store. If not, put them there
+      if (!this.props.rootStore.userStore.user.firstName) {
+        let netID = await AsyncStorage.getItem("Authenticated");
+        await this.props.rootStore.userStore.getUserFromNetID(netID);
+      }
 
+      let { netID, firstName, lastName, phone, customerIDArray } = this.props.rootStore.userStore.user;
+
+      // Parse through customerIDArray to find correct vendor
+      let { customerID } = customerIDArray.find(pair => pair.accountID == "East West Tea");
+
+      console.log(customerID);
+
+      let name = firstName + " " + lastName;
+      this.setState({ netID, name, phone, customerID });
+  }
+
+  async createOrder(netID, defaultLocation, vendorName, data) {
+    let success = await this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
+    if (success) {
+      // console.log("success");
+      this.props.navigation.navigate("SingleOrderScreen")
+    } else {
+      this.props.navigation.navigate("Menu");
+    }
+  };
 
   render() {
 
@@ -37,7 +68,8 @@ export class CheckoutScreen extends React.Component<any, any> {
   let vendorName = "East West Tea";
   let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}));
 
-	let {name, email, phone, card} = this.state;
+  let {name, netID, phone, creditToken} = this.state;
+  
 
     return (
       <View style={css.screen.defaultScreen}>
@@ -87,22 +119,22 @@ export class CheckoutScreen extends React.Component<any, any> {
             <View style={css.container.checkoutScreenContainer}>
             <Text style={css.text.itemText}>
                     Name : {name}{"\n"}
-                    Email : {email}{"\n"}
+                    Email : {netID + "@rice.edu"}{"\n"}
                     Phone : {phone}
                 </Text>
             </View>
 
-            <View style={css.container.checkoutScreenContainer}>
+            {/* <View style={css.container.checkoutScreenContainer}>
                 <Text>
-                    Card Number : {card}
+                    Card Number : {creditToken}
                 </Text>
-            </View>
+            </View> */}
 
             <View>   
 
              <PrimaryButton
                         title = "Place Order"
-                        onPress = {this.createOrder(mockNetID, defaultLocation, vendorName, data)}
+                        onPress={() => this.createOrder(netID, this.state.location, vendorName, data)}
                     />
             </View>
             

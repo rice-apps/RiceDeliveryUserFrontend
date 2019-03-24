@@ -14,17 +14,17 @@ const POST_CART = gql`
   }
 `;
 
-const CREATE_ORDER = gql
-`mutation createOrderShort ($netID: String!, $defaultLocationName: String!, $vendorName: String!, $data: [CreateOrderInput!]!) {
-  createOrder(
-    netID: $netID,
-    defaultLocationName: $defaultLocationName,
-    vendorName: $vendorName,
-    data: $data) 
-    {
-    id
+const CREATE_ORDER = gql`
+  mutation createOrderShort($netID: String!, $locationName: String!, $vendorName: String!, $data: [CreateOrderInput!]!) {
+    createOrder(
+      netID: $netID,
+      locationName: $locationName,
+      vendorName: $vendorName,
+      data: $data) 
+      {
+      id
+    }
   }
- }
  `;
  
 
@@ -67,16 +67,24 @@ export const CartStoreModel = types
         removeFromCart() {
 
         },
-        async createOrder(netID, defaultLocationName, vendorName, data) {
+        async createOrder(netID, locationName, vendorName, data) {
           let order = await client.mutate({
             mutation: CREATE_ORDER,
             variables: {
                 netID: netID,
-                defaultLocationName: defaultLocationName,
+                locationName: locationName,
                 vendorName: vendorName,
                 data: data
             }
           });
+          
+          console.log(order);
+
+          if (order) {
+            return true;
+          } else {
+            return false;
+          }
         }
     }),
 )

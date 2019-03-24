@@ -10,6 +10,7 @@ import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
 import { RootNavigator } from "../navigation/root-navigator";
 import LoadingScreen from "./screens/LoadingScreen";
+import { AsyncStorage } from "react-native";
 
 interface RootComponentState {
   rootStore?: RootStore

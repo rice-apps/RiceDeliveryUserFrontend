@@ -5,6 +5,9 @@ import * as storage from "../lib/storage"
 import { Reactotron } from "../services/reactotron"
 import { Api } from "../services/api"
 import { create } from 'apisauce'
+import { AsyncStorage } from "react-native";
+import { client } from "./main";
+import gql from "graphql-tag";
 // import { OrderStoreModel } from "./stores/order-store";
 
 /**
@@ -40,6 +43,18 @@ const vendorQuery = `
   }
   `;
 
+const GET_USER = gql`
+  query GET_USER($netID: String!) {
+      user(netid:$netID) {
+          netID
+          firstName
+          lastName
+          phone
+          creditToken
+      }
+  }
+`;
+
 /**
  * Setup the root state.
  */
@@ -53,6 +68,7 @@ export async function setupRootStore() {
     // load data from storage
     data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
 
+    // Get vendors
     let vendorRes: any = await api.post('', { query: vendorQuery, })
     data.vendorStore = {"vendor": vendorRes.data.data.vendor};
 

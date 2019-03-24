@@ -1,6 +1,7 @@
 import { types, destroy } from "mobx-state-tree";
 import { client } from "../main";
 import gql from "graphql-tag";
+import { AsyncStorage } from "react-native";
 // import { Location } from "./vendor-store";
 
 const AUTHENTICATION = gql`
@@ -10,9 +11,34 @@ const AUTHENTICATION = gql`
             firstName
             lastName
             phone
+            customerIDArray {
+                accountID
+                customerID
+            }
         }
     }    
 `
+
+const GET_USER = gql`
+    query GET_USER($netID: String!) {
+        user(netID:$netID) {
+            netID
+            firstName
+            lastName
+            phone
+            customerIDArray {
+                accountID
+                customerID
+            }
+        }
+    }
+`
+
+const CustomerIDPair = types
+.model('CustomerIDPair', {
+    accountID: types.optional(types.string, ""),
+    customerID: types.optional(types.string, "")
+});
 
  const User = types
 .model('User', {
@@ -21,6 +47,7 @@ const AUTHENTICATION = gql`
     firstName: types.optional(types.string, ""),
     lastName: types.optional(types.string, ""),
     phone: types.optional(types.string, ""),
+    customerIDArray: types.optional(types.array(CustomerIDPair), [])
     // defaultLocation: types.optional(Location, {name: ""}),
 })
 
@@ -89,6 +116,26 @@ export const UserStoreModel = types
         // },
         setAuth(authState) {
             self.authenticated = authState;
+        },
+        async getUserFromNetID(netID) {
+            console.log("Pre netID thing");
+            let data = await client.query({
+                query: GET_USER,
+                variables: {
+                    netID: netID
+                }
+            });
+
+            console.log("Post netID gt");
+            console.log(data.data.user[0]);
+            let user = data.data.user[0];
+
+            // Set user
+            self.setUser(user);
+            // Set account
+            self.setAccountState(true);
+            // Set auth
+            self.setAuth(true);
         }
     })
 )
