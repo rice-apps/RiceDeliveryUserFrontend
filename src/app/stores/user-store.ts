@@ -4,8 +4,8 @@ import gql from "graphql-tag";
 // import { Location } from "./vendor-store";
 
 const AUTHENTICATION = gql`
-    mutation Authenticate($ticket: String!) {
-        authenticator(ticket:$ticket) {
+    mutation Authenticate($ticket: String!, $checkVendor: Boolean!, $vendorName: String) {
+        authenticator(ticket:$ticket, checkVendor:$checkVendor, vendorName:$vendorName) {
             netID
             firstName
             lastName
@@ -38,7 +38,9 @@ export const UserStoreModel = types
             let user = await client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
-                    ticket: ticket
+                    ticket: ticket,
+                    checkVendor: false,
+                    vendorName: ""
                 }
             });
             console.log(user.data.authenticator);
