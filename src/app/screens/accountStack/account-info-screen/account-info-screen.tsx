@@ -16,13 +16,13 @@ export interface AccountInfoScreenProps extends NavigationScreenProps<{}> {
 
 @inject("rootStore")
 @observer
-export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {firstName: String, lastName: String, phoneNumber: String, netID: String}> {
+export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {firstName: String, lastName: String, phone: String, netID: String}> {
 	constructor(props) {
     super(props);
     this.state = {
       firstName: "",
       lastName: "",
-      phoneNumber: "",
+      phone: "",
       netID: "",
     }
   }
@@ -57,12 +57,17 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
     console.log(userInfo);
     const user = userInfo.data.user[0];
     console.log(user);
-    await this.props.rootStore.userStore.setUser(user);
     console.log(this.props.rootStore.userStore.user);
-    // this.setState({firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phone})
+    // this.setState({firstName: user.firstName, lastName: user.lastName, phone: user.phone})
   }
 
 	async updateAccount() {
+    let infoToUpdate = {};
+    Object.keys(this.state).map(item => {
+      if (this.state[item] != "") {
+        infoToUpdate[item] = this.state[item];
+      }
+    })
     const updatedUserInfo = await client.mutate({
       mutation: gql`
       mutation mutate($data: UpdateUserInput!) {
@@ -76,17 +81,12 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
       `
       , 
       variables : {
-        data: {
-          netID: this.state.netID,
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          phone: this.state.phoneNumber
-      }
+        data: infoToUpdate
     }
     });
     console.log(updatedUserInfo);
     const user = updatedUserInfo.data.updateUser;
-    this.setState({firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phone})
+    this.setState({firstName: user.firstName, lastName: user.lastName, phone: user.phone})
     console.log(this.state.lastName);
     await this.props.rootStore.userStore.setUser(user);
     console.log(this.props.rootStore.userStore.user);
@@ -122,7 +122,7 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
             <Text style={{fontSize:10, color:css.LIGHTEST_GRAY}}>
               Phone Number
             </Text>
-            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(phone) => this.setState({phoneNumber: phone})}>
+            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(phone) => this.setState({phone: phone})}>
               {this.props.rootStore.userStore.user.phone}
             </TextInput>
             <Divider style={css.screen.divider} />
