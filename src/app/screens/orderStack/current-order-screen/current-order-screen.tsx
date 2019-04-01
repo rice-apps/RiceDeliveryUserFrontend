@@ -18,7 +18,7 @@ export class OrderScreen extends React.Component<any, any> {
 
   // Link to order history screen
   previousOrdersPush = () => {
-    this.props.navigation.navigate("Order History")
+    this.props.navigation.navigate("OrderHistory")
   }
 
   render() {

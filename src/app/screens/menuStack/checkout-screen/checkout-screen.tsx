@@ -37,7 +37,7 @@ export class CheckoutScreen extends React.Component<any, any> {
 
 	componentDidMount() {
 	var x = this.props.rootStore.vendorStore.vendors[0];
-	console.log(x.locationOptions); 
+	// console.log(x.locationOptions); 
 	this.setState({
 		locationOptions : x.locationOptions
 	})
@@ -53,30 +53,16 @@ export class CheckoutScreen extends React.Component<any, any> {
 		  value : name 
 		}
   });
-//   console.log(locationOptions);
   
-  var productItems = rootStore.cartStore.cart;
-  // Get product items that have cart items with quantity > 0
-  var nonEmptyProductItems = productItems.filter((productItem) => {
-    return productItem.cartItems.filter((cartItem) => {
-      return cartItem.quantity > 0;
-    }).length > 0;
-  });
-  // Get cart items with quantity > 0
-  var nonEmptyCartItems = nonEmptyProductItems.flatMap((productItem) => {
-    return productItem.cartItems.filter((cartItem) => {
-      return cartItem.quantity > 0;
-    })
-  });
-
-  var orderInputs = nonEmptyCartItems.map((cartItem) => {
+  var cartItems = rootStore.cartStore.cart;
+  console.log(cartItems);
+  var orderInputs = cartItems.map((cartItem) => {
     return ({
       SKU : cartItem.sku,
       quantity : cartItem.quantity
     });
   });
 
-//   console.log(orderInputs);
 
 	let mockNetID = "jl23";
 	let defaultLocation = "Wiess";
@@ -104,19 +90,23 @@ export class CheckoutScreen extends React.Component<any, any> {
 				// borderWidth : 4,
 				// borderColor : "red",
 			}}>
+      <View style={{borderWidth : 3, borderColor : "red"}}>
 
-				<Text style={css.text.bigBodyText}>
-				Location
-				</Text>
+          <Text style={css.text.bigBodyText}>
+          Location
+          </Text>
+        </View>
 
-					<Dropdown
-						containerStyle = {{
-							width : 150,
-							// height : 10
-						}}
-						// label='Location'
-					data={dropDownData}
-					/>
+        <View style={{borderWidth : 3, borderColor : "red"}}>
+            <Dropdown
+              containerStyle = {{
+                width : 150,
+                // height : 10
+              }}
+              // label='Location'
+            data={dropDownData}
+            />
+        </View>
 			</View>
 
             <Divider style={css.screen.divider} />

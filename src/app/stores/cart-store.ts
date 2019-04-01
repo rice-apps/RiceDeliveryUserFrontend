@@ -38,17 +38,10 @@ export const CartItemModel = types.model("CartItemModel", {
   productName: "", 
   productID: "",
   sku: "", 
+  note: "",
   attributes: types.array(SKUAtributesModel), 
-  quantity: 0,
   price: 0
-}).actions(self =>({
-  incrementQuantity() {    
-    self.quantity += 1
-  }, 
-  decrementQuantity() {
-    self.quantity -= 1
-  }
-}))
+})
 
 export const ProductModel = types.model("ProductModel", {
   productName: "", 
@@ -62,19 +55,15 @@ export const ProductModel = types.model("ProductModel", {
 
 export const CartStoreModel = types
 .model('CartStoreModel', {
-    cart: types.optional(types.array(ProductModel), []),
-    // cartMap: types.optional(types.map(ProductModel), {})
+    cart: types.optional(types.array(CartItemModel), []),
 })
 .actions(
     (self) => ({
-        addCartIem(ProductModel) {
-          self.cart.push(ProductModel)
+        addToCart(CartItemModel) {
+            self.cart.push(CartItemModel)
         },
-        addToCart() {
-            
-        },
-        removeFromCart() {
-
+        removeFromCart(CartItemModel) { 
+          self.cart.remove(CartItemModel);
         },
         async createOrder(netID, defaultLocationName, vendorName, data) {
           let order = await client.mutate({

@@ -19,6 +19,13 @@ export const screen = StyleSheet.create({
         height: "100%",
         backgroundColor: LIGHT_GRAY
     }, 
+    defaultScreenPopup: {
+        // flex: 1, 
+        justifyContent: "center", 
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+    }, 
     paddedScreen: {
         flex: 1, 
         padding: 10,
@@ -140,8 +147,6 @@ export const container = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 10,
         paddingRight: 10,
-        // marginLeft: 6,
-        // marginRight: 6,
         marginTop: 5,
         marginBottom: 5,
         borderRadius: 14,
