@@ -15,11 +15,6 @@ export class AccountScreen extends React.Component<any, any> {
       navigateTo: 'AccountInfo'
     },
     {
-      name: 'Default Location',
-      subtitle: 'Update your default delivery location',
-      navigateTo: 'LocationInfo'
-    },
-    {
       name: 'Payment Cards',
       subtitle: 'Add a credit or debit card',
       navigateTo: 'PaymentInfo'
