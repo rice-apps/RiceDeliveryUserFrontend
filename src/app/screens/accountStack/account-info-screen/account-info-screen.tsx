@@ -1,18 +1,18 @@
-import * as React from 'react'
-import { Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight} from 'react-native';
-import * as css from '../../style';
-import { Divider } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as React from "react"
+import { Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight} from "react-native"
+import * as css from "../../style"
+import { Divider } from "react-native-elements"
+import Icon from "react-native-vector-icons/MaterialIcons"
 
 
 export class AccountInfoScreen extends React.Component<any, any> {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.changePasswordPush = this.changePasswordPush.bind(this)
 	}
 
 	changePasswordPush() {
-        this.props.navigation.navigate("ChangePassword");
+        this.props.navigation.navigate("ChangePassword")
 	}
 
   render() {
@@ -24,7 +24,7 @@ export class AccountInfoScreen extends React.Component<any, any> {
           <View style={{
             flex : .5,
             flexDirection : "column",
-            justifyContent : "space-between"
+            justifyContent : "space-between",
           }}>
 
           <Text style={css.text.bigBodyText}>First Name</Text>

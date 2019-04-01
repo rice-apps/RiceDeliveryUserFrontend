@@ -1,13 +1,13 @@
-import * as React from 'react'
-import { Text, Picker, View} from 'react-native';
-import * as css from '../../style';
-import PrimaryButton from '../../../components/primary-button.js';
+import * as React from "react"
+import { Text, Picker, View} from "react-native"
+import * as css from "../../style"
+import PrimaryButton from "../../../components/primary-button.js"
 
 export class LocationInfoScreen extends React.Component<any, any> {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
-			location : "nowhere"
+			location : "nowhere",
 		}
 	}
 

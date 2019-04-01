@@ -2,19 +2,19 @@ import * as React from "react"
 import { View, ViewStyle, StatusBar } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
 import { inject, observer } from "mobx-react"
-import { create } from 'apisauce'
+import { create } from "apisauce"
 // Linking
-import { WebView } from 'react-native';
-import { UserStoreModel } from "../stores/user-store";
-import { RootStore } from "../stores/root-store";
-import CookieManager from 'react-native-cookies'; 
+import { WebView } from "react-native"
+import { UserStoreModel } from "../stores/user-store"
+import { RootStore } from "../stores/root-store"
+import CookieManager from "react-native-cookies" 
 
 const FULL: ViewStyle = { flex: 1 }
 
 const api = create({
   baseURL: "http://localhost:3000/graphql",
-  headers: { 'Accept': 'application/json' }
-});
+  headers: { "Accept": "application/json" },
+})
 
 export interface AuthenticationComponentProps {
   rootStore?: RootStore
@@ -26,21 +26,21 @@ export interface AuthenticationComponentProps {
 @observer
 export class AuthenticationComponent extends React.Component<AuthenticationComponentProps, { author: object, person: string, authorJSON: string, displayBrowser: boolean, userStore: UserStore }> {
   constructor(props) {
-    super(props);
-    console.log(props);
+    super(props)
+    console.log(props)
     this.state = {
       author: {},
       authorJSON: "",
       person: "",
       displayBrowser: true,
-      userStore: props.rootStore.userStore
-    };
+      userStore: props.rootStore.userStore,
+    }
   }
 
   queryGetPost = (name) => {
     api
       .post(
-        '',
+        "",
         {
           query: `
           query Author($firstName: String!) {
@@ -50,25 +50,25 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
         }
         `,
           variables: {
-            firstName: name
+            firstName: name,
           },
-        }
+        },
       ).then(
         (res: any) => {
-          return this.setState({ author: res.data.data.author[0] });
-        }
-      );
+          return this.setState({ author: res.data.data.author[0] })
+        },
+      )
   }
 
   toggleBrowser() {
-    this.setState({ displayBrowser: !this.state.displayBrowser });
+    this.setState({ displayBrowser: !this.state.displayBrowser })
   }
 
 
   authenticate = (ticket) => {
     api
       .post(
-        '',
+        "",
         {
           query: `
           mutation Authenticate($ticket: String!) {
@@ -78,47 +78,47 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
           }
         `,
           variables: {
-            ticket: ticket
-          }
-        }
+            ticket: ticket,
+          },
+        },
       )
       .then((res) => {
-        let user = res.data.data.authenticator;
+        let user = res.data.data.authenticator
 
-        console.log(user);
-        console.log(res);
-      });
+        console.log(user)
+        console.log(res)
+      })
   }
 
   async _onNavigationStateChange(webViewState) {
-    console.log(webViewState.url);
+    console.log(webViewState.url)
 
-    CookieManager.get(webViewState.url).then((res) => {console.log('CookieManager.get =>', res);
-    });
+    CookieManager.get(webViewState.url).then((res) => {console.log("CookieManager.get =>", res)
+    })
 
-    var equalSignIndex = webViewState.url.indexOf('ticket=') + 1;
+    var equalSignIndex = webViewState.url.indexOf("ticket=") + 1
     if (equalSignIndex > 0) {
 
-      var ticket = webViewState.url.substring(equalSignIndex + 6);
-      console.log("Parsed Ticket: " + ticket);
-      let badTicket = "28939299239";
-      await this.state.userStore.authenticate(ticket);
-      console.log("Authenticated");
-      let authenticated = this.state.userStore.authenticated;
-      console.log("Post Auth");
-      console.log(authenticated);
+      var ticket = webViewState.url.substring(equalSignIndex + 6)
+      console.log("Parsed Ticket: " + ticket)
+      let badTicket = "28939299239"
+      await this.state.userStore.authenticate(ticket)
+      console.log("Authenticated")
+      let authenticated = this.state.userStore.authenticated
+      console.log("Post Auth")
+      console.log(authenticated)
       if (authenticated) {
-        this.props.onSuccess();
+        this.props.onSuccess()
       } else {
-        console.log("Auth failed");
-        this.props.onFailure();
+        console.log("Auth failed")
+        this.props.onFailure()
       }
     }
 
   }
 
   checkUser() {
-    console.log(this.state.userStore.user);
+    console.log(this.state.userStore.user)
   }
 
 
@@ -128,9 +128,9 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
         <StatusBar barStyle="light-content" />
         <WebView
               // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=hedwig://localhost:8080/auth'}}
-              source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org' }}
+              source={{ uri: "https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org" }}
               onNavigationStateChange={this._onNavigationStateChange.bind(this)}
-              style={{ marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
+              style={{ marginTop: 20, display: this.state.displayBrowser ? "flex" : "none" }}
             />
         {/* {
           this.state.userStore.loggedIn() ?

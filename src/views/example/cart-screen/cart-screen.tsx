@@ -13,14 +13,14 @@ import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/stores/root-store"
 import { CartStore } from "../../../app/stores/cart-store"
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag'
-import ApolloClient from "apollo-boost";
+import { Mutation } from "react-apollo"
+import gql from "graphql-tag"
+import ApolloClient from "apollo-boost"
 export const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql"
-});
+  uri: "http://localhost:3000/graphql",
+})
 // Just for testing purposes disable yellowbox warnings
-console.disableYellowBox = true;
+console.disableYellowBox = true
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -122,17 +122,17 @@ const MOCK_CART: Cart = {
   cart: [
     {menuId: "5bd01d4e2e964215214ad0a3",
     quantity: 1,
-    price: 5.00
+    price: 5.00,
     },
     {menuId: "5bd01d4e2e964215214ad0a6", 
     quantity: 1,
-    price: 7.00
+    price: 7.00,
     },
     {menuId:  "5bd01d4e2e964215214ad0af", 
     quantity: 4,
-    price: 4.00
-    }
-  ]
+    price: 4.00,
+    },
+  ],
 }
 
 
@@ -147,7 +147,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
     super(props)
     this.state = {
       cart: MOCK_CART, 
-      cartStore: props.rootStore.cartStore
+      cartStore: props.rootStore.cartStore,
     }
     console.log("SET STATE", this.state)
   }
@@ -197,7 +197,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
     this.state.cart.cart.forEach(async (item) => {
       const menuItem = await client.query({
         query: GET_MENU_ITEM,
-        variables: {itemId: item.menuId}
+        variables: {itemId: item.menuId},
       })
       menuItems.push(menuItem.data)
     })
@@ -207,7 +207,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
   async generateOrder()  {
     const order =  await client.mutate({
       mutation: POST_CART,
-      variables: {cart: this.state.cart, userID: "5bd01994032993139cbbc845", location: "Wiess Commons", vendorID: "5bd01d4e2e964215214ad094" }
+      variables: {cart: this.state.cart, userID: "5bd01994032993139cbbc845", location: "Wiess Commons", vendorID: "5bd01d4e2e964215214ad094" },
     })
     return order
   }

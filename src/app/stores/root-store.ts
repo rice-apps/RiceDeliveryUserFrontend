@@ -3,18 +3,18 @@ import { NavigationStoreModel } from "../../navigation/navigation-store"
 import { UserStoreModel }  from "./user-store"
 import { VendorStoreModel }  from "./vendor-store"
 import { OrderModel } from "./order-store"
-import { CartStoreModel } from "./cart-store";
+import { CartStoreModel } from "./cart-store"
 /**
  * An RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
   navigationStore: types.optional(NavigationStoreModel, {}),
   userStore: types.optional(UserStoreModel, {
-    user: {}
+    user: {},
   }),
   vendorStore: types.optional(VendorStoreModel, {vendors: []}),
   orderStore: types.optional(OrderModel, {pending : []}),
-  cartStore: types.optional(CartStoreModel, {})
+  cartStore: types.optional(CartStoreModel, {}),
 })
 
 /**

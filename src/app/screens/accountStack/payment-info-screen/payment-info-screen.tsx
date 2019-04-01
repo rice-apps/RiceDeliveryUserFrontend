@@ -1,8 +1,8 @@
-import * as React from 'react'
-import { Text, ScrollView, View, StyleSheet, FlatList} from 'react-native';
-import * as css from '../../style';
-import { Divider } from 'react-native-elements';
-import PrimaryButton from '../../../components/primary-button.js';
+import * as React from "react"
+import { Text, ScrollView, View, StyleSheet, FlatList} from "react-native"
+import * as css from "../../style"
+import { Divider } from "react-native-elements"
+import PrimaryButton from "../../../components/primary-button.js"
 
 
 export class PaymentInfoScreen extends React.Component<any, any> {

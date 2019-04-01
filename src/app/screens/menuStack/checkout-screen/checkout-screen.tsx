@@ -1,11 +1,11 @@
-import * as React from 'react'
-import { View, Text, Picker } from 'react-native';
-import * as css from "../../style";
-import { Divider } from 'react-native-elements';
-import PrimaryButton from '../../../components/primary-button.js'
-import { inject, observer } from 'mobx-react';
-import { RootStore } from '../../../stores/root-store'
-console.disableYellowBox = true; 
+import * as React from "react"
+import { View, Text, Picker } from "react-native"
+import * as css from "../../style"
+import { Divider } from "react-native-elements"
+import PrimaryButton from "../../../components/primary-button.js"
+import { inject, observer } from "mobx-react"
+import { RootStore } from "../../../stores/root-store"
+console.disableYellowBox = true 
 
 interface CheckoutScreenProps {
   rootStore: RootStore,
@@ -22,39 +22,38 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       email : "coolguy@gmail.com",
       phone : "(123)456-789",
       card : "123456789",
-      language: "Martel Commons" //field must be called language due to Picker's requirements.
+      language: "Martel Commons", //field must be called language due to Picker's requirements.
     }
   }
 
   payOrder(UpdateOrderInput, creditToken){
-    this.props.rootStore.cartStore.payOrder(UpdateOrderInput, creditToken);
+    this.props.rootStore.cartStore.payOrder(UpdateOrderInput, creditToken)
   }
 
   async createOrder(netID, defaultLocation, vendorName, data) {
     // Retrieve the order (to get the order_id for pay order).
-    let order = await this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
-
+    let order = await this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data)
     // Used for paying the order.
     let UpdateOrderInput = {netID: netID, vendorName: vendorName, orderID: order.data.createOrder.id}
-    let creditToken = "tok_visa"; // Should be able to retrieve credit from individual user.
+    let creditToken = "tok_visa" // Should be able to retrieve credit from individual user.
     
-    this.payOrder(UpdateOrderInput, creditToken);
+    this.payOrder(UpdateOrderInput, creditToken)
 
-  };
+  }
 
   
  
   render() {
 
-  let { rootStore } = this.props;
-  let {name, email, phone, card} = this.state;
+  let { rootStore } = this.props
+  let {name, email, phone, card} = this.state
 
   //For Creating Order.
-  let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0);
-  let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID; //Backend doesn't create customer id-pair for some netid's yet.
-  let location = this.state.language;
-  let vendorName = "East West Tea";
-  let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}));
+  let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
+  let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID //Backend doesn't create customer id-pair for some netid's yet.
+  let location = this.state.language
+  let vendorName = "East West Tea"
+  let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}))
   
     return (
       <View style={css.screen.defaultScreen}>

@@ -5,14 +5,14 @@ export const OrderItem = types.model("OrderItem", {
   amount: types.number,
   description: types.string,
   parent: types.string,
-  quantity: types.number
+  quantity: types.number,
 })
 
 export const OrderStatus = types.model("OrderStatus", {
   pending: types.Date, 
   onTheWay: types.Date, 
   fulfilled: types.Date, 
-  unfulfilled: types.boolean
+  unfulfilled: types.boolean,
 })
 
 export const Order = types.model("Order", {
@@ -24,11 +24,11 @@ export const Order = types.model("Order", {
   items: types.array(OrderItem),
   orderStatus: OrderStatus,
   paymentStatus: types.string, 
-  location: Location
+  location: Location,
 })
 
 export const OrderModel = types.model("OrderModel", {
-  pending: types.array(Order)
+  pending: types.array(Order),
 })
 
 //  export type OrderStore = typeof OrderStoreModel.Type

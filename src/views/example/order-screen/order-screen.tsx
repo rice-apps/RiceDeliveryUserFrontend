@@ -11,10 +11,10 @@ import { BulletItem } from "../bullet-item"
 import { Api } from "../../../services/api"
 import { save } from "../../../lib/storage"
 import { inject, observer } from "mobx-react"
-import { RootStore } from "../../../app/stores/root-store";
-import { OrderStoreModel } from "../../../app/stores/order-store";
-import { getRoot } from "mobx-state-tree";
-import { Order } from "./order";
+import { RootStore } from "../../../app/stores/root-store"
+import { OrderStoreModel } from "../../../app/stores/order-store"
+import { getRoot } from "mobx-state-tree"
+import { Order } from "./order"
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -71,14 +71,14 @@ export interface OrderScreenProps extends NavigationScreenProps<{}> {
 export class OrderScreen extends React.Component<OrderScreenProps, {orders: Array<any>, user: Object}> {
   constructor(props) {
     super(props)
-    let user;
-    let {orders: orderArray} = this.props.rootStore.orderStore;
-    let { users: userArray } = this.props.rootStore.userStore; 
+    let user
+    let {orders: orderArray} = this.props.rootStore.orderStore
+    let { users: userArray } = this.props.rootStore.userStore 
     if (userArray.length > 0) {
-      console.log(userArray);
-      user = userArray[0];
+      console.log(userArray)
+      user = userArray[0]
     } else {
-      user = {};
+      user = {}
     }
     this.state = {orders: orderArray, user: user } 
 
@@ -93,8 +93,8 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
   goBack = () => this.props.navigation.goBack(null)
 
   getOrders = () => {
-    let { orderStore } = this.props.rootStore;
-    console.log(this.state.user);
+    let { orderStore } = this.props.rootStore
+    console.log(this.state.user)
     // this.setState( orders )
     // console.log(this.state);
 
@@ -115,13 +115,13 @@ export class OrderScreen extends React.Component<OrderScreenProps, {orders: Arra
             <SectionList
                 renderItem={({item, index}) => <Order key={index} order={index} orderStore={this.props.rootStore.orderStore}></Order>}
                 renderSectionHeader={({section: {title}}) => (
-                  <Text style={{fontWeight: 'bold'}}>{title}</Text>
+                  <Text style={{fontWeight: "bold"}}>{title}</Text>
                 )}
                 sections={
  
                 [
                   // {title: 'Title2', data: [this.state.orderStore.orders[0]]},
-                  {title: 'Today\'s Orders', data: this.state.orders.map((x, idx) => idx)},
+                  {title: "Today's Orders", data: this.state.orders.map((x, idx) => idx)},
                 ]
               
               }
