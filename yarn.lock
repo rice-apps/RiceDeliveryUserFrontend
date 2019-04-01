@@ -9511,6 +9511,11 @@ react-native-ratings@^6.3.0:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
+react-native-refresh-list-view@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-refresh-list-view/-/react-native-refresh-list-view-1.0.10.tgz#4f801e8526f9028d4273f04283506f7a1eda8a0b"
+  integrity sha512-n9QSwCThcY/JR2uz5B0+dSy1wAjGWYH7kEzV/lX9JfzSGXWIzKjLlJnOESZ3W65xXT5eh4r17zxTsYHYTmCtUg==
+
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"

@@ -1,43 +1,20 @@
-import * as React from 'react'
-import { Text, Button, View, FlatList } from 'react-native';
-import * as css from "../../style";
+import * as React from "react"
+import { Text, Button, View, FlatList, ActivityIndicator } from "react-native"
+import RefreshListView, { RefreshState } from "react-native-refresh-list-view"
+import * as css from "../../style"
 // import Order, { mock_orders } from '../../../components/temporary-mock-order';
-import OrderHistItem from '../../../components/order-hist-item';
-import gql from 'graphql-tag'
-import { inject, observer } from 'mobx-react';
-import { client } from "../../../main";
-import LoadingScreen from '../../loading-screen';
-import { getOrderTime } from '../../util';
-
-export const GET_ACTIVE_ORDERS = gql`
-  query getUserOrder($user_netid: String) {
-    user(netID: $user_netid){
-      activeOrders{
-        id
-        orderStatus{
-          pending
-          onTheWay
-          fulfilled
-          unfulfilled
-        }
-        location{
-          name 
-        }
-        items{
-          amount
-          description
-          parent
-          quantity
-        }
-      }
-    }
-  }
-`
+import OrderHistItem from "../../../components/order-hist-item"
+import gql from "graphql-tag"
+import { inject, observer } from "mobx-react"
+import { client } from "../../../main"
+import LoadingScreen from "../../loading-screen"
+import { getOrderTime } from "../../util"
+import { RootStore } from "../../../stores/root-store";
 
 export const GET_ORDERS = gql`
-  query getUserOrder($user_netid: String) {
+  query getUserOrder($user_netid: String, $starting_after: String) {
     user(netID: $user_netid){
-      orders{
+      orders(starting_after: $starting_after){
         id
         orderStatus{
           pending
@@ -45,8 +22,8 @@ export const GET_ORDERS = gql`
           fulfilled
           unfulfilled
         }
-        location{
-          name 
+        location {
+          name
         }
         items{
           amount
@@ -59,111 +36,112 @@ export const GET_ORDERS = gql`
   }
 `
 
-
+interface OrderHistryScreenprops {
+  rootStore: RootStore
+}
 @inject("rootStore")
 @observer
-export class OrderHistoryScreen extends React.Component<any, any> {
+export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, any> {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       loading: true,
       orders: {},
       idx: 0,
-      activeOrders:{}
+      endReached: false,
+      refreshState: RefreshState.Idle,
     }
   }
 
-  async activeOrders() {
-    return await client.query({
-      query: GET_ACTIVE_ORDERS,
-      // variables: {$user_netid: this.props.rootStore.userStore.user.netID}
-      variables: {
-        "user_netid": "jl23"
-      }
-    })
-  }
-
-  async getOrders() {
-	return await client.query({
-		query: GET_ORDERS,
-		// variables: {$user_netid: this.props.rootStore.userStore.user.netID}
-		variables: {
-		  "user_netid": "jl23"
-		}
+  async getOrders(starting_after) {
+    const variables = {
+      "user_netid": "jl23"
+    }
+    if (starting_after != null) variables.starting_after = starting_after;
+	  return client.query({
+      query: GET_ORDERS,
+      variables: variables
 	  })
   }
   
-   async componentWillMount() {
-    // const info = await this.activeOrders();
-	const info = await this.getOrders();
-
-	var orders = info.data.user[0].orders;
-
-	// Sort the orders by time
-    orders.sort((o1, o2) => {
-		return getOrderTime(o2).getTime() - getOrderTime(o1).getTime();
-    })
-	
+  async componentWillMount() {
+	  const info = await this.getOrders(null)
+	  var orders = info.data.user[0].orders
     this.setState({
       loading: false,
-      active_orders: orders.filter(item => !item.orderStatus.fulfilled),
-      previous_orders: orders.filter(item => item.orderStatus.fulfilled)
+      orders: orders
     })
   }
 
+  loadMore = async () => {
+    if (!this.state.endReached) {
+      this.setState({refreshState: RefreshState.FooterRefreshing})
+      const orders = (await this.getOrders(this.state.orders[this.state.orders.length - 1].id)).data.user[0].orders
+      if (orders.length == 0) this.setState({ endReached: true })
+      this.setState({refreshState: RefreshState.Idle, orders: this.state.orders.concat(orders)})
+    } else {
+      this.setState({refreshState: RefreshState.NoMoreData})
+    }
+  }
 
+  renderIf = (condition, component) => {
+    if (condition) return component 
+    return null;
+  }
+
+  renderFooter = () => 
+      (<View
+        style={{
+          paddingVertical: 10,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE",
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    )
+
+    renderEnd = () => (
+        <View
+          style={{
+            paddingVertical: 10,
+            borderTopWidth: 1,
+            borderColor: "#CED0CE",
+          }}
+        >
+          <Text>End</Text>
+        </View>
+      )
+  
+  onRefresh = async() => {
+    this.setState({ refreshState: RefreshState.HeaderRefreshing})
+	  const orders = (await this.getOrders(null)).data.user[0].orders;
+    this.setState({ refreshState: RefreshState.Idle, orders: orders })
+  }
 
   render() {
     if (this.state.loading) {
       return(
-		<View style={css.screen.defaultScreen}>
-			<View style={css.screen.accountScreenContainer}>
-				<LoadingScreen />
-			</View>
-		</View>)
+        <View style={css.screen.defaultScreen}>
+          <View style={css.screen.accountScreenContainer}>
+            <LoadingScreen />
+          </View>
+        </View>)
     } else {
-	  let { previous_orders, active_orders } = this.state;
-
-	//   active_orders = [];
-
-	  let pendingOrders = 
-		<View style={css.screen.defaultScreen}>
-			<View style={{margin: 10}}>
-				<Text style={css.text.bigBodyText}>
-					Active Orders
-				</Text>
-			</View>
-			<FlatList
-            style={css.flatlist.container}
-            data={active_orders}
-            keyExtractor={(item, index) => item.id.toString()}
-            renderItem={({ item }) =>
-              <OrderHistItem style={css.text.itemText} order={item} />
-            }
-          />
-		</View> 
-
+	  let {orders} = this.state
       return (
         <View style={css.screen.defaultScreen}>
-
-          {/* If there are no active orders, do not display the flatlist */}
-          {active_orders.length > 0 ? pendingOrders : null}
-
-			{/* Always displaying previous orders */}
-			<View style={{margin: 10}}>
-				<Text style={css.text.bigBodyText}>
-					Previous Orders
-				</Text>
-			</View>
-			
-          <FlatList
+          <RefreshListView
             style={css.flatlist.container}
-            data={previous_orders}
+            data={orders}
             keyExtractor={(item, index) => item.id.toString()}
-            renderItem={({ item }) =>
-              <OrderHistItem style={css.text.itemText} order={item} />
-            }
+            renderItem={({ item }) => <OrderHistItem style={css.text.itemText} order={item} />}
+            refreshState={this.state.refreshState}
+            onHeaderRefresh={this.onRefresh}
+            onFooterRefresh={this.loadMore}
+            footerRefreshingComponent={this.renderFooter}
+            footerNoMoreDataComponent={<Text>All orders listed!</Text>}
           />
         </View>
       )

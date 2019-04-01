@@ -1,11 +1,11 @@
-import * as React from 'react'
-import { Text, View, StyleSheet, TouchableHighlight, Button } from 'react-native';
-import * as css from '../screens/style';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { CartItem } from '../stores/cart-store'
-import { inject, observer } from 'mobx-react';
-import { client } from '../main';
-import gql from 'graphql-tag';
+import * as React from "react"
+import { Text, View, StyleSheet, TouchableHighlight, Button } from "react-native"
+import * as css from "../screens/style"
+import Icon from "react-native-vector-icons/MaterialIcons"
+import { CartItem } from "../stores/cart-store"
+import { inject, observer } from "mobx-react"
+import { client } from "../main"
+import gql from "graphql-tag"
 interface MenuScreenItemProps {
     product : any
 }
@@ -24,9 +24,9 @@ const SKU_QUERY = gql`
 @observer
 export class MenuScreenItem extends React.Component<MenuScreenItemProps, any> {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            client: client
+            client: client,
         }
     }
     

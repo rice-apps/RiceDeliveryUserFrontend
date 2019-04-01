@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Text, View} from 'react-native';
+import { Text, ScrollView, View, StyleSheet, FlatList} from "react-native"
 import { NavigationScreenProps} from 'react-navigation'
 import * as css from '../../style';
 import { Divider } from 'react-native-elements';
-import PrimaryButton from '../../../components/primary-button.js';
+import PrimaryButton from '../../../components/primary-button';
 
 export interface PaymentInfoScreenProps extends NavigationScreenProps<{}> {
 }

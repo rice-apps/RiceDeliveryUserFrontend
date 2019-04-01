@@ -1,11 +1,18 @@
-import * as React from 'react'
-import { ScrollView, View, AsyncStorage, FlatList} from 'react-native';
-import { ListItem } from 'react-native-elements'
-import SecondaryButton from '../../../components/secondary-button';
-import * as css from "../../style";
-import CookieManager from 'react-native-cookies'; 
+import * as React from "react"
+import { ScrollView, View, AsyncStorage, FlatList} from "react-native"
+import { ListItem, Text } from "react-native-elements"
+import SecondaryButton from "../../../components/secondary-button"
+import * as css from "../../style"
+import CookieManager from "react-native-cookies" 
+import { inject, observer } from "mobx-react"
+import { RootStore } from "../../../stores/root-store"
 
-export class AccountScreen extends React.Component<any, any> {
+export interface CreateAccountScreenProps {
+  rootStore?: RootStore
+}
+@inject("rootStore")
+@observer
+export class AccountScreen extends React.Component<CreateAccountScreenProps, any> {
 
 
   list = [
@@ -19,7 +26,7 @@ export class AccountScreen extends React.Component<any, any> {
       subtitle: 'Add a credit or debit card',
       navigateTo: 'PaymentInfo'
     },
-  ];
+  ]
 
   keyExtractor = (item, index) => index
 
@@ -33,7 +40,7 @@ export class AccountScreen extends React.Component<any, any> {
   )
 
   render() {
-
+    console.log(this.props.rootStore.userStore.user)
     return (
         <View style = {css.screen.paddedScreen}>
 
@@ -47,14 +54,17 @@ export class AccountScreen extends React.Component<any, any> {
 
 
         <View>
+          <Text>Logged in as</Text>
+          <Text>{this.props.rootStore.userStore.user.netID} @rice.edu</Text>
+
           <SecondaryButton
             title ="Logout"
             onPress={() => {
-              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org')
-                .then((res) => {console.log('CookieManager.get =>', res);});
+              CookieManager.get("https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org")
+                .then((res) => {console.log("CookieManager.get =>", res)})
               CookieManager.clearAll()
-                .then((res) => console.log('CookieManager.clearAll =>', res));
-              AsyncStorage.removeItem("Authenticated");
+                .then((res) => console.log("CookieManager.clearAll =>", res))
+              AsyncStorage.removeItem("Authenticated")
               this.props.navigation.reset({ index: 0, actions: [this.props.navigation.navigate("Login")]})
             }}
           />

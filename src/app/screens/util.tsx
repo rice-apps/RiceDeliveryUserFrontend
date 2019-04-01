@@ -1,60 +1,60 @@
 export function getOrderTime(order) {
-	let { orderStatus } = order;
+	let { orderStatus } = order
 
-	var statusDisplay = orderStatus.pending ? "pending" : "cancelled";
-	statusDisplay = orderStatus.onTheWay ? "on the way" : statusDisplay;
-	statusDisplay = orderStatus.fulfilled ? "fulfilled" : statusDisplay;
-	statusDisplay = orderStatus.unfulfilled ? "unfulfilled" : statusDisplay;
+	var statusDisplay = orderStatus.pending ? "pending" : "cancelled"
+	statusDisplay = orderStatus.onTheWay ? "on the way" : statusDisplay
+	statusDisplay = orderStatus.fulfilled ? "fulfilled" : statusDisplay
+	statusDisplay = orderStatus.unfulfilled ? "unfulfilled" : statusDisplay
 
-	var time;
+	var time
 	switch(statusDisplay) {
 		case "pending":
-			time = orderStatus.pending;
-			break;
+			time = orderStatus.pending
+			break
 		case "on the way":
-			time = orderStatus.onTheWay;
-			break;
+			time = orderStatus.onTheWay
+			break
 		case "fulfilled":
-			time = orderStatus.fulfilled;
-			break;
+			time = orderStatus.fulfilled
+			break
 		case "unfilfilled":
-			break;
+			break
 		default:
 	}
-	var date = new Date(0);
+	var date = new Date(0)
 	if (!orderStatus.unfulfilled) {
-		date.setUTCSeconds(time);
+		date.setUTCSeconds(time)
 	}
-	return date;
+	return date
 }
 
 export function getStatusDisplayColor(order) {
-    let {location, orderStatus} = order;
+    let {location, orderStatus} = order
 
-    var statusDisplay = orderStatus.pending ? "pending" : "cancelled";
-    statusDisplay = orderStatus.onTheWay ? "on the way" : statusDisplay;
-    statusDisplay = orderStatus.fulfilled ? "fulfilled" : statusDisplay;
-    statusDisplay = orderStatus.unfulfilled ? "unfulfilled" : statusDisplay;
+    var statusDisplay = orderStatus.pending ? "pending" : "cancelled"
+    statusDisplay = orderStatus.onTheWay ? "on the way" : statusDisplay
+    statusDisplay = orderStatus.fulfilled ? "fulfilled" : statusDisplay
+    statusDisplay = orderStatus.unfulfilled ? "unfulfilled" : statusDisplay
 
-    var statusColor; 
+    var statusColor 
     switch(statusDisplay) {
         case "pending":
-            statusColor = "orange";
-            break;
+            statusColor = "orange"
+            break
         case "on the way":
-            statusColor = "yellow";
-            break;
+            statusColor = "yellow"
+            break
         case "fulfilled":
-            statusColor = "green";
-            break;
+            statusColor = "green"
+            break
         case "unfilfilled":
-            statusColor = "red";
-            break;
+            statusColor = "red"
+            break
         default:
             statusColor = "grey"
     }
     return {
         color : statusColor, 
-        status : statusDisplay
+        status : statusDisplay,
     }
 } 

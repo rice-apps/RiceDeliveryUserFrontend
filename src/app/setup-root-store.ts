@@ -4,7 +4,7 @@ import { Environment } from "./environment"
 import * as storage from "../lib/storage"
 import { Reactotron } from "../services/reactotron"
 import { Api } from "../services/api"
-import { create } from 'apisauce'
+import { create } from "apisauce"
 // import { OrderStoreModel } from "./stores/order-store";
 
 /**
@@ -14,8 +14,8 @@ const ROOT_STATE_STORAGE_KEY = "root"
 
 const api = create({
   baseURL: "http://localhost:3000/graphql",
-  headers: {'Accept': 'application/json'}
-});
+  headers: {"Accept": "application/json"},
+})
 
 const vendorQuery = `
   query vendors{
@@ -38,7 +38,7 @@ const vendorQuery = `
       }
     }
   }
-  `;
+  `
 
 /**
  * Setup the root state.
@@ -53,8 +53,8 @@ export async function setupRootStore() {
     // load data from storage
     data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
 
-    let vendorRes: any = await api.post('', { query: vendorQuery, })
-    data.vendorStore = {"vendor": vendorRes.data.data.vendor};
+    let vendorRes: any = await api.post("", { query: vendorQuery })
+    data.vendorStore = {"vendor": vendorRes.data.data.vendor}
 
     rootStore = RootStoreModel.create(data, env)
   } catch(e) {

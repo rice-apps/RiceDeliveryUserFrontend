@@ -1,7 +1,7 @@
 import * as React from "react"
 import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, StatusBar, TextInput } from "react-native"
 import { NavigationScreenProps } from "react-navigation"
-import { create } from 'apisauce'
+import { create } from "apisauce"
 import { Text } from "../../shared/text"
 import { Button } from "../../shared/button"
 import { Screen } from "../../shared/screen"
@@ -81,19 +81,19 @@ const FOOTER_CONTENT: ViewStyle = {
 
 const api = create({
   baseURL: "http://localhost:3000/graphql",
-  headers: {'Accept': 'application/json'}
-});
+  headers: {"Accept": "application/json"},
+})
 
 export interface FirstExampleScreenProps extends NavigationScreenProps<{}> {}
 
 export class FirstExampleScreen extends React.Component<FirstExampleScreenProps, {author: object, person: string, authorJSON: string}> {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       author : {},
       authorJSON: "",
-      person : ""
-    };
+      person : "",
+    }
   }
 
   nextScreen = () => this.props.navigation.navigate("secondExample")
@@ -101,7 +101,7 @@ export class FirstExampleScreen extends React.Component<FirstExampleScreenProps,
   queryGetPost = (name) => {
     api
     .post(
-      '',
+      "",
       {
         query: `
           query Author($firstName: String!) {
@@ -111,14 +111,14 @@ export class FirstExampleScreen extends React.Component<FirstExampleScreenProps,
         }
         `,
         variables: {
-          firstName: name
+          firstName: name,
         },
-      }
+      },
     ).then(
       (res: any) => {
-        return this.setState({ author: res.data.data.author[0] });
-      }
-    );
+        return this.setState({ author: res.data.data.author[0] })
+      },
+    )
   }
 
   render() {
@@ -146,13 +146,13 @@ export class FirstExampleScreen extends React.Component<FirstExampleScreenProps,
             <Text style={CONTENT}>
               For everyone else, this is where you'll see a live preview of your fully functioning app using Ignite.
             </Text>
-            <Text style={{paddingTop: 10,paddingBottom: 10, backgroundColor: 'blue', color: 'white'}}>
+            <Text style={{paddingTop: 10,paddingBottom: 10, backgroundColor: "blue", color: "white"}}>
               <Text>
-                Hello {this.state.author != {} ? this.state.author['lastName'] : ""} 
+                Hello {this.state.author != {} ? this.state.author["lastName"] : ""} 
               </Text>
             </Text>
             <TextInput
-              style={{height: 40, backgroundColor:'white', paddingLeft: 10}}
+              style={{height: 40, backgroundColor:"white", paddingLeft: 10}}
               value={this.state.person}
               placeholder="Person"
               onChangeText={(input) => this.setState({ person: input })}

@@ -1,14 +1,12 @@
 import * as React from 'react'
-import { Picker, View } from 'react-native';
+import { Text, Picker, View} from "react-native"
 import * as css from '../../style';
-import PrimaryButton from '../../../components/primary-button.js';
+import PrimaryButton from '../../../components/primary-button';
 import { RootStore } from '../../../stores/root-store';
 import { inject, observer } from 'mobx-react';
 import { NavigationScreenProps } from 'react-navigation'
 import { client } from '../../../main'
 import gql from 'graphql-tag'
-
-
 export interface LocationInfoScreenProps extends NavigationScreenProps<{}> {
 	rootStore?: RootStore
       }
@@ -17,7 +15,7 @@ export interface LocationInfoScreenProps extends NavigationScreenProps<{}> {
 @observer
 export class LocationInfoScreen extends React.Component<LocationInfoScreenProps, {location: String}> {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			location : "" // TODO: change this to be a Location object
 		}

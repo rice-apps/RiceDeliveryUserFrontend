@@ -7,14 +7,26 @@ import { RootComponent } from "./root-component"
 import { StorybookUIRoot } from "../../storybook"
 
 // Apollo Imports
-import ApolloClient from "apollo-boost";
+import {ApolloClient} from "apollo-client"
+import { createHttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-boost";
 
 /**
 * Initializing Apollo Client. We'll use this to make 
 */
+const link = createHttpLink({
+  uri: "http://localhost:3000/graphql",
+})
  export const client = new ApolloClient({
-   uri: "http://localhost:3000/graphql"
- });
+   link: link,
+   cache: new InMemoryCache(),
+   defaultOptions: {
+    query: {
+      fetchPolicy: "no-cache",
+    },
+  }
+ })
+
 
 /**
  * This needs to match what's found in your app_delegate.m and MainActivity.java.

@@ -1,12 +1,12 @@
-import * as React from 'react'
-import { Text, View} from 'react-native';
-import * as css from '../../style';
-import PrimaryButton from '../../../components/primary-button.js';
-import { Divider } from 'react-native-elements';
+import * as React from "react"
+import { Text, View} from "react-native"
+import * as css from "../../style"
+import PrimaryButton from "../../../components/primary-button.js"
+import { Divider } from "react-native-elements"
 
 export class ChangePasswordScreen extends React.Component<any, any> {
 	constructor(props) {
-		super(props);
+		super(props)
     }
     
     changePasswordPush() {
@@ -22,7 +22,7 @@ export class ChangePasswordScreen extends React.Component<any, any> {
         <View style={{
             flex : .5,
             flexDirection : "column",
-            justifyContent : "space-between"
+            justifyContent : "space-between",
           }}>
 
           <Text style={css.text.bigBodyText}>Old</Text>

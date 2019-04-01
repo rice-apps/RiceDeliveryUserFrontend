@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { color } from "../../theme";
+import { StyleSheet } from "react-native"
+import { color } from "../../theme"
 
 //Use this site to look for RGB colors.
 // https://www.w3schools.com/colors/colors_rgb.asp
@@ -19,17 +19,18 @@ export const screen = StyleSheet.create({
         alignItems: "center",
         width: "100%",
         height: "100%",
-        backgroundColor: LIGHT_GRAY
+        backgroundColor: LIGHT_GRAY,
     }, 
     paddedScreen: {
         flex: 1, 
         padding: 10,
-        backgroundColor: LIGHT_GRAY
+        backgroundColor: LIGHT_GRAY,
     }, 
     accountScreenContainer: {
         alignContent : "center",
         flex: 1, 
-        padding: 2,
+        padding: 10,
+        backgroundColor: LIGHT_GRAY,
     }, 
     divider : {
         backgroundColor : SILVER,
@@ -62,7 +63,7 @@ export const text = StyleSheet.create({
         fontSize: 30,
         fontFamily: FONT_FAMILY,
         color: GRAY,
-        paddingBottom: 180
+        paddingBottom: 180,
     },
     regularText: {
         fontSize: 15,
@@ -71,35 +72,35 @@ export const text = StyleSheet.create({
     },
     headerText: {
         color: color.storybookTextColor,
-        fontWeight: '800',
+        fontWeight: "800",
         fontSize: 40,
       },
     accountHeaderText: {
         color: color.storybookTextColor,
-        fontWeight: '800',
-        fontSize: 20,
-        textAlign: "center"
-    },
+        fontWeight: "800",
+        fontSize: 40,
+        textAlign: "center",
+      },
     menuHeaderText: {
         color: color.storybookTextColor,
-        fontWeight: '800',
+        fontWeight: "800",
         fontSize: 40,
-        textAlign: "center"
+        textAlign: "center",
     },
     bodyText: {
         fontSize: 20,
         color: color.storybookTextColor,
-        textAlign: "left"
+        textAlign: "left",
     },
     bigBodyText: {
         fontSize: 26,
         color: color.storybookTextColor,
-        textAlign: "left"
+        textAlign: "left",
     },
     bigBodyTextCentered: {
         fontSize: 26,
         color: color.storybookTextColor,
-        textAlign: "center"
+        textAlign: "center",
     },
     smallText : {
         fontSize : 15,
@@ -115,7 +116,7 @@ export const text = StyleSheet.create({
         paddingTop : 5,
         paddingBottom : 5,
       },
-});
+})
 
 export const container = StyleSheet.create({
     iconHighlight : {
@@ -134,11 +135,11 @@ export const container = StyleSheet.create({
         alignContent : "center",
     },
     menuItem: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         flex : 1,
-        flexDirection: 'row',  
-        justifyContent: 'space-between',
-        alignItems: 'center', 
+        flexDirection: "row",  
+        justifyContent: "space-between",
+        alignItems: "center", 
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 10,
@@ -149,14 +150,14 @@ export const container = StyleSheet.create({
         marginBottom: 5,
         borderRadius: 14,
         borderWidth: 1,
-        borderColor: '#fff'    
+        borderColor: "#fff",    
       },
       orderHistItem: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         flex : 1,
-        flexDirection: 'row',  // main axis
-        justifyContent: 'space-between', // main axis
-        alignItems: 'center', // cross axis
+        flexDirection: "row",  // main axis
+        justifyContent: "space-between", // main axis
+        alignItems: "center", // cross axis
         paddingTop: 20,
         paddingBottom: 20,
         paddingLeft: 10,
@@ -165,10 +166,10 @@ export const container = StyleSheet.create({
         marginBottom: 5,
       },
       checkoutScreenContainer: {
-        backgroundColor: 'white',
-        flexDirection: 'row',  
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        backgroundColor: "white",
+        flexDirection: "row",  
+        justifyContent: "flex-start",
+        alignItems: "center",
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 10,
@@ -177,7 +178,7 @@ export const container = StyleSheet.create({
         marginBottom: 5,
         borderRadius: 14,
         borderWidth: 1,
-        borderColor: '#fff'    
+        borderColor: "#fff",    
       },
       cartItem: {
         paddingTop: 10,
@@ -187,7 +188,7 @@ export const container = StyleSheet.create({
         // marginTop: 5,
         // marginBottom: 5,
       },
-});
+})
 
 //FLATLIST
 export const flatlist = StyleSheet.create({
@@ -211,11 +212,11 @@ export const flatlist = StyleSheet.create({
         width : "100%",
       },
       vendorView: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         // flex: 1,
-        flexDirection: 'row',  // main axis
-        justifyContent: 'flex-start', // main axis
-        alignItems: 'center', // cross axis
+        flexDirection: "row",  // main axis
+        justifyContent: "flex-start", // main axis
+        alignItems: "center", // cross axis
         paddingTop: 70,
         paddingBottom: 10,
         paddingLeft: 50,
@@ -226,9 +227,9 @@ export const flatlist = StyleSheet.create({
         marginBottom: 5,
         borderRadius: 17,
         borderWidth: 1,
-        borderColor: '#fff'    
+        borderColor: "#fff",    
       },
-});
+})
 
 //TOUCHABLEOPACITY
 export const touchableopacity = StyleSheet.create({
@@ -236,11 +237,11 @@ export const touchableopacity = StyleSheet.create({
         height: 40, 
         width: 300, 
         padding: 4, 
-        borderColor: 'gray', 
-        borderWidth: 0
-    }
+        borderColor: "gray", 
+        borderWidth: 0,
+    },
 
-});
+})
 
 
 //PCIKER
@@ -250,22 +251,22 @@ export const picker = StyleSheet.create({
         width: 100, 
         padding: 0, 
         margin: 0,
-    }
-});
+    },
+})
 
 //DATEPICKERIOS
 export const datepickerios = StyleSheet.create({
     timescroller : { 
         height: 160, 
-        alignContent: "center"
-    }
-});
+        alignContent: "center",
+    },
+})
 
 
 //IMAGE
 export const image = StyleSheet.create({
     logo : {
         width: 45, 
-        height: 45
-    }
-});
+        height: 45,
+    },
+})

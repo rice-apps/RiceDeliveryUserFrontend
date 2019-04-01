@@ -1,34 +1,34 @@
-import {types, destroy, getSnapshot} from "mobx-state-tree";
+import {types, destroy, getSnapshot} from "mobx-state-tree"
 import { Location } from "./location-store"
-import { client } from '../main';
-import gql from "graphql-tag";
+import { client } from "../main"
+import gql from "graphql-tag"
 
 const Inventory = types
-.model('Inventory', {
+.model("Inventory", {
     quantity: types.maybe(types.number),
     type: types.string,
-    value: types.string
+    value: types.string,
 })
 
 const AttributePair = types
-.model('AttributePair', {
+.model("AttributePair", {
     key: types.string,
-    value: types.string
+    value: types.string,
 })
 
 const SKU = types
-.model('SKU', {
+.model("SKU", {
     id: types.string,
     active: types.boolean,
     attributes: types.array(AttributePair),
     image: types.maybe(types.string),
     inventory: Inventory,
     price: types.number,
-    product: types.string
+    product: types.string,
 })
 
 const Product = types
-.model('Product', {
+.model("Product", {
     id: types.string,
     name: types.string,
     caption: types.string,
@@ -36,26 +36,26 @@ const Product = types
     attributes: types.array(types.string),
     images: types.array(types.string),
     skuItems: types.array(SKU),
-    description: types.maybe(types.string)
+    description: types.maybe(types.string),
 })
 
 const Vendor = types
-.model('Vendor', {
+.model("Vendor", {
     name: types.string,
     phone: types.string,
     hours: types.array(types.optional(types.array(types.number), [])),
     locationOptions: types.array(Location),
-    products: types.optional(types.array(Product),[])
+    products: types.optional(types.array(Product),[]),
 }).actions(self => ({
     initializeProducts(products) {
         self.products = products
-    }
+    },
 }))
 
 export const VendorStoreModel = types
-.model('VendorStoreModel', {
+.model("VendorStoreModel", {
     vendors: types.array(Vendor), 
-    activeVendor: ""
+    activeVendor: "",
 }).actions(self => ({
     addVendor(vendor) {
         self.vendors.push(vendor)
@@ -72,11 +72,11 @@ export const VendorStoreModel = types
         // if vendor menu is initialized and menu is not
         vendor[0].initializeProducts(menuData.products)
         return vendor[0].products
-    }
+    },
 })).views(self => ({
     vendor(vendorName) {
         return self.vendors.filter(vendor => vendor.name === vendorName)[0]
-    }
+    },
 }))
 
 export type VendorStore = typeof VendorStoreModel.Type

@@ -1,28 +1,28 @@
-import * as React from 'react'
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
-import * as css from '../screens/style';
-import Order from '../components/temporary-mock-order';
-import { withNavigation } from 'react-navigation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { getStatusDisplayColor, getOrderTime } from '../screens/util';
+import * as React from "react"
+import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
+import * as css from "../screens/style"
+import Order from "../components/temporary-mock-order"
+import { withNavigation } from "react-navigation"
+import Icon from "react-native-vector-icons/MaterialIcons"
+import { getStatusDisplayColor, getOrderTime } from "../screens/util"
 
 
 
 // Should we always define the input props/state for components instead of <any, any>???
 class OrderHistItem extends React.Component<any, any> {
     constructor(props) {
-        super(props);
-        this.checkoutOrderPress = this.checkoutOrderPress.bind(this);
+        super(props)
+        this.checkoutOrderPress = this.checkoutOrderPress.bind(this)
     }
     
     checkoutOrderPress() {
-        this.props.navigation.navigate("SingleOrder", { order : this.props.order });
+        this.props.navigation.navigate("SingleOrder", { order : this.props.order })
     }
 
     render() {
-        let { location } = this.props.order;
-        var statusDisplay = getStatusDisplayColor(this.props.order);
-        var time = getOrderTime(this.props.order);
+        let { location } = this.props.order
+        var statusDisplay = getStatusDisplayColor(this.props.order)
+        var time = getOrderTime(this.props.order)
 
         return (
             <View style={css.container.orderHistItem}>
@@ -45,7 +45,7 @@ class OrderHistItem extends React.Component<any, any> {
 
                 <TouchableHighlight 
                     style={{
-                        padding: 10
+                        padding: 10,
                     }} 
                     onPress={this.checkoutOrderPress}>
                         <Icon name="chevron-right" size={30} color="black" />
@@ -56,4 +56,4 @@ class OrderHistItem extends React.Component<any, any> {
     }
 }
 
-export default withNavigation(OrderHistItem);
+export default withNavigation(OrderHistItem)

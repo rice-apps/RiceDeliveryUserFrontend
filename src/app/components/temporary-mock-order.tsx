@@ -141,13 +141,13 @@ export var mock_batches = {
     orders : [
       order1,
       order2,
-    ]
+    ],
   },
   batch2 : {
     batchNumber : 2,
     orders : [
       order3,
-    ]
+    ],
   },
 }
 
@@ -244,23 +244,23 @@ export var TaroMilkTea = {
         quantity : 20,
         type : "idk",
         value : "idk",
-      }
+      },
     },
   ],
-  description : "This is tea. Drink it."
+  description : "This is tea. Drink it.",
 }
 
-export var PearlMilkTea = {...TaroMilkTea};
-PearlMilkTea.name = "Pearl Milk Tea";
-PearlMilkTea._id = "2";
+export var PearlMilkTea = {...TaroMilkTea}
+PearlMilkTea.name = "Pearl Milk Tea"
+PearlMilkTea._id = "2"
 
-var LycheeMilkTea = {...TaroMilkTea};
-LycheeMilkTea.name = "Lychee Milk Tea";
-LycheeMilkTea._id = "3";
+var LycheeMilkTea = {...TaroMilkTea}
+LycheeMilkTea.name = "Lychee Milk Tea"
+LycheeMilkTea._id = "3"
 
-var ThaiMilkTea = {...TaroMilkTea};
-ThaiMilkTea.name = "Thai Milk Tea";
-ThaiMilkTea._id = "4";
+var ThaiMilkTea = {...TaroMilkTea}
+ThaiMilkTea.name = "Thai Milk Tea"
+ThaiMilkTea._id = "4"
 
 export var mockCart = [
   {
@@ -306,7 +306,7 @@ export var EastWestTeaWithoutProducts = {
       name : "Sid",
     },
   ],
-  products : []
+  products : [],
 }
 export var EastWestTea = {
   _id : 10,
@@ -336,7 +336,7 @@ export var EastWestTea = {
     PearlMilkTea,
     LycheeMilkTea,
     ThaiMilkTea,
-  ]
+  ],
 }
 
 export var realVendors = [
@@ -346,38 +346,38 @@ export var realVendors = [
     "hours": [
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
-      ]
+        1,
+      ],
     ],
     "locationOptions": [
       {
         "_id": "5c3931356e04384b7ecf9cdb",
-        "name": "McMurtry Commons"
-      }
+        "name": "McMurtry Commons",
+      },
     ],
     "products": [
       {
@@ -385,7 +385,7 @@ export var realVendors = [
         "name": "Add-Ons",
         "active": true,
         "attributes": [
-          "topping"
+          "topping",
         ],
         "caption": "Add-on toppings to enhance",
         "images": [],
@@ -397,17 +397,17 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "topping",
-                "value": "No Topping"
-              }
+                "value": "No Topping",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "infinite",
-              "value": null
+              "value": null,
             },
             "price": 0,
-            "product": "prod_EJSdVzKZjEi6Tx"
+            "product": "prod_EJSdVzKZjEi6Tx",
           },
           {
             "id": "sku_EJSeO8nhj2ZfSH",
@@ -415,17 +415,17 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "topping",
-                "value": "Oreo"
-              }
+                "value": "Oreo",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 0,
-            "product": "prod_EJSdVzKZjEi6Tx"
+            "product": "prod_EJSdVzKZjEi6Tx",
           },
           {
             "id": "sku_EJSd3be15i6mTM",
@@ -433,17 +433,17 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "topping",
-                "value": "Lychee Jelly"
-              }
+                "value": "Lychee Jelly",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 0,
-            "product": "prod_EJSdVzKZjEi6Tx"
+            "product": "prod_EJSdVzKZjEi6Tx",
           },
           {
             "id": "sku_EJSdF3WFMyLegJ",
@@ -451,19 +451,19 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "topping",
-                "value": "Tapioca Pearls"
-              }
+                "value": "Tapioca Pearls",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 0,
-            "product": "prod_EJSdVzKZjEi6Tx"
-          }
-        ]
+            "product": "prod_EJSdVzKZjEi6Tx",
+          },
+        ],
       },
       {
         "id": "prod_EJSOU3XwmvX5zE",
@@ -471,12 +471,12 @@ export var realVendors = [
         "active": true,
         "attributes": [
           "size",
-          "flavor"
+          "flavor",
         ],
         "caption": "The best tea this side of the RMC",
         "images": [
           "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA2NS81MTEvb3JpZ2luYWwvZ2xhc3MtZnJvZy5qcGc=",
-          "https://www.australiangeographic.com.au/wp-content/uploads/2018/06/green-tree-frogs.jpg"
+          "https://www.australiangeographic.com.au/wp-content/uploads/2018/06/green-tree-frogs.jpg",
         ],
         "description": null,
         "skuItems": [
@@ -486,21 +486,21 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "size",
-                "value": "Medium"
+                "value": "Medium",
               },
               {
                 "key": "flavor",
-                "value": "Thai Milk Tea"
-              }
+                "value": "Thai Milk Tea",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "limited"
+              "value": "limited",
             },
             "price": 300,
-            "product": "prod_EJSOU3XwmvX5zE"
+            "product": "prod_EJSOU3XwmvX5zE",
           },
           {
             "id": "sku_EJSPTm6Ie9Xaco",
@@ -508,21 +508,21 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "size",
-                "value": "Medium"
+                "value": "Medium",
               },
               {
                 "key": "flavor",
-                "value": "Milk Tea"
-              }
+                "value": "Milk Tea",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 300,
-            "product": "prod_EJSOU3XwmvX5zE"
+            "product": "prod_EJSOU3XwmvX5zE",
           },
           {
             "id": "sku_EJSPwevkJuZNiY",
@@ -530,25 +530,25 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "size",
-                "value": "Medium"
+                "value": "Medium",
               },
               {
                 "key": "flavor",
-                "value": "Earl Grey Milk Tea"
-              }
+                "value": "Earl Grey Milk Tea",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 300,
-            "product": "prod_EJSOU3XwmvX5zE"
-          }
-        ]
-      }
-    ]
+            "product": "prod_EJSOU3XwmvX5zE",
+          },
+        ],
+      },
+    ],
   },
   {
     "name": "The Hoot",
@@ -556,42 +556,42 @@ export var realVendors = [
     "hours": [
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
+        1,
       ],
       [
         20,
-        1
-      ]
+        1,
+      ],
     ],
     "locationOptions": [
       {
         "_id": "5c3931356e04384b7ecf9cda",
-        "name": "Sid Rich Commons"
+        "name": "Sid Rich Commons",
       },
       {
         "_id": "5c3931356e04384b7ecf9cdb",
-        "name": "McMurtry Commons"
-      }
+        "name": "McMurtry Commons",
+      },
     ],
     "products": [
       {
@@ -599,7 +599,7 @@ export var realVendors = [
         "name": "Chick-fil-a Sandwich",
         "active": true,
         "attributes": [
-          "flavor"
+          "flavor",
         ],
         "caption": "Sandwiches from the OG",
         "images": [],
@@ -611,17 +611,17 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "flavor",
-                "value": "Spicy"
-              }
+                "value": "Spicy",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 450,
-            "product": "prod_EM2yVxL6wXlJXS"
+            "product": "prod_EM2yVxL6wXlJXS",
           },
           {
             "id": "sku_EM2z3FNCLmXW6d",
@@ -629,26 +629,26 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "flavor",
-                "value": "Regular"
-              }
+                "value": "Regular",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 400,
-            "product": "prod_EM2yVxL6wXlJXS"
-          }
-        ]
+            "product": "prod_EM2yVxL6wXlJXS",
+          },
+        ],
       },
       {
         "id": "prod_EM2w2W2i7oSA1M",
         "name": "Chick-fil-a Nuggets",
         "active": true,
         "attributes": [
-          "flavor"
+          "flavor",
         ],
         "caption": "Regular Nuggets",
         "images": [],
@@ -660,19 +660,19 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "flavor",
-                "value": "Regular"
-              }
+                "value": "Regular",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 400,
-            "product": "prod_EM2w2W2i7oSA1M"
-          }
-        ]
+            "product": "prod_EM2w2W2i7oSA1M",
+          },
+        ],
       },
       {
         "id": "prod_EJaEfo5Mih4o3u",
@@ -691,12 +691,12 @@ export var realVendors = [
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 400,
-            "product": "prod_EJaEfo5Mih4o3u"
-          }
-        ]
+            "product": "prod_EJaEfo5Mih4o3u",
+          },
+        ],
       },
       {
         "id": "prod_EJSfozstvZH8Qg",
@@ -704,11 +704,11 @@ export var realVendors = [
         "active": true,
         "attributes": [
           "size",
-          "topping"
+          "topping",
         ],
         "caption": "Papa John's Coming Through",
         "images": [
-          "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+          "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
         ],
         "description": "The thing about pizza is that everyone generally likes it, but we aim to be the exception by making pizza no one likes. Buy it!",
         "skuItems": [
@@ -718,21 +718,21 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "size",
-                "value": "Half"
+                "value": "Half",
               },
               {
                 "key": "topping",
-                "value": "Pepperoni"
-              }
+                "value": "Pepperoni",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 450,
-            "product": "prod_EJSfozstvZH8Qg"
+            "product": "prod_EJSfozstvZH8Qg",
           },
           {
             "id": "sku_EJSfWXATlApb0D",
@@ -740,21 +740,21 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "size",
-                "value": "Whole"
+                "value": "Whole",
               },
               {
                 "key": "topping",
-                "value": "Pepperoni"
-              }
+                "value": "Pepperoni",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 900,
-            "product": "prod_EJSfozstvZH8Qg"
+            "product": "prod_EJSfozstvZH8Qg",
           },
           {
             "id": "sku_EJSfuA1NBctFGk",
@@ -762,21 +762,21 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "size",
-                "value": "Half"
+                "value": "Half",
               },
               {
                 "key": "topping",
-                "value": "Cheese"
-              }
+                "value": "Cheese",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 450,
-            "product": "prod_EJSfozstvZH8Qg"
+            "product": "prod_EJSfozstvZH8Qg",
           },
           {
             "id": "sku_EJSfFqFDkaV99I",
@@ -784,24 +784,24 @@ export var realVendors = [
             "attributes": [
               {
                 "key": "size",
-                "value": "Whole"
+                "value": "Whole",
               },
               {
                 "key": "topping",
-                "value": "Cheese"
-              }
+                "value": "Cheese",
+              },
             ],
             "image": null,
             "inventory": {
               "quantity": null,
               "type": "bucket",
-              "value": "in_stock"
+              "value": "in_stock",
             },
             "price": 900,
-            "product": "prod_EJSfozstvZH8Qg"
-          }
-        ]
-      }
-    ]
-  }
+            "product": "prod_EJSfozstvZH8Qg",
+          },
+        ],
+      },
+    ],
+  },
 ]

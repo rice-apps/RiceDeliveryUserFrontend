@@ -1,8 +1,8 @@
-import { types, destroy, getRoot } from "mobx-state-tree";
-import gql from 'graphql-tag'
-import { client } from "../main";
-import { MenuItem } from './vendor-store';
-import { RootStore } from "./root-store";
+import { types, destroy, getRoot } from "mobx-state-tree"
+import gql from "graphql-tag"
+import { client } from "../main"
+import { MenuItem } from "./vendor-store"
+import { RootStore } from "./root-store"
 
 
 // GraphQL Mutations
@@ -12,7 +12,7 @@ const POST_CART = gql`
         _id
     }
   }
-`;
+`
 
 const CREATE_ORDER = gql
 `mutation createOrder ($netID: String!, $locationName: String!, $vendorName: String!, $data: [CreateOrderInput!]!) {
@@ -40,7 +40,7 @@ const CREATE_ORDER = gql
     }
   }
  }
- `;
+ `
 
 const PAY_ORDER = gql`
 mutation payOrder ($data: UpdateOrderInput!, $creditToken: String!) {
@@ -73,7 +73,7 @@ mutation payOrder ($data: UpdateOrderInput!, $creditToken: String!) {
 
 export const SKUAtributesModel = types.model("SKUAttributeModel", {
   key: "",
-  value: ""
+  value: "",
 })
 
 export const CartItemModel = types.model("CartItemModel", {
@@ -82,21 +82,21 @@ export const CartItemModel = types.model("CartItemModel", {
   sku: "", 
   attributes: types.array(SKUAtributesModel), 
   quantity: 0,
-  price: 0
+  price: 0,
 }).actions(self =>({
   incrementQuantity() {    
     self.quantity += 1
   }, 
   decrementQuantity() {
     self.quantity -= 1
-  }
+  },
 }))
 
 
 export const CartStoreModel = types
-.model('CartStoreModel', {
+.model("CartStoreModel", {
     cart: types.optional(types.array(CartItemModel), []),
-    cartMap: types.optional(types.map(CartItemModel), {})
+    cartMap: types.optional(types.map(CartItemModel), {}),
 })
 .actions(
     (self) => ({
@@ -116,10 +116,10 @@ export const CartStoreModel = types
                 netID: netID,
                 locationName: locationName,
                 vendorName: vendorName,
-                data: data
-            }
+                data: data,
+            },
           })
-          return order;
+          return order
         },
         
         async payOrder(data, creditToken) {
@@ -127,10 +127,10 @@ export const CartStoreModel = types
             mutation: PAY_ORDER,
             variables: {
                 data: data,
-                creditToken: creditToken
-            }
-          });
-        }
+                creditToken: creditToken,
+            },
+          })
+        },
     }),
 )
 
