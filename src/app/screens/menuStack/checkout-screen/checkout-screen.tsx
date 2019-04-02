@@ -82,9 +82,19 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
                 Delivery details
             </Text> 
 
-            <Text style={css.text.bigBodyText}>
-              Location
-            </Text>
+			<View style= {{
+				justifyContent : "space-between",
+				flex : .3,
+				flexDirection : "row",
+				// borderWidth : 4,
+				// borderColor : "red",
+			}}>
+      <View style={{borderWidth : 3, borderColor : "red"}}>
+
+          <Text style={css.text.bigBodyText}>
+          Location
+          </Text>
+        </View>
 
             <View style={
 				{flex : 1,
@@ -129,7 +139,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
                 </Text>
             </View> */}
 
-            <View>   
+            <View>
 
              <PrimaryButton
                         title = "Place Order"
@@ -139,6 +149,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
             
         </View>
 
+      </View>
       </View>
       )
   }

@@ -28,6 +28,8 @@ export class MenuScreenItem extends React.Component<MenuScreenItemProps, any> {
         this.state = {
             client: client,
         }
+        console.log("this.props.product");
+        console.log(this.props.product);
     }
     
     onIncrementHandler = async() => {

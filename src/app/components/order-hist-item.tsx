@@ -8,7 +8,6 @@ import { getStatusDisplayColor, getOrderTime } from "../screens/util"
 
 
 
-// Should we always define the input props/state for components instead of <any, any>???
 class OrderHistItem extends React.Component<any, any> {
     constructor(props) {
         super(props)
@@ -20,14 +19,15 @@ class OrderHistItem extends React.Component<any, any> {
     }
 
     render() {
-        let { location } = this.props.order
-        var statusDisplay = getStatusDisplayColor(this.props.order)
-        var time = getOrderTime(this.props.order)
+        console.log(this.props.order)
+        let { location } = this.props.order;
+        var statusDisplay = getStatusDisplayColor(this.props.order);
+        var time = getOrderTime(this.props.order);
 
         return (
             <View style={css.container.orderHistItem}>
                 <View>
-                    <Text style={css.text.bodyText}> {location.name} </Text>
+                    <Text style={css.text.bodyText}> { location.name} </Text>
                     <Text> {time.toLocaleDateString() + " - " + time.toLocaleTimeString()}</Text>
                 </View>
                 <View>

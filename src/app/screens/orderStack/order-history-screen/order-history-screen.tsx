@@ -76,12 +76,12 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
 
   loadMore = async () => {
     if (!this.state.endReached) {
-      this.setState({refreshState: RefreshState.FooterRefreshing})
+      await this.setState({refreshState: RefreshState.FooterRefreshing})
       const orders = (await this.getOrders(this.state.orders[this.state.orders.length - 1].id)).data.user[0].orders
-      if (orders.length == 0) this.setState({ endReached: true })
-      this.setState({refreshState: RefreshState.Idle, orders: this.state.orders.concat(orders)})
+      if (orders.length == 0) await this.setState({ endReached: true })
+      await this.setState({refreshState: RefreshState.Idle, orders: this.state.orders.concat(orders)})
     } else {
-      this.setState({refreshState: RefreshState.NoMoreData})
+      await this.setState({refreshState: RefreshState.NoMoreData})
     }
   }
 
@@ -115,9 +115,9 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       )
   
   onRefresh = async() => {
-    this.setState({ refreshState: RefreshState.HeaderRefreshing})
+    await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
 	  const orders = (await this.getOrders(null)).data.user[0].orders;
-    this.setState({ refreshState: RefreshState.Idle, orders: orders })
+    await this.setState({ refreshState: RefreshState.Idle, orders: orders })
   }
 
   render() {
@@ -147,6 +147,7 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       )
     }
   }
+  
 
 }
 

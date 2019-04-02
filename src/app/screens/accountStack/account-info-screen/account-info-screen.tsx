@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight, TextInput} from "react-native"
+import { AsyncStorage, Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight, TextInput} from "react-native"
 import * as css from '../../style';
 import PrimaryButton from '../../../components/primary-button';
 import { client } from '../../../main'
@@ -9,7 +9,6 @@ import { RootStore } from '../../../stores/root-store';
 import { inject, observer } from 'mobx-react';
 import { NavigationScreenProps } from 'react-navigation'
 import Icon from "react-native-vector-icons/MaterialIcons"
-
 
 export interface AccountInfoScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore

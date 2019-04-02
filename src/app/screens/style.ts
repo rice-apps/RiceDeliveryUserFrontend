@@ -15,11 +15,19 @@ export const SILVER = "#C0C0C0"
 export const screen = StyleSheet.create({
     defaultScreen: {
         flex: 1, 
+        padding: 10,
         justifyContent: "center", 
         alignItems: "center",
         width: "100%",
         height: "100%",
         backgroundColor: LIGHT_GRAY,
+    }, 
+    defaultScreenPopup: {
+        // flex: 1, 
+        justifyContent: "center", 
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
     }, 
     paddedScreen: {
         flex: 1, 
@@ -144,6 +152,22 @@ export const container = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 10,
         paddingRight: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
+      },
+      bigMenuItem: {
+        backgroundColor: 'white',
+        flex : 1,
+        flexDirection: 'row',  
+        // justifyContent: 'f',
+        alignItems: 'center', 
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
         // marginLeft: 6,
         // marginRight: 6,
         marginTop: 5,
@@ -151,6 +175,19 @@ export const container = StyleSheet.create({
         borderRadius: 14,
         borderWidth: 1,
         borderColor: "#fff",    
+      },
+      smallMenuItem: {
+        backgroundColor: 'white',
+        flex : 1,
+        flexDirection: 'row',  
+        // justifyContent: 'f',
+        alignItems: 'center', 
+        padding : 10,
+        // marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#fff'    
       },
       orderHistItem: {
         backgroundColor: "white",
@@ -214,9 +251,9 @@ export const flatlist = StyleSheet.create({
       vendorView: {
         backgroundColor: "white",
         // flex: 1,
-        flexDirection: "row",  // main axis
-        justifyContent: "flex-start", // main axis
-        alignItems: "center", // cross axis
+        flexDirection: 'row',  // main axis
+        justifyContent: 'center', // main axis
+        alignItems: 'center', // cross axis
         paddingTop: 70,
         paddingBottom: 10,
         paddingLeft: 50,
