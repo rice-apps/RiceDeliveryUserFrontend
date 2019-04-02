@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Text, View} from "react-native"
-import { NavigationScreenProps} from 'react-navigation'
+import { Text, View, Alert} from "react-native"
+import { NavigationScreenProps } from 'react-navigation'
 import * as css from '../../style';
 import PrimaryButton from '../../../components/primary-button';
 import { inject, observer } from 'mobx-react';
@@ -47,6 +47,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
                     this.updateAccount();
             }
             this.props.navigation.pop();
+
       }
 
       async updateAccount() {
@@ -73,6 +74,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
             console.log(updatedUserInfo);
             const user = updatedUserInfo.data.updateUser;
             console.log(user);
+            Alert.alert('Updated Payment Info', 'Successfully Updated');
       }
 
 	render() {
