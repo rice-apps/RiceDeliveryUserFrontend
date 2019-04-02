@@ -54,8 +54,8 @@ export class AccountScreen extends React.Component<CreateAccountScreenProps, any
 
 
         <View>
-          <Text>Logged in as</Text>
-          <Text>{this.props.rootStore.userStore.user.netID} @rice.edu</Text>
+          <Text>Logged in as:</Text>
+          <Text>{this.props.rootStore.userStore.user.netID}@rice.edu</Text>
 
           <SecondaryButton
             title ="Logout"
