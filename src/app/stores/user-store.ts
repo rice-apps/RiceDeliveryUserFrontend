@@ -36,8 +36,8 @@ const GET_USER = gql`
 
 const CustomerIDPair = types
 .model('CustomerIDPair', {
-    accountID: types.optional(types.string, ""),
-    customerID: types.optional(types.string, "")
+    accountID: types.maybe(types.string),
+    customerID: types.maybe(types.string)
 });
 
  const User = types
@@ -70,6 +70,7 @@ export const UserStoreModel = types
                     vendorName: ""
                 }
             });
+            console.log(user)
             console.log(user.data.authenticator);
 
             console.log("Almost authenticated");

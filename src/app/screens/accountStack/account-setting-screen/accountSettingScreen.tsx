@@ -55,7 +55,7 @@ export class AccountScreen extends React.Component<any, any> {
           <SecondaryButton
             title ="Logout"
             onPress={() => {
-              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org')
+              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://gizmodo.com/')
                 .then((res) => {console.log('CookieManager.get =>', res);});
               CookieManager.clearAll()
                 .then((res) => console.log('CookieManager.clearAll =>', res));

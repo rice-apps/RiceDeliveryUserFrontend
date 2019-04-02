@@ -55,13 +55,14 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
     }
 
     async loginHandler() {
-        // this.props.navigation.navigate("Tabs")
         const authenticated = await AsyncStorage.getItem("Authenticated");
         console.log("Login handler!");
         console.log(this.state.rootStore.userStore.hasAccount);
-        if (!this.state.rootStore.userStore.hasAccount) {
+        console.log(authenticated);
+
+        if (!authenticated) {
             this.setModalVisible(!this.state.modalVisible);
-        } else {
+        } else { 
             // Get user from authenticated netid
             console.log("Heellloo");
             this.state.rootStore.userStore.getUserFromNetID(authenticated);

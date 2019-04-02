@@ -5,7 +5,7 @@ import { inject, observer } from "mobx-react"
 import { create } from 'apisauce'
 // Linking
 import { WebView } from 'react-native';
-import { UserStoreModel } from "../stores/user-store";
+import { UserStoreModel, UserStore } from "../stores/user-store";
 import { RootStore } from "../stores/root-store";
 import CookieManager from 'react-native-cookies'; 
 
@@ -128,7 +128,7 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
         <StatusBar barStyle="light-content" />
         <WebView
               // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=hedwig://localhost:8080/auth'}}
-              source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org' }}
+              source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://gizmodo.com/' }}
               onNavigationStateChange={this._onNavigationStateChange.bind(this)}
               style={{ marginTop: 20, display: this.state.displayBrowser ? 'flex' : 'none' }}
             />

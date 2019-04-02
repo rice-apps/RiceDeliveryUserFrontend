@@ -54,7 +54,6 @@ const GET_MENU = gql`
           inventory {
             type
             value
-            quantity
             
           }
         }
