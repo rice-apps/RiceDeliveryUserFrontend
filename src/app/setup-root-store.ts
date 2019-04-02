@@ -17,8 +17,8 @@ const ROOT_STATE_STORAGE_KEY = "root"
 
 const api = create({
   baseURL: "http://localhost:3000/graphql",
-  headers: {'Accept': 'application/json'}
-});
+  headers: {"Accept": "application/json"},
+})
 
 const vendorQuery = `
   query vendors{
@@ -41,7 +41,7 @@ const vendorQuery = `
       }
     }
   }
-  `;
+  `
 
 const GET_USER = gql`
   query GET_USER($netID: String!) {

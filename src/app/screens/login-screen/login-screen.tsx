@@ -59,7 +59,6 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
         console.log("Login handler!");
         console.log(this.state.rootStore.userStore.hasAccount);
         console.log(authenticated);
-
         if (!authenticated) {
             this.setModalVisible(!this.state.modalVisible);
         } else { 

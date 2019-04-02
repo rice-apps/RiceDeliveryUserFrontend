@@ -2,9 +2,9 @@ import * as React from "react"
 import { MenuItem as MenuItemModel } from "../../../app/stores/vendorStore"
 import { View, Text, TextStyle, TouchableHighlight, FlatList } from "react-native"
 import { CartStore } from "../../../app/stores/cart-store"
-import { OrderItemStore, OrderStore } from "../../../app/stores/order-store";
-import { client } from "../../../app/main";
-import gql from "graphql-tag";
+import { OrderItemStore, OrderStore } from "../../../app/stores/order-store"
+import { client } from "../../../app/main"
+import gql from "graphql-tag"
 
 const BOLD: TextStyle = { fontWeight: "bold" }
 const UNSELECTED_STYLE: TextStyle = {
@@ -19,7 +19,7 @@ const ITEM_STYLE: TextStyle = {
     fontSize: 20,
     lineHeight: 20,
     textAlign: "left",
-    color: "grey"
+    color: "grey",
 }
 const SELECTED_STYLE: TextStyle = {
     ...UNSELECTED_STYLE,
@@ -44,31 +44,31 @@ export interface OrderProps {
 export class Order extends React.Component<OrderProps, {}> {
     // Initialize state to reflect the cart store
     constructor(props) {
-        super(props);
+        super(props)
     }
 
     _renderItems(items) {
         const menuItems = []
         items.forEach(async (item) => {
-            console.log(item.item);
+            console.log(item.item)
             const menuItem = await client.query({
                 query: GET_MENU_ITEM,
-                variables: {itemId: item.item.id}
-            });
+                variables: {itemId: item.item.id},
+            })
             menuItems.push(menuItem.data.getMenuItem)
-        });
-        return menuItems;
+        })
+        return menuItems
     }
 
     render() {
-        let orderNum = this.props.order;
-        let order = this.props.orderStore.orders[orderNum];
-        let { items, location, user, vendor, status } = order;
+        let orderNum = this.props.order
+        let order = this.props.orderStore.orders[orderNum]
+        let { items, location, user, vendor, status } = order
         if (items != undefined) {
-            items = this._renderItems(items);
+            items = this._renderItems(items)
         }
-        console.log(items);
-        console.log(status);
+        console.log(items)
+        console.log(status)
         // Currently, only displaying first element
         return (
             <View>

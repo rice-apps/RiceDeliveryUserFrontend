@@ -59,24 +59,25 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     }
   };
 
+  
+ 
   render() {
 
-  let { rootStore } = this.props;
-  let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0);
-  let mockNetID = "jl23";
-  let defaultLocation = "Weiss";
-  let vendorName = "East West Tea";
-  let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}));
+  let { rootStore } = this.props
+  let {name, email, phone, card} = this.state
 
-  let {name, netID, phone, creditToken} = this.state;
+  //For Creating Order.
+  let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
+  let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID //Backend doesn't create customer id-pair for some netid's yet.
+  let location = this.state.language
+  let vendorName = "East West Tea"
+  let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}))
   
-
     return (
       <View style={css.screen.defaultScreen}>
 
         <View style={css.screen.singleOrderDisplay}>
           
-
             <Text style={css.text.headerText}>
                 Delivery details
             </Text> 
@@ -92,21 +93,19 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 				}
 			}>
 				<Picker
-					selectedValue={this.state.location}
-					style={{
-						height: 1, 
-						width: 100, 
-						padding: 0, 
-						margin: 0,
-					}}
+					selectedValue={this.state.language}
+          style={css.picker.locationPicker}
 					onValueChange={(itemValue, itemIndex) =>
-					this.setState({location: itemValue})
+					this.setState({language: itemValue})
 					}>
-					<Picker.Item label="Jones" value="jones" />
-					<Picker.Item label="Martel" value="martel" />
-					<Picker.Item label="Brown" value="brown" />
-					<Picker.Item label="McMurtry" value="mcmurtry" />
-					<Picker.Item label="Duncan" value="duncan" />
+
+					<Picker.Item label="Wiess" value="Wiess Commons" />
+					<Picker.Item label="Martel" value="Martel Commons" />
+					<Picker.Item label="Brown" value="Brown Commons" />
+					<Picker.Item label="Sid Rich" value="Sid Rich Commons" />
+					<Picker.Item label="McMurtry" value="McMurtry Commons" />
+					<Picker.Item label="Shepherd" value="Shepherd School" />
+
 				</Picker>
             </View>
 

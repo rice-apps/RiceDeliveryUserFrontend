@@ -10,7 +10,7 @@ import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../app/stores/root-store"
 import { MenuItem } from "./menu-item"
 // import { CartStore } from "../../../app/stores/cart-store";
-import { VendorStore } from "../../../app/stores/vendor-store";
+import { VendorStore } from "../../../app/stores/vendor-store"
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -51,26 +51,26 @@ export interface MenuScreenProps extends NavigationScreenProps<{}> {
 export class MenuScreen extends React.Component<MenuScreenProps, { vendorName: String, vendorMenu: Array<Object> }> {
   // Loading in first vendor from vendorStore
   constructor(props) {
-    super(props);
-    let vendorName, vendorMenu;
-    let { vendor: vendorArray } : VendorStore = this.props.rootStore.vendorStore;
+    super(props)
+    let vendorName, vendorMenu
+    let { vendor: vendorArray } : VendorStore = this.props.rootStore.vendorStore
     if (vendorArray.length > 0) {
-      let vendor = vendorArray[0];
-      vendorName = vendor.name;
-      vendorMenu = vendor.menu;
+      let vendor = vendorArray[0]
+      vendorName = vendor.name
+      vendorMenu = vendor.menu
     } else {
-      vendorName = "";
-      vendorMenu = []; 
+      vendorName = ""
+      vendorMenu = [] 
     }
-    this.state = { vendorName: vendorName, vendorMenu: vendorMenu };
+    this.state = { vendorName: vendorName, vendorMenu: vendorMenu }
   }
 
   goBack = () => this.props.navigation.goBack(null)
 
   render() {
-    let { cartStore } : RootStore = this.props.rootStore;
-    let { vendorName, vendorMenu } = this.state;
-    console.log(vendorMenu);
+    let { cartStore } : RootStore = this.props.rootStore
+    let { vendorName, vendorMenu } = this.state
+    console.log(vendorMenu)
     return (
       <View style={FULL}>
         <Wallpaper />

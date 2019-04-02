@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
-import {Modal, Text, TouchableHighlight, View, Alert} from 'react-native';
-import AuthenticationComponent from './authentication'
-import PrimaryButton from './primary-button.js'
+import React, {Component} from "react"
+import {Modal, Text, TouchableHighlight, View, Alert} from "react-native"
+import AuthenticationComponent from "./authentication"
+import PrimaryButton from "./primary-button.js"
 
 export interface AuthModalProps {
-        visible?: boolean;
-        setVisible?: Function;
-        onSuccess?: Function;
-        onFailure?: Function;
+        visible?: boolean
+        setVisible?: Function
+        onSuccess?: Function
+        onFailure?: Function
 }
 
 export class AuthModal extends React.Component<AuthModalProps, {}> {
@@ -31,7 +31,7 @@ export class AuthModal extends React.Component<AuthModalProps, {}> {
                                         </PrimaryButton>
                                 </Modal>
                         </View>
-                );
+                )
         }       
 }
 

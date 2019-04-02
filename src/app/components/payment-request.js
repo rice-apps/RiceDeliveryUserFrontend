@@ -6,7 +6,7 @@ export default class PaymentRequest extends React.Component {
         constructor(props) {
                 super(props);
                 stripe.setOptions({
-                        publishableKey: 'pk_test_AFqSBwnwrS3AInWfxCylFcyk'
+                        publishableKey: 'pk_test_v5O7UYeViJ9FzgoiQujGKxEG'
                 });
                 this.state = {
                         isFirstTime: true,

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react"
 import * as css from "./style"
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator } from "react-native"
 
 class LoadingScreen extends React.Component<any, any> { 
 

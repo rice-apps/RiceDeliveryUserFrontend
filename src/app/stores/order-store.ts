@@ -58,12 +58,11 @@ export const Order = types.model("Order", {
   items: types.array(OrderItem),
   orderStatus: OrderStatus,
   paymentStatus: types.string, 
-  location: Location
-});
+  location: Location,
+})
 
 export const OrderModel = types.model("OrderModel", {
-  active: types.array(Order),
-  previous: types.array(Order)
+  pending: types.array(Order),
 })
 .actions(
   (self) => ({

@@ -41,7 +41,7 @@ const CustomerIDPair = types
 });
 
  const User = types
-.model('User', {
+.model("User", {
     // _id: types.string,
     netID: types.optional(types.string, ""),
     firstName: types.optional(types.string, ""),
@@ -53,15 +53,15 @@ const CustomerIDPair = types
 
 
 export const UserStoreModel = types
-.model('UserStoreModel', {
+.model("UserStoreModel", {
     user : User,
     authenticated: types.optional(types.boolean, false),
-    hasAccount: types.optional(types.boolean, false)
+    hasAccount: types.optional(types.boolean, false),
 })
 .actions(
     (self) => ({
         async authenticate(ticket) {
-            console.log("HERE");
+            console.log("HERE")
             let user = await client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
@@ -73,14 +73,14 @@ export const UserStoreModel = types
             console.log(user)
             console.log(user.data.authenticator);
 
-            console.log("Almost authenticated");
-            self.setAuth(true);
+            console.log("Almost authenticated")
+            self.setAuth(true)
             if (user.data.authenticator.firstName != null) {
-                self.setUser(user.data.authenticator);
-                self.setAccountState(true);
+                self.setUser(user.data.authenticator)
+                self.setAccountState(true)
             } else {
-                self.setUser({ netID: user.data.authenticator.netID });
-                self.setAccountState(false);
+                self.setUser({ netID: user.data.authenticator.netID })
+                self.setAccountState(false)
             }
 
             // api
@@ -107,10 +107,10 @@ export const UserStoreModel = types
             // });
         },
         setUser(user) {
-            self.user = user;
+            self.user = user
         },
         setAccountState(accountState) {
-            self.hasAccount = accountState;
+            self.hasAccount = accountState
         },
         // loggedIn() {
         //     return self.authenticated ? true : false

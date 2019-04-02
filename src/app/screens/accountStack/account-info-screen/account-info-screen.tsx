@@ -1,60 +1,141 @@
 import * as React from 'react'
-import { Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight} from 'react-native';
+import { Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight, TextInput} from "react-native"
 import * as css from '../../style';
+import PrimaryButton from '../../../components/primary-button';
+import { client } from '../../../main'
+import gql from 'graphql-tag'
 import { Divider } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { RootStore } from '../../../stores/root-store';
+import { inject, observer } from 'mobx-react';
+import { NavigationScreenProps } from 'react-navigation'
+import Icon from "react-native-vector-icons/MaterialIcons"
 
 
-export class AccountInfoScreen extends React.Component<any, any> {
+export interface AccountInfoScreenProps extends NavigationScreenProps<{}> {
+  rootStore?: RootStore
+}
+
+@inject("rootStore")
+@observer
+export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {firstName: String, lastName: String, phone: String, netID: String}> {
 	constructor(props) {
-		super(props);
-		this.changePasswordPush = this.changePasswordPush.bind(this)
-	}
+    super(props);
+    this.state = {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      netID: "",
+    }
+  }
 
-	changePasswordPush() {
-        this.props.navigation.navigate("ChangePassword");
-	}
+  async componentWillMount() {
+    // When the component mounts, fetch existing user info from backend using netID
+    const netID = await AsyncStorage.getItem("Authenticated");
+    this.setState({netID: netID});
+    console.log(netID);
+    console.log(this.state.netID);
+    await this.fetchUser();
+  }
+  
+  async fetchUser() {
+    // Find the user and set the appropriate states
+    const userInfo = await client.query({
+      query: gql`
+      query user($data: String!) {
+        user(netID: $data) {
+          netID
+          firstName
+          lastName
+          phone
+        }
+      }
+      `
+      ,
+      variables: {
+        data: this.state.netID
+      }
+    });
+    console.log(userInfo);
+    const user = userInfo.data.user[0];
+    console.log(user);
+    console.log(this.props.rootStore.userStore.user);
+    // this.setState({firstName: user.firstName, lastName: user.lastName, phone: user.phone})
+  }
 
+	async updateAccount() {
+    let infoToUpdate = {};
+    Object.keys(this.state).map(item => {
+      if (this.state[item] != "") {
+        infoToUpdate[item] = this.state[item];
+      }
+    })
+    const updatedUserInfo = await client.mutate({
+      mutation: gql`
+      mutation mutate($data: UpdateUserInput!) {
+        updateUser(data: $data) {
+          netID
+          firstName
+          lastName
+          phone
+        }
+      }
+      `
+      , 
+      variables : {
+        data: infoToUpdate
+    }
+    });
+    console.log(updatedUserInfo);
+    const user = updatedUserInfo.data.updateUser;
+    this.setState({firstName: user.firstName, lastName: user.lastName, phone: user.phone})
+    console.log(this.state.lastName);
+    await this.props.rootStore.userStore.setUser(user);
+    console.log(this.props.rootStore.userStore.user);
+  }
+ 
   render() {
-
     return (
-      <View style={css.screen.defaultScreen}>
-      		<View style={css.screen.accountScreenContainer}>
-
+      <View style={css.screen.paddedScreen}>
+        <View style={css.screen.accountScreenContainer}>
           <View style={{
-            flex : .5,
+            flex : 0.3,
             flexDirection : "column",
-            justifyContent : "space-between"
+            justifyContent : "space-evenly",
+            alignItems: "flex-start",
           }}>
 
-          <Text style={css.text.bigBodyText}>First Name</Text>
+            <Text style={{fontSize:10, color:css.LIGHTEST_GRAY}}>
+              First Name
+            </Text>
+            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(name) => this.setState({firstName: name})}>
+              {this.props.rootStore.userStore.user.firstName}
+            </TextInput>
+            <Divider style={css.screen.divider} />            
+            
+            <Text style={{fontSize:10, color:css.LIGHTEST_GRAY}}>
+              Last Name
+            </Text>
+            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(name) => this.setState({lastName: name})}>
+              {this.props.rootStore.userStore.user.lastName}
+            </TextInput>
             <Divider style={css.screen.divider} />
-
-            <Text style={css.text.bigBodyText}>Last Name</Text>
+            
+            <Text style={{fontSize:10, color:css.LIGHTEST_GRAY}}>
+              Phone Number
+            </Text>
+            <TextInput style={{fontSize:20, alignSelf: 'stretch'}} onChangeText={(phone) => this.setState({phone: phone})}>
+              {this.props.rootStore.userStore.user.phone}
+            </TextInput>
             <Divider style={css.screen.divider} />
-
-            <Text style={css.text.bigBodyText}>Phone Number</Text>
-            <Divider style={css.screen.divider} />
-
-            <Text style={css.text.bigBodyText}>Email</Text>
-            <Divider style={css.screen.divider} />
-
-            <View style={{
-				flex : .2,
-				flexDirection : "row",
-				justifyContent : "space-between",
-			}}>
-              <Text style={css.text.bigBodyText}>Change Your Password</Text>
-			  <TouchableHighlight 
-			  style={{padding : 0}}
-			  onPress={this.changePasswordPush}
-			  >
-				<Icon name="chevron-right" size={30} color="black" />
-			  </TouchableHighlight>
-            </View>
 
           </View>
-          </View>
+        </View>
+        <PrimaryButton 
+            title={"Update Account"}
+            onPress={() => this.updateAccount().then(res => {
+              this.props.navigation.pop();
+            })}>
+        </PrimaryButton>
       </View>
     )
   }
