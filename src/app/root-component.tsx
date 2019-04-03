@@ -12,6 +12,9 @@ import { RootNavigator } from "../navigation/root-navigator";
 import LoadingScreen from "./screens/LoadingScreen";
 import { AsyncStorage } from "react-native";
 
+import {PushNotificationHandler} from "./push-notification-handler"
+
+
 interface RootComponentState {
   rootStore?: RootStore
 }
@@ -38,6 +41,7 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
    * @param routeName The currently active route name.
    */
   canExit(routeName: string) {
+    console.log("\n\n\n\n this is the routeName: " + routeName + "\n\n\n\n")
     return contains(routeName, DEFAULT_NAVIGATION_CONFIG.exitRoutes)
   }
 
@@ -69,6 +73,8 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
             // persistenceKey={"NavigationState"}
             // renderLoadingExperimental={() => <LoadingScreen />}
            />
+          <PushNotificationHandler />
+
         </BackButtonHandler>
       </Provider>
     )
