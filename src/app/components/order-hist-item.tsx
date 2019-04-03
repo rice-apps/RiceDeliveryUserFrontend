@@ -19,7 +19,6 @@ class OrderHistItem extends React.Component<any, any> {
     }
 
     render() {
-        console.log(this.props.order)
         let { location } = this.props.order;
         var statusDisplay = getStatusDisplayColor(this.props.order);
         var time = getOrderTime(this.props.order);

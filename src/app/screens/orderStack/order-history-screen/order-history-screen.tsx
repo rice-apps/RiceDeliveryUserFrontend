@@ -55,18 +55,19 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
   }
 
   async getOrders(starting_after) {
+    let netid = this.props.rootStore.userStore.user.netID;
     const variables = {
-      "user_netid": "jl23"
+      "user_netid": netid
     }
     if (starting_after != null) variables.starting_after = starting_after;
 	  return client.query({
       query: GET_ORDERS,
       variables: variables
-	  })
+    })
   }
   
   async componentWillMount() {
-	  const info = await this.getOrders(null)
+    const info = await this.getOrders(null)
 	  var orders = info.data.user[0].orders
     this.setState({
       loading: false,

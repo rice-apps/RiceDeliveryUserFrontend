@@ -32,8 +32,8 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
     }
 
     render() {
-        console.log("this.props.cartItem");
-        console.log(this.props.cartItem);
+        // console.log("this.props.cartItem");
+        // console.log(this.props.cartItem);
 
         let icon = 
         <TouchableHighlight onPress={this.removeFromCart}>

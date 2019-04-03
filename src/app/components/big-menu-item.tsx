@@ -28,7 +28,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             modalVisible: false,
             size: "Medium",
             topping: "None",
-            note: "",
+            description: "",
         }
         this.onTouchablePress = this.onTouchablePress.bind(this);
     }
@@ -63,7 +63,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             sku : prod.id,
             attributes : [attrOne, attrTwo],
             price : prod.price,
-            note : this.state.note,
+            description : this.state.description,
         });
         this.props.rootStore.cartStore.addToCart(cartItem);
     }
@@ -150,7 +150,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
 
                         <TextInput
                         style={{margin : 4, padding : 2, height: 40, borderColor: 'gray', borderWidth: 1}}
-                        onChangeText={(text) => this.setState({note : text})}
+                        onChangeText={(text) => this.setState({description : text})}
                         value={this.state.text}
                         />
 

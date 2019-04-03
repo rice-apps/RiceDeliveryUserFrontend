@@ -63,12 +63,14 @@ export class SingleOrderScreen extends React.Component<any, any> {
 		<View style={css.screen.defaultScreen}>
     
       <View style={css.screen.singleOrderDisplay}>
+      <View style={{justifyContent : "flex-start"}}>
+
         <Text style={css.text.headerText}>Active Order</Text>
         <Text style={css.text.smallText}>
           {"Time: " + time.toDateString()}
         </Text>
         <Text style={css.text.headerText}>
-          Order ID: #{id}
+          Order ID #{id}
         </Text>
 
         <Divider style={css.screen.divider} />
@@ -106,6 +108,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
                 }
               />
         </View>
+      </View>
         {!fulfilled ? orderOptions : null}
       </View>
       </View>

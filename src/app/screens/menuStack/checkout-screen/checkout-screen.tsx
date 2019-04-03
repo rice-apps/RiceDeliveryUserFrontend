@@ -22,7 +22,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
   constructor(props) {
     super(props);
     this.state = {
-      location : "Jones",
+      location : "Baker Inner Loop", // Location initialized to be Baker Inner Loop
       name : "",
       netID : "",
       phone : "",
@@ -49,12 +49,14 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       this.setState({ netID, name, phone, customerID });
   }
 
-  async createOrder(netID, defaultLocation, vendorName, data) {
-    let success = await this.props.rootStore.cartStore.createOrder(netID, defaultLocation, vendorName, data);
+  async createOrder(netID, locationName, vendorName, data) {
+    console.log(locationName);
+    let success = await this.props.rootStore.cartStore.createOrder(netID, locationName, vendorName, data);
     if (success) {
-      // console.log("success");
+      console.log("create order was success"); 
       this.props.navigation.navigate("SingleOrderScreen")
     } else {
+      console.log("create order failed"); 
       this.props.navigation.navigate("Menu");
     }
   };
@@ -67,49 +69,64 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
   let {name, email, phone, card} = this.state
 
   //For Creating Order.
-  let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
-  let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID //Backend doesn't create customer id-pair for some netid's yet.
-  let location = this.state.language
-  let vendorName = "East West Tea"
-  let data = arr.map(x => ({"SKU": x[1].sku, "quantity": x[1].quantity}))
+  // Grab cart items from cart store
+  let cartItems = rootStore.cartStore.cart;
+  // turn cart items to order items in preparation to create order.
+  let orderItems = cartItems.map((item, index) => {
+    return {
+      SKU : item.sku,
+      quantity : 1,
+      description : item.description,
+    }
+  })
+
+  //Backend doesn't create customer id-pair for some netid's yet.
+  let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID
+  let location = this.state.location
+  let vendorName = "East West Tea" // Maybe this should not be hardcoded????
   
     return (
       <View style={css.screen.defaultScreen}>
 
-        <View style={css.screen.singleOrderDisplay}>
+        <View style={{
+          flex : 2,
+          flexDirection: "column",
+          justifyContent: "flex-start",
+        }}>
           
             <Text style={css.text.headerText}>
                 Delivery details
             </Text> 
 
-			<View style= {{
-				justifyContent : "space-between",
-				flex : .3,
-				flexDirection : "row",
-				// borderWidth : 4,
-				// borderColor : "red",
-			}}>
-      <View style={{borderWidth : 3, borderColor : "red"}}>
+      <View style={
+        {
+          flex : 1,
+          flexDirection: "column",
+          justifyContent : "flex-start",
+        }}>
+
+        <View style={{
+          flex : .2 ,
+          flexDirection : "row",
+          justifyContent : "space-between",
+          height : 20,
+        }}> 
+
 
           <Text style={css.text.bigBodyText}>
           Location
           </Text>
-        </View>
 
-            <View style={
-				{flex : 1,
-					height: 10, 
-					width: 110, 
-				}
-			}>
+        <View style={{height: 50, width: 150}}>
 				<Picker
-					selectedValue={this.state.language}
-          style={css.picker.locationPicker}
+					selectedValue={this.state.location}
+                    style={css.picker.locationPicker}
+                    itemStyle= {css.picker.locationPickerItem}
 					onValueChange={(itemValue, itemIndex) =>
-					this.setState({language: itemValue})
-					}>
-
-					<Picker.Item label="Wiess" value="Wiess Commons" />
+                    this.setState({location: itemValue})
+                            }>
+          <Picker.Item label="Baker Inner Loop" value="Baker Inner Loop" />
+          <Picker.Item label="Wiess" value="Wiess Commons" />
 					<Picker.Item label="Martel" value="Martel Commons" />
 					<Picker.Item label="Brown" value="Brown Commons" />
 					<Picker.Item label="Sid Rich" value="Sid Rich Commons" />
@@ -117,6 +134,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 					<Picker.Item label="Shepherd" value="Shepherd School" />
 
 				</Picker>
+          </View>
             </View>
 
             <Divider style={css.screen.divider} />
@@ -133,18 +151,16 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
                 </Text>
             </View>
 
-            {/* <View style={css.container.checkoutScreenContainer}>
-                <Text>
-                    Card Number : {creditToken}
-                </Text>
-            </View> */}
-
+              <PrimaryButton
+                         title = "Place Order"
+                         onPress={() => {
+                             this.createOrder(netID, this.state.location, vendorName, orderItems);
+                             this.props.navigation.navigate("OrderHistory");
+                            }
+                        }
+                     />
             <View>
 
-             <PrimaryButton
-                        title = "Place Order"
-                        onPress={() => this.createOrder(netID, this.state.location, vendorName, data)}
-                    />
             </View>
             
         </View>

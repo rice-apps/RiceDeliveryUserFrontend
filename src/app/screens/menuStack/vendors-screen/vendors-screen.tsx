@@ -31,9 +31,7 @@ export class VendorsScreen extends React.Component<any, any> {
     const vendors = (await client.query({
       query: GET_VENDOR_QUERY
     })).data.vendor;
-    console.log(vendors);
     this.setState({vendors: vendors, loading: false})
-    console.log(this.state)
   }
   componentDidMount() {
     this.getVendors();
