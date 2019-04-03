@@ -92,7 +92,7 @@ export const CartItemModel = types.model("CartItemModel", {
   productName: "", 
   productID: "",
   sku: "", 
-  note: "",
+  description: "",
   attributes: types.array(SKUAtributesModel), 
   price: 0
 })

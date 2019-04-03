@@ -49,6 +49,7 @@ export const screen = StyleSheet.create({
     singleOrderDisplay : {
         width : "100%",
         flex : 1,
+        justifyContent : "space-between",
         paddingTop : 20,
         paddingBottom : 20,
         paddingLeft : 10,
@@ -81,7 +82,7 @@ export const text = StyleSheet.create({
     headerText: {
         color: color.storybookTextColor,
         fontWeight: "800",
-        fontSize: 40,
+        fontSize: 32,
       },
     accountHeaderText: {
         color: color.storybookTextColor,
@@ -284,11 +285,15 @@ export const touchableopacity = StyleSheet.create({
 //PCIKER
 export const picker = StyleSheet.create({
     locationPicker: {
-        height: 1, 
-        width: 100, 
+        height: 50, 
+        width: 150, 
         padding: 0, 
         margin: 0,
     },
+    locationPickerItem : {
+        width : 150,
+        height : 50,
+    }
 })
 
 //DATEPICKERIOS

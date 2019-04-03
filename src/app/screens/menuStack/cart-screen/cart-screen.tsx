@@ -80,6 +80,12 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
         right: "$" + deliveryCost
       }
 
+      let placeOrderButton = 
+      <PrimaryButton
+            title ={`Checkout $${subtotalCost + deliveryCost}`}
+            onPress = {this.checkoutPush}
+          />
+
     return (
       
       <View style={[css.screen.defaultScreen, {height: "100%"}]}>
@@ -92,11 +98,8 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
           ]}
         />
 
-        <Divider style={css.screen.divider} />
-        <PrimaryButton
-            title ={`Checkout $${subtotalCost + deliveryCost}`}
-            onPress = {this.checkoutPush}
-          />
+
+        {cartItems.length > 0 ? placeOrderButton : null}
 
       </View>
       )
