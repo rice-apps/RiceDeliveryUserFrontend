@@ -1,5 +1,5 @@
 import { types } from "mobx-state-tree"
-import { Location } from "./location-store"
+import { Location } from "./vendor-store"
 import gql from "graphql-tag";
 import { getOrderTime } from '../screens/util';
 import { client } from '../main';

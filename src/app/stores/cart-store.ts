@@ -129,9 +129,6 @@ export const CartStoreModel = types
                 data: data
             }
           });
-          
-          console.log(order);
-
           if (order) {
             return true;
           } else {

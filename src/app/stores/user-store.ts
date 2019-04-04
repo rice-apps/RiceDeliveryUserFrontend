@@ -61,7 +61,6 @@ export const UserStoreModel = types
 .actions(
     (self) => ({
         async authenticate(ticket) {
-            console.log("HERE")
             let user = await client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
@@ -70,10 +69,6 @@ export const UserStoreModel = types
                     vendorName: ""
                 }
             });
-            console.log(user)
-            console.log(user.data.authenticator);
-
-            console.log("Almost authenticated")
             self.setAuth(true)
             if (user.data.authenticator.firstName != null) {
                 self.setUser(user.data.authenticator)

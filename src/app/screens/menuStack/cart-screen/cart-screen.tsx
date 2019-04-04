@@ -36,6 +36,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
     
   renderItems = ({item}) => {
     var cartItemAttributes = this.parseCartItemAttributes(item);
+    console.log(item);
     return (
     <Observer>
       {() => 
@@ -43,6 +44,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
         rootStore = {this.props.rootStore}
           cartItem={item}
           text={{
+            middleSmallTwo : item.description,
             middleBig: item.productName.toString(),
             middleSmall: cartItemAttributes.join('\xa0'),
             right: `$${(item.price / 100).toString()}`,
@@ -67,7 +69,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
     let { rootStore } = this.props;
     // let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
     let cartItems = rootStore.cartStore.cart;
-    let deliveryCost = 1.99;
+    let deliveryCost = 1.50;
     let subtotalCost = cartItems.reduce((previous, item) => previous + (item.price / 100.0), 0)
     let subtotalData = {
       middleBig: "Subtotal",
