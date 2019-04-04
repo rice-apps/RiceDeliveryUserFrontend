@@ -284,14 +284,18 @@ export const touchableopacity = StyleSheet.create({
 
 //PCIKER
 export const picker = StyleSheet.create({
+    pickerContainer : {
+        height: 50, 
+        width: 250
+    },
     locationPicker: {
         height: 50, 
-        width: 150, 
+        width: 250, 
         padding: 0, 
         margin: 0,
     },
     locationPickerItem : {
-        width : 150,
+        width : 250,
         height : 50,
     }
 })

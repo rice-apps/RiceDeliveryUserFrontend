@@ -36,7 +36,6 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
     
   renderItems = ({item}) => {
     var cartItemAttributes = this.parseCartItemAttributes(item);
-    console.log(item);
     return (
     <Observer>
       {() => 

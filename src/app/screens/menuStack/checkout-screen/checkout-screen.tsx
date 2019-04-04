@@ -49,7 +49,6 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
   }
 
   async createOrder(netID, locationName, vendorName, data) {
-    console.log(locationName);
     let success = await this.props.rootStore.cartStore.createOrder(netID, locationName, vendorName, data);
     if (success) {
       console.log("create order was success"); 
@@ -85,7 +84,6 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
   let vendorName = "East West Tea" // Maybe this should not be hardcoded????
 
   let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
-  console.log(locationOptions);
 
   let locationPickerItems = locationOptions.map((s, i) => {
     return <Picker.Item key={i} value={s.name} label={s.name} />
@@ -124,7 +122,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
           Location
           </Text>
 
-        <View style={{height: 50, width: 150}}>
+        <View style={css.picker.pickerContainer}>
 				<Picker
 					selectedValue={this.state.location}
                     style={css.picker.locationPicker}

@@ -28,9 +28,8 @@ export class SingleOrderScreen extends React.Component<any, any> {
 	}
 
   render() {
+    console.log(this.state.order);
     var order = this.state.order
-    console.log("order");
-    console.log(order);
     if (order == "no_order_retrieved") {
 	  console.log("Didn't find passed in order prop!")
 	  return (
@@ -45,7 +44,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
     var { location, id } = this.state.order
     var location = location.name
 	var { pending, onTheWay, fulfilled } = this.state.order.orderStatus
-	var { status } = getStatusDisplayColor(this.state.order)
+	var { status, color } = getStatusDisplayColor(this.state.order)
 	var time = getOrderTime(this.state.order)
 
     let orderOptions = 
@@ -71,9 +70,9 @@ export class SingleOrderScreen extends React.Component<any, any> {
         <Text style={css.text.smallText}>
           {"Time: " + time.toDateString()}
         </Text>
-        <Text style={css.text.headerText}>
+        {/* <Text style={css.text.headerText}>
           Order ID #{id}
-        </Text>
+        </Text> */}
 
         <Divider style={css.screen.divider} />
 
@@ -83,7 +82,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
         <Text style={css.text.bodyText}>
           {"Location : " + location}
         </Text>
-        <Text style={css.text.bodyText}>
+        <Text style={[css.text.bodyText, {color : color}]}>
           {"Status : " + status}
         </Text>
 
@@ -101,7 +100,6 @@ export class SingleOrderScreen extends React.Component<any, any> {
                 })}
                 keyExtractor={(item, index) => {
                     count++
-                    console.log(item);
                     return count.toString()
                 }}
                 renderItem={({item}) => 
