@@ -43,7 +43,6 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       // Parse through customerIDArray to find correct vendor
       let { customerID } = customerIDArray.find(pair => pair.accountID == "East West Tea");
 
-      console.log(customerID);
 
       let name = firstName + " " + lastName;
       this.setState({ netID, name, phone, customerID });
@@ -66,7 +65,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
   render() {
 
   let { rootStore } = this.props
-  let {name, email, phone, card} = this.state
+  let {name, phone} = this.state
 
   //For Creating Order.
   // Grab cart items from cart store
@@ -84,6 +83,14 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
   let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID
   let location = this.state.location
   let vendorName = "East West Tea" // Maybe this should not be hardcoded????
+
+  let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
+  console.log(locationOptions);
+
+  let locationPickerItems = locationOptions.map((s, i) => {
+    return <Picker.Item key={i} value={s.name} label={s.name} />
+  });
+
   
     return (
       <View style={css.screen.defaultScreen}>
@@ -125,13 +132,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 					onValueChange={(itemValue, itemIndex) =>
                     this.setState({location: itemValue})
                             }>
-          <Picker.Item label="Baker Inner Loop" value="Baker Inner Loop" />
-          <Picker.Item label="Wiess" value="Wiess Commons" />
-					<Picker.Item label="Martel" value="Martel Commons" />
-					<Picker.Item label="Brown" value="Brown Commons" />
-					<Picker.Item label="Sid Rich" value="Sid Rich Commons" />
-					<Picker.Item label="McMurtry" value="McMurtry Commons" />
-					<Picker.Item label="Shepherd" value="Shepherd School" />
+          {locationPickerItems}
 
 				</Picker>
           </View>

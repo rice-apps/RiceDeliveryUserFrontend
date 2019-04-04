@@ -81,8 +81,6 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   // Query and set state when component mounts
   // Initializes the menu in the vendor store
   async componentDidMount() {
-    this.props.rootStore.vendorStore.addVendor(EastWestTeaWithoutProducts)
-    // this.getProductMapping(products)
     this.setState({isLoading: false})
     const menu = await client.query({
       query: GET_MENU, 

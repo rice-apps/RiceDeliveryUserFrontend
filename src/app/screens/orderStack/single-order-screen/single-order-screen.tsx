@@ -29,6 +29,8 @@ export class SingleOrderScreen extends React.Component<any, any> {
 
   render() {
     var order = this.state.order
+    console.log("order");
+    console.log(order);
     if (order == "no_order_retrieved") {
 	  console.log("Didn't find passed in order prop!")
 	  return (
@@ -98,7 +100,8 @@ export class SingleOrderScreen extends React.Component<any, any> {
                     return (item.quantity != null)
                 })}
                 keyExtractor={(item, index) => {
-					count++
+                    count++
+                    console.log(item);
                     return count.toString()
                 }}
                 renderItem={({item}) => 

@@ -25,7 +25,7 @@ class OrderHistItem extends React.Component<any, any> {
 
         return (
             <View style={css.container.orderHistItem}>
-                <View>
+                <View style={{width : 180}}>
                     <Text style={css.text.bodyText}> { location.name} </Text>
                     <Text> {time.toLocaleDateString() + " - " + time.toLocaleTimeString()}</Text>
                 </View>
