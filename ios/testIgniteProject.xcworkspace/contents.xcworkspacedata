@@ -5,9 +5,6 @@
       location = "container:testIgniteProject.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:testIgniteProject.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

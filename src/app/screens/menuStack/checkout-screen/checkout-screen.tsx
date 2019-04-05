@@ -9,6 +9,9 @@ import { toJS } from "mobx"
 import { CartStoreModel } from "../../../stores/cart-store"
 import { RootStore } from '../../../stores/root-store';
 
+
+
+
 console.disableYellowBox = true;
 
 export interface CheckoutScreenProps extends NavigationScreenProps<{}> {

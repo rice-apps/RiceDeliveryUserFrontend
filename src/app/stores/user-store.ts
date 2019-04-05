@@ -2,8 +2,14 @@ import { types, destroy } from "mobx-state-tree";
 import { client } from "../main";
 import gql from "graphql-tag";
 import { AsyncStorage } from "react-native";
-// import { Location } from "./vendor-store";
 
+const ADD_DEVICETOKEN = gql`
+mutation AddToken($netID: String!, $token:String! ){
+  addDeviceToken(netID: $netID, token: $token){
+    deviceToken
+  }
+}
+`
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!, $checkVendor: Boolean!, $vendorName: String) {
         authenticator(ticket:$ticket, checkVendor:$checkVendor, vendorName:$vendorName) {
@@ -15,6 +21,7 @@ const AUTHENTICATION = gql`
                 accountID
                 customerID
             }
+            deviceToken
         }
     }    
 `
@@ -30,6 +37,7 @@ const GET_USER = gql`
                 accountID
                 customerID
             }
+            deviceToken
         }
     }
 `
@@ -47,7 +55,8 @@ const CustomerIDPair = types
     firstName: types.optional(types.string, ""),
     lastName: types.optional(types.string, ""),
     phone: types.optional(types.string, ""),
-    customerIDArray: types.optional(types.array(CustomerIDPair), [])
+    customerIDArray: types.optional(types.array(CustomerIDPair), []),
+    deviceToken: types.optional(types.array(types.string), [])
     // defaultLocation: types.optional(Location, {name: ""}),
 })
 
@@ -56,7 +65,10 @@ export const UserStoreModel = types
 .model("UserStoreModel", {
     user : User,
     authenticated: types.optional(types.boolean, false),
+    curr_deviceToken: types.optional(types.string, "12343"),
     hasAccount: types.optional(types.boolean, false),
+    notification_asked: types.optional(types.boolean, false),
+    notification_granted: types.optional(types.boolean, false)
 })
 .actions(
     (self) => ({
@@ -78,28 +90,29 @@ export const UserStoreModel = types
                 self.setAccountState(false)
             }
 
-            // api
-            // .post(
-            // '',
-            // {
-            //     query: `
-            //     mutation Authenticate($ticket: String!) {
-            //         authenticator(ticket:$ticket) {
-            //         netID
-            //         }
-            //     }
-            //     `,
-            //     variables: {
-            //     ticket: ticket
-            //     }
-            // }
-            // )
-            // .then((res) => {
-            // let user = res.data.data.authenticator;
-            
-            // console.log(user);
-            // console.log(res);
-            // });
+        },
+        async AddTokenToUser(){
+            if (self.notification_granted){
+                try {
+                    let addToken = await client.mutate({
+                        mutation: ADD_DEVICETOKEN,
+                        variables: {
+                        netID: self.user.netID,
+                        token: self.curr_deviceToken
+                        }
+                    })
+                    self.setDeviceTokenArray(addToken.data.addDeviceToken)
+                } catch(err) {
+                    console.log("\n\n\n\n" + err + "\n\n\n\n\n")
+                
+                }
+            }
+          },
+        setDeviceTokenArray(tokenArr){            
+            self.user.deviceToken = tokenArr
+        },
+        setDeviceToken(token){
+            self.curr_deviceToken = token
         },
         setUser(user) {
             self.user = user
@@ -107,9 +120,12 @@ export const UserStoreModel = types
         setAccountState(accountState) {
             self.hasAccount = accountState
         },
-        // loggedIn() {
-        //     return self.authenticated ? true : false
-        // },
+        setNotificationAsked(status){
+            self.notification_asked = status
+        },
+        setNotificationGranted(status){
+            self.notification_granted = status
+        },
         setAuth(authState) {
             self.authenticated = authState;
         },
@@ -121,7 +137,7 @@ export const UserStoreModel = types
                     netID: netID
                 }
             });
-
+            
             console.log("Post netID gt");
             console.log(data.data.user[0]);
             let user = data.data.user[0];
@@ -136,45 +152,6 @@ export const UserStoreModel = types
     })
 )
 
-// .create({
-//      users : [{
-//          netid: "Lyla.Nicolas",
-//         firstName: "Will",
-//         lastName: "James",
-//         phone: "780-594-8541",
-//         stripeId: "0123",
-//         defaultLocation: "5bca4c408f2c68f7ba37422e",
-//         access: "Employee"
-//     }]
-//  })
- //export type NavigationStore = typeof NavigationStoreModel.Type
-
  export type UserStore = typeof UserStoreModel.Type
 
 
-
-
-// .actions(self => ({
-//     toggleVip(){
-//         self.vip = !self.vip
-//     }
-// }
-// ))
-
-
-//  const UserStore = types
-// .model('UserNames', {
-//     names: types.array(UserName)
-// })
-// .actions(self =>({
-//     addUser(user) {
-//         self.names.push(user)
-//     },
-//     removeUser(user) {
-//         destroy(user)
-//     }
-// })
-// )
-// .create({
-//      names: [{name: "William Su", vip: true}]
-//  })

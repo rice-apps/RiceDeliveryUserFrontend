@@ -92,7 +92,10 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
       products : menu.data.vendor[0].products
     })
     this.props.rootStore.vendorStore.initializeMenu(menu.data.vendor[0])
+
+
   }
+  
 
 	setModalVisible(visible) {
 		this.setState({
