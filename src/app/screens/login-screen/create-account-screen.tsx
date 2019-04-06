@@ -28,7 +28,7 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                 }
                 console.log("Stripe Object " + stripe)
                 stripe.setOptions({
-                        publishableKey: "pk_test_AFqSBwnwrS3AInWfxCylFcyk",
+                        publishableKey: "pk_test_v5O7UYeViJ9FzgoiQujGKxEG",
                 })
         }
 
@@ -41,6 +41,7 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                 //TODO: Check if token is valid or no?
                 if (this.state.token.tokenId != null) {
                         this.setState({ display : false})
+                        console.log("About to create user");
                         this.createUserHandler()
                         this.props.navigation.navigate("Menu")
                 }
@@ -56,6 +57,7 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                 }
         }
         async createUserHandler() {
+                console.log("About to create user in createUserHandler")
                 const user = await client.mutate({
                         mutation: gql`
                         mutation mutate($data: CreateUserInput!) {
@@ -75,12 +77,12 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                                         firstName: this.state.firstName,
                                         lastName: this.state.lastName,
                                         phone: this.state.phoneNumber,
-                                        defaultLocationName: "Brown Commons", // TODO change this because we don't have default location
                                         // creditToken: "tok_mastercard" // TODO change this because doesn't actually accept token
                                         creditToken: this.state.token.tokenId,
                                 },
                         },
                 })
+                console.log(user);
         }
         render() {
                 if (this.state.display) {

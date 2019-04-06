@@ -27,7 +27,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
         }
         console.log("Stripe Object " + stripe);
           stripe.setOptions({
-                  publishableKey: 'pk_test_AFqSBwnwrS3AInWfxCylFcyk'
+                  publishableKey: 'pk_test_v5O7UYeViJ9FzgoiQujGKxEG'
           });
     }
 
@@ -68,6 +68,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
                 data: {
                   netID: this.state.netID,
                   creditToken: this.state.token.tokenId
+                  // creditToken: "tok_visa"
               }
             }
             });
@@ -87,7 +88,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
       return (
         <View style={css.screen.paddedScreen}>
         <View style={css.screen.accountScreenContainer}> 
-          <Text style={css.text.bigBodyTextCentered}>Replace your form of by adding a new card</Text>
+          <Text style={css.text.bigBodyTextCentered}>Replace your form of payment by adding a new card</Text>
           {/* TODO - need to display this with current credit card information  */}
         </View>
         <PrimaryButton
