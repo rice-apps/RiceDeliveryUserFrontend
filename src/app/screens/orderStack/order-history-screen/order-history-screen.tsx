@@ -66,6 +66,8 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
     })
   }
   
+  timer
+  
   async componentWillMount() {
     const info = await this.getOrders(null)
 	  var orders = info.data.user[0].orders
@@ -73,7 +75,13 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       loading: false,
       orders: orders
     })
+    this.timer = setInterval(()=> this.onRefresh(), 3000);
   }
+
+  componentWillUnmount() {
+    this.timer = null; // here...
+  }
+  
 
   loadMore = async () => {
     if (!this.state.endReached) {
@@ -116,7 +124,8 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       )
   
   onRefresh = async() => {
-    await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
+    console.log("refreshing order history screen");
+    // await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
 	  const orders = (await this.getOrders(null)).data.user[0].orders;
     await this.setState({ refreshState: RefreshState.Idle, orders: orders })
   }
