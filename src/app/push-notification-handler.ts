@@ -43,10 +43,17 @@ export class PushNotificationHandler extends React.Component<PushNotificationPro
       if (!notification) {
         return
       }
+
       const data = notification.getData()
       // handle events
-      
-      Alert.alert(JSON.stringify({ data }))
+      console.log("\n\n\n\n")
+      console.log(JSON.stringify(data))
+      console.log("\n\n\n\n\n")
+      const event = data.event
+      const message = data.message
+      console.log("\n\n\n\n this is the message: " + message + "\n\n\n")
+      rootStore.orderStore.getOrders(rootStore.userStore.user.netID)
+      Alert.alert(message)
     })
 
     PushNotificationIOS.getInitialNotification().then(notification => {

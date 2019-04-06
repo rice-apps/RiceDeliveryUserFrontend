@@ -129,10 +129,17 @@ export const CartStoreModel = types
                 data: data
             }
           });
-          if (order) {
-            return true;
+
+          /* Returns the orderID of the created order if successful */
+          if (order.data.createOrder.id !== null) {
+            return order.data.createOrder.id;
           } else {
-            return false;
+            return null;
+          }
+        },
+        removeAllItems() {
+          while (self.cart.length > 0) {
+            self.cart.pop()
           }
         },
         async payOrder(data, creditToken) {

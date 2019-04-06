@@ -22,6 +22,7 @@ export const GET_ORDERS = gql`
           fulfilled
           unfulfilled
         }
+        paymentStatus
         location {
           name
         }
@@ -75,7 +76,7 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       loading: false,
       orders: orders
     })
-    this.timer = setInterval(()=> this.onRefresh(), 3000);
+    this.timer = setInterval(()=> this.onRefresh(), 30000);
   }
 
   componentWillUnmount() {

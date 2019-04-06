@@ -101,7 +101,7 @@ export const UserStoreModel = types
                         token: self.curr_deviceToken
                         }
                     })
-                    self.setDeviceTokenArray(addToken.data.addDeviceToken)
+                    self.setDeviceTokenArray(addToken.data.deviceToken)
                 } catch(err) {
                     console.log("\n\n\n\n" + err + "\n\n\n\n\n")
                 

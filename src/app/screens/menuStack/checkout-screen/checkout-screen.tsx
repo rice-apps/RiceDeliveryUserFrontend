@@ -12,7 +12,42 @@ import { RootStore } from '../../../stores/root-store';
 
 
 
+import { client } from "../../../main"
+import gql from "graphql-tag"
 console.disableYellowBox = true;
+
+
+export const PAY_ORDER = gql`
+mutation payOrder($netID:String!, $vendorName:String!, $orderID:String!) {
+  payOrder( data: {
+    netID: $netID, 
+    vendorName: $vendorName,
+    orderID: $orderID
+  }
+    creditToken: "tok_amex"
+  ) {
+    id
+    amount
+    created
+    customer
+    netID
+    customerName
+    email
+    orderStatus {
+      pending
+      onTheWay
+      fulfilled
+      unfulfilled
+      refunded
+    }
+    paymentStatus
+    location {
+      _id
+      name
+    }
+  }
+}
+`
 
 export interface CheckoutScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
@@ -52,14 +87,32 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
   }
 
   async createOrder(netID, locationName, vendorName, data) {
-    let success = await this.props.rootStore.cartStore.createOrder(netID, locationName, vendorName, data);
-    if (success) {
-      console.log("create order was success"); 
-      this.props.navigation.navigate("SingleOrderScreen")
+      /* Creating the order */
+      let orderID = await this.props.rootStore.cartStore.createOrder(netID, locationName, vendorName, data);
+      if (orderID !== null) {
+        
+        console.log("create order was success"); 
+        this.props.navigation.popToTop();
+        this.props.navigation.navigate("OrderHistory");
+
+        /* Clearing the cart store */
+        this.props.rootStore.cartStore.removeAllItems();
+
+        /* Paying for the order */
+        let payment = client.mutate({
+          mutation: PAY_ORDER,
+          variables: {
+            "netID" : netID,
+            "vendorName" : vendorName,
+            "orderID" : orderID
+          }
+        });
+        console.log(payment);
     } else {
       console.log("create order failed"); 
-      this.props.navigation.navigate("Menu");
     }
+    
+
   };
 
   
@@ -80,6 +133,8 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       description : item.description,
     }
   })
+
+  console.log(rootStore.userStore.user);
 
   //Backend doesn't create customer id-pair for some netid's yet.
   let netID = rootStore.userStore.user.netID === "" ? "jl23" : rootStore.userStore.user.netID
