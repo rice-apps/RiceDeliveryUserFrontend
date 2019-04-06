@@ -148,14 +148,14 @@ export const RootNavigator = createStackNavigator({
     },
     Tabs: {
       screen: TabNavigator, 
+      navigationOptions: {
+        gesturesEnabled: false,
+    },
     },
   }, 
   {
     mode: "modal", 
     initialRouteName: "Login", 
     headerMode: "none",
-    navigationOptions: {
-        gesturesEnabled: false,
-    },
 },
 )
