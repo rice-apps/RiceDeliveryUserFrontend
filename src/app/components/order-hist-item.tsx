@@ -24,7 +24,10 @@ class OrderHistItem extends React.Component<any, any> {
         var time = getOrderTime(this.props.order);
 
         return (
+                <TouchableHighlight
+                    onPress={this.checkoutOrderPress}>
             <View style={css.container.orderHistItem}>
+
                 <View style={{width : 180}}>
                     <Text style={css.text.bodyText}> { location.name} </Text>
                     <Text> {time.toLocaleDateString() + " - " + time.toLocaleTimeString()}</Text>
@@ -42,15 +45,10 @@ class OrderHistItem extends React.Component<any, any> {
                          {statusDisplay.status} </Text>
                 </View>
 
-                <TouchableHighlight 
-                    style={{
-                        padding: 10,
-                    }} 
-                    onPress={this.checkoutOrderPress}>
                         <Icon name="chevron-right" size={30} color="black" />
-                </TouchableHighlight>
 
-            </View>
+                </View>
+            </TouchableHighlight>
         )
     }
 }
