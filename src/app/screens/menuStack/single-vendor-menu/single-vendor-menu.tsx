@@ -1,19 +1,16 @@
 import * as React from 'react'
 import { View, Text, FlatList, TouchableHighlight } from 'react-native';
 import * as css from "../../style";
-import { VendorStore } from '../../../stores/vendor-store';
 import PrimaryButton from '../../../components/primary-button.js'
 import { Vendor, EastWestTea, EastWestTeaWithoutProducts } from '../../../components/temporary-mock-order';
 import gql from 'graphql-tag'
-import { CartItem, CartItemModel, SKUAtributesModel, CartStoreModel, ProductModel } from '../../../stores/cart-store'
 import { client } from '../../../main';
 import LoadingScreen from '../../LoadingScreen';
 import { observer, inject } from 'mobx-react';
-import { Observer } from 'mobx-react/native'
 import { RootStore } from '../../../stores/root-store';
 import { NavigationScreenProp } from 'react-navigation';
-import { getSnapshot } from 'mobx-state-tree';
 import { BigMenuScreenItem } from '../../../components/big-menu-item';
+
 
 
 interface SingleVendorMenuState {
@@ -83,7 +80,6 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   async componentDidMount() {
     this.props.rootStore.vendorStore.addVendor(EastWestTeaWithoutProducts)
     // this.getProductMapping(products)
-    this.setState({isLoading: false})
     const menu = await client.query({
       query: GET_MENU, 
       variables: {
@@ -91,7 +87,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
       },
     })
     this.setState({
-      products : menu.data.vendor[0].products
+      products : menu.data.vendor[0].products, isLoading: false
     })
     this.props.rootStore.vendorStore.initializeMenu(menu.data.vendor[0])
   }
@@ -108,7 +104,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   var viewCartButton = <PrimaryButton title ="View Cart" onPress = {this.viewCartPush} />
 
 	if (this.state.isLoading) {
-      return (<LoadingScreen />)
+      return (<LoadingScreen/>)
     } else {
       return (
         <View style={[css.screen.defaultScreen, this.state.modalVisible ? {backgroundColor: 'rgba(0,0,0,0.5)'} : {}]}>
