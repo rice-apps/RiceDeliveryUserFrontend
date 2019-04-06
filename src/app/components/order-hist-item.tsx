@@ -19,14 +19,16 @@ class OrderHistItem extends React.Component<any, any> {
     }
 
     render() {
-        console.log(this.props.order)
         let { location } = this.props.order;
         var statusDisplay = getStatusDisplayColor(this.props.order);
         var time = getOrderTime(this.props.order);
 
         return (
+                <TouchableHighlight
+                    onPress={this.checkoutOrderPress}>
             <View style={css.container.orderHistItem}>
-                <View>
+
+                <View style={{width : 180}}>
                     <Text style={css.text.bodyText}> { location.name} </Text>
                     <Text> {time.toLocaleDateString() + " - " + time.toLocaleTimeString()}</Text>
                 </View>
@@ -43,15 +45,10 @@ class OrderHistItem extends React.Component<any, any> {
                          {statusDisplay.status} </Text>
                 </View>
 
-                <TouchableHighlight 
-                    style={{
-                        padding: 10,
-                    }} 
-                    onPress={this.checkoutOrderPress}>
                         <Icon name="chevron-right" size={30} color="black" />
-                </TouchableHighlight>
 
-            </View>
+                </View>
+            </TouchableHighlight>
         )
     }
 }

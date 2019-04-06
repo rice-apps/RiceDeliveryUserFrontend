@@ -4,6 +4,8 @@ import SingleVendorButton from "../../../components/single-vendor-button"
 import * as css from "../../style"
 import { client } from "../../../main"
 import gql from "graphql-tag"
+import { observer, inject } from 'mobx-react';
+import { RootStore } from '../../../stores/root-store';
 import LoadingScreen from "../../LoadingScreen";
 
 const GET_VENDOR_QUERY = gql`
@@ -16,7 +18,15 @@ const GET_VENDOR_QUERY = gql`
     }
   }
 `
-export class VendorsScreen extends React.Component<any, any> {
+
+interface VendorsScreenProps {
+  rootStore : RootStore
+}
+
+
+@inject("rootStore")
+@observer
+export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
 
   constructor(props) {
     super(props)
@@ -30,9 +40,7 @@ export class VendorsScreen extends React.Component<any, any> {
     const vendors = (await client.query({
       query: GET_VENDOR_QUERY
     })).data.vendor;
-    console.log(vendors);
     this.setState({vendors: vendors, loading: false})
-    console.log(this.state)
   }
   componentDidMount() {
     this.getVendors();
@@ -42,6 +50,7 @@ export class VendorsScreen extends React.Component<any, any> {
     if (this.state.loading) {
       return (<LoadingScreen />)
     }
+    this.props.rootStore.vendorStore.initialize();
     var vendors = this.state.vendors
     return (
       <View style={css.screen.defaultScreen}>

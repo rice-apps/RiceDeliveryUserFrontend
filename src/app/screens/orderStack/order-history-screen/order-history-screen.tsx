@@ -22,6 +22,7 @@ export const GET_ORDERS = gql`
           fulfilled
           unfulfilled
         }
+        paymentStatus
         location {
           name
         }
@@ -55,24 +56,33 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
   }
 
   async getOrders(starting_after) {
+    let netid = this.props.rootStore.userStore.user.netID;
     const variables = {
-      "user_netid": "jl23"
+      "user_netid": netid
     }
     if (starting_after != null) variables.starting_after = starting_after;
 	  return client.query({
       query: GET_ORDERS,
       variables: variables
-	  })
+    })
   }
   
+  timer
+  
   async componentWillMount() {
-	  const info = await this.getOrders(null)
+    const info = await this.getOrders(null)
 	  var orders = info.data.user[0].orders
     this.setState({
       loading: false,
       orders: orders
     })
+    this.timer = setInterval(()=> this.onRefresh(), 30000);
   }
+
+  componentWillUnmount() {
+    this.timer = null; // here...
+  }
+  
 
   loadMore = async () => {
     if (!this.state.endReached) {
@@ -115,7 +125,8 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       )
   
   onRefresh = async() => {
-    await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
+    console.log("refreshing order history screen");
+    // await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
 	  const orders = (await this.getOrders(null)).data.user[0].orders;
     await this.setState({ refreshState: RefreshState.Idle, orders: orders })
   }

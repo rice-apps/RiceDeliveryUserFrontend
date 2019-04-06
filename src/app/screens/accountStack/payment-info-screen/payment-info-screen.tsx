@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Text, View} from "react-native"
-import { NavigationScreenProps} from 'react-navigation'
+import { Text, View, Alert} from "react-native"
+import { NavigationScreenProps } from 'react-navigation'
 import * as css from '../../style';
 import PrimaryButton from '../../../components/primary-button';
 import { inject, observer } from 'mobx-react';
@@ -27,7 +27,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
         }
         console.log("Stripe Object " + stripe);
           stripe.setOptions({
-                  publishableKey: 'pk_test_AFqSBwnwrS3AInWfxCylFcyk'
+                  publishableKey: 'pk_test_v5O7UYeViJ9FzgoiQujGKxEG'
           });
     }
 
@@ -47,6 +47,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
                     this.updateAccount();
             }
             this.props.navigation.pop();
+
       }
 
       async updateAccount() {
@@ -67,12 +68,14 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
                 data: {
                   netID: this.state.netID,
                   creditToken: this.state.token.tokenId
+                  // creditToken: "tok_visa"
               }
             }
             });
             console.log(updatedUserInfo);
             const user = updatedUserInfo.data.updateUser;
             console.log(user);
+            Alert.alert('Updated Payment Info', 'Successfully Updated');
       }
 
 	render() {
@@ -85,7 +88,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
       return (
         <View style={css.screen.paddedScreen}>
         <View style={css.screen.accountScreenContainer}> 
-          <Text style={css.text.bigBodyTextCentered}>Replace your form of by adding a new card</Text>
+          <Text style={css.text.bigBodyTextCentered}>Replace your form of payment by adding a new card</Text>
           {/* TODO - need to display this with current credit card information  */}
         </View>
         <PrimaryButton

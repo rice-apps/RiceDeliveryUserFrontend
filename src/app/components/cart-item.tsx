@@ -14,6 +14,7 @@ interface CartScreenItemProps {
         // left : string
         middleBig : string
         middleSmall : string
+        middleSmallTwo : string
         right : string
     }
 }
@@ -32,9 +33,6 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
     }
 
     render() {
-        console.log("this.props.cartItem");
-        console.log(this.props.cartItem);
-
         let icon = 
         <TouchableHighlight onPress={this.removeFromCart}>
             <Icon name="close" size={30} color="black" />
@@ -47,7 +45,7 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
         </View>
 
 
-        var {right, middleBig, middleSmall} = this.props.text;
+        var {right, middleBig, middleSmall, middleSmallTwo} = this.props.text;
         return (
             <View style={{
                 padding: 10,
@@ -81,6 +79,9 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
                             </Text>
                             <Text>
                                 {middleSmall}
+                            </Text>
+                            <Text>
+                                {middleSmallTwo}
                             </Text>
                         {/* </View> */}
                 </View>

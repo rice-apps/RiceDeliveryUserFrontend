@@ -10,7 +10,25 @@ import { RootStore } from '../stores/root-store';
 import { CartItemModel , SKUAtributesModel } from '../stores/cart-store';
 
 
-// import { MenuItemModal } from './menu-item-modal';
+const flatMap = (f,xs) =>
+  xs.map(f).reduce(concat, [])
+
+function eliminateDuplicates(arr) {
+var i,
+    len = arr.length,
+    out = [],
+    obj = {};
+
+for (i = 0; i < len; i++) {
+    obj[arr[i]] = 0;
+}
+for (i in obj) {
+    out.push(i);
+}
+return out;
+}
+  
+
 
 interface BigMenuScreenItemProps {
     product : any
@@ -28,7 +46,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             modalVisible: false,
             size: "Medium",
             topping: "None",
-            note: "",
+            description: "",
         }
         this.onTouchablePress = this.onTouchablePress.bind(this);
     }
@@ -58,12 +76,12 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
           })
   
         let cartItem = CartItemModel.create({
-            productName : this.props.product.caption,
+            productName : this.props.product.name,
             productID : this.props.product.id,
             sku : prod.id,
             attributes : [attrOne, attrTwo],
             price : prod.price,
-            note : this.state.note,
+            description : this.state.description ? this.state.description : "",
         });
         this.props.rootStore.cartStore.addToCart(cartItem);
     }
@@ -80,8 +98,23 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
         return correctCartItems[0]
     }
 
+
+    getPossibleAttributeValues(keyAttribute, product) {
+        let list = product.skuItems.flatMap((skuItem=> 
+            skuItem.attributes.filter((attribute) => attribute.key == keyAttribute)
+            .map((attribute) => attribute.value)
+        ));
+        return(eliminateDuplicates(list));
+    }
+
     render() {
         let {cartItems} = this.props.product;
+        let sizes = this.getPossibleAttributeValues("size", this.props.product)
+        let toppings = this.getPossibleAttributeValues("topping", this.props.product)
+
+        let sizePickerItems = sizes.map((size, i) => <Picker.Item key={i} value={size} label= {size} />);
+
+        let toppingPickerItems = toppings.map((topping, i) => <Picker.Item key={i} value={topping} label= {topping}/>);
 
         return (
             <View>
@@ -123,8 +156,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({size: itemValue})
                         }>
-                        <Picker.Item label="Medium" value="Medium" />
-                        <Picker.Item label="Large" value="Large" />
+                        {sizePickerItems}
                         </Picker>
 
                     <Text>
@@ -138,10 +170,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({topping: itemValue})
                         }>
-                        <Picker.Item label="None" value="None" />
-                        <Picker.Item label="Boba" value="Boba" />
-                        <Picker.Item label="Lychee" value="Lychee" />
-                        <Picker.Item label="Oreo" value="Oreo" />
+                        {toppingPickerItems}
                         </Picker>
 
                     <Text>
@@ -150,7 +179,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
 
                         <TextInput
                         style={{margin : 4, padding : 2, height: 40, borderColor: 'gray', borderWidth: 1}}
-                        onChangeText={(text) => this.setState({note : text})}
+                        onChangeText={(text) => this.setState({description : text})}
                         value={this.state.text}
                         />
 
