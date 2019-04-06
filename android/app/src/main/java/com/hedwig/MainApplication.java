@@ -1,4 +1,4 @@
-package com.testigniteproject;
+package com.hedwig;
 
 import android.app.Application;
 

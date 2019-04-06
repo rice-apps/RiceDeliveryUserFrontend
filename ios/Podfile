@@ -2,9 +2,9 @@
 platform :ios, '9.0'
 
 # Specify Workspace
-workspace 'testIgniteProject'
+workspace 'Hedwig'
 
-target 'testIgniteProject' do
+target 'Hedwig' do
   # Stripe
   pod 'Stripe', '~> 14.0.0'
 end
