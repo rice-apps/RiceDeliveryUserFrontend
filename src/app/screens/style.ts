@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet, Dimensions} from "react-native"
 import { color } from "../../theme"
 
 //Use this site to look for RGB colors.
@@ -10,6 +10,7 @@ export const LIGHT_GRAY = "#DCDCDC"
 export const FONT_FAMILY = "Verdana"
 export const LIGHTEST_GRAY = "#808080"
 export const SILVER = "#C0C0C0"
+export const win = Dimensions.get('window')
 
 //SCREENS
 export const screen = StyleSheet.create({
@@ -23,11 +24,8 @@ export const screen = StyleSheet.create({
         backgroundColor: LIGHT_GRAY,
     }, 
     defaultScreenPopup: {
-        // flex: 1, 
-        justifyContent: "center", 
-        alignItems: "center",
-        width: "100%",
-        height: "100%",
+        justifyContent: 'flex-end',
+        alignSelf: 'stretch',
     }, 
     paddedScreen: {
         flex: 1, 

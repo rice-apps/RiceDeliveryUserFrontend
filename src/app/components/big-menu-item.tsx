@@ -1,10 +1,8 @@
 import * as React from 'react'
-import { Modal, Text, View, TextInput, TouchableHighlight, Picker, TouchableOpacity } from 'react-native';
+import { Modal, Text, View, TextInput, TouchableHighlight, Picker, TouchableOpacity, SegmentedControlIOS, TouchableWithoutFeedback, Dimensions} from 'react-native';
 import * as css from '../screens/style';
 import { inject, observer } from 'mobx-react';
 import { client } from '../main';
-import gql from 'graphql-tag';
-import { SmallMenuScreenItem } from './small-menu-item';
 import PrimaryButton from './primary-button.js';
 import { RootStore } from '../stores/root-store';
 import { CartItemModel , SKUAtributesModel } from '../stores/cart-store';
@@ -44,7 +42,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             toggleDrop : false,
             client: client,
             modalVisible: false,
-            size: "Medium",
+            size: "",
             topping: "None",
             description: "",
         }
@@ -64,6 +62,9 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
     }
 
     addToCart(size, topping) {
+        console.log("I'm trying to purchase");
+        console.log(size);
+        console.log(topping);
         let prod = this.findSKU(size, topping, this.props.product.caption);
         let { attributes } = prod;
         let attrOne = SKUAtributesModel.create({
@@ -87,8 +88,12 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
     }
 
     findSKU(size, topping, productName) {
+        console.log(size + " " + topping + " " + productName)
+        console.log(this.props.rootStore.vendorStore.vendors[0])
         let products = this.props.rootStore.vendorStore.vendors[0].products;
+        console.log(products);
         var product = products.filter((item) => item.caption == productName)[0];
+        console.log(product);
         var correctCartItems = product.skuItems.filter((item) => {
             let attributes = item.attributes;
             let sizeAttr = attributes.filter((attr) => attr.key == "size");
@@ -115,63 +120,57 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
         let sizePickerItems = sizes.map((size, i) => <Picker.Item key={i} value={size} label= {size} />);
 
         let toppingPickerItems = toppings.map((topping, i) => <Picker.Item key={i} value={topping} label= {topping}/>);
-
+        console.log(this.state.size);
+        console.log(this.state.topping);
         return (
             <View>
                 <TouchableHighlight onPress= {() => {
                     this.setModalVisible(!this.state.modalVisible)
-                    }}>
+                }}>
                     <View style={css.container.bigMenuItem}>
                         <Text style={css.text.bodyText}> {this.props.product.name} </Text>
                     </View>
-            </TouchableHighlight>
-
-            <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
-            >
-                <TouchableOpacity 
-                        activeOpacity={1} 
-                        onPressOut={() => {
-                            this.setModalVisible(!this.state.modalVisible)
-                        }}
-                    >
-                <View style={css.screen.defaultScreenPopup}>
-
+                </TouchableHighlight>
+                <Modal
+                animationType="fade"
+                transparent={true}
+                visible={this.state.modalVisible}
+                >
+                    <TouchableOpacity 
+                            activeOpacity={1} 
+                        >
+                    <TouchableWithoutFeedback>
                     <View style={{
+                        marginTop: 80,
                         marginLeft: 20,
-                        marginRight: 20,
-                        padding: 40,
+                        marginRight: 20, 
+                        padding: 20,
                         backgroundColor: "white",
                         borderRadius: 14,
                     }}>
                     <Text>
                         Size:
                     </Text>
-                    <Picker
-                        selectedValue={this.state.size}
-                        itemStyle={{height: 60}}
-                        style = {{height: 60, width: 100}}
-                        onValueChange={(itemValue, itemIndex) =>
-                            this.setState({size: itemValue})
-                        }>
-                        {sizePickerItems}
-                        </Picker>
+                    <SegmentedControlIOS
+                    style={{margin: 10}}
+                    values ={sizes}
+                    onValueChange={(itemValue) => {
+                        this.setState({size: itemValue})
+                    }}
+                    />
 
                     <Text>
                         Topping:
                     </Text>
 
-                        <Picker
-                        selectedValue={this.state.topping}
-                        itemStyle={{ height: 60 }}
-                        style = {{height: 60, width: 100}}
-                        onValueChange={(itemValue, itemIndex) =>
-                            this.setState({topping: itemValue})
-                        }>
-                        {toppingPickerItems}
-                        </Picker>
+                    <SegmentedControlIOS
+                    style={{margin: 10, flexDirection:'row'}}
+                    values ={toppings}
+                    selectedIndex = {this.state.selectedIndex}
+                    onValueChange = {(itemValue) => {
+                        this.setState({topping: itemValue});
+                    }}
+                    />
 
                     <Text>
                         Additional note:
@@ -190,11 +189,17 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                             this.addToCart(this.state.size, this.state.topping)
                         }}
                     />
+                    <PrimaryButton
+                        title="Cancel"
+                        onPress={() => {
+                            this.setModalVisible(false)
+                        }}
+                    />
 
                     </View>
-                </View>
-                </TouchableOpacity>     
-            </Modal>
+                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>     
+                </Modal>
             </View>
 
         )
