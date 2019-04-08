@@ -213,7 +213,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
         <Text style={css.text.smallText}>
           {"Time: " + time.toDateString()}
         </Text>
-        <Text style={css.text.headerText}>
+        <Text style={css.text.smallText}>
           Order ID #{id}
         </Text>
 
