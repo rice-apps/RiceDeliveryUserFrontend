@@ -3,7 +3,7 @@ import { View, Text, FlatList, SectionList } from "react-native"
 import * as css from "../../style"
 import PrimaryButton from "../../../components/primary-button.js"
 import { CartItem, mockCart } from "../../../components/temporary-mock-order"
-import { Divider } from "react-native-elements"
+import { Divider, Button } from "react-native-elements"
 import { CartScreenItem } from "../../../components/cart-item"
 import { inject, observer } from "mobx-react" 
 import { RootStore } from "../../../stores/root-store"
@@ -81,28 +81,36 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
         right: "$" + deliveryCost
       }
 
-      let placeOrderButton = 
-      <PrimaryButton
-            title ={`Checkout $${subtotalCost + deliveryCost}`}
-            onPress = {this.checkoutPush}
-          />
+      var placeOrderButton = 
+      (
+      <View style={{width: "100%"}}>
+        <Button 
+        containerStyle={{width: "100%", color: "blue", padding: 0, margin: 0, borderRadius: 0}}
+        buttonStyle={{padding: 12}}
+        title ={`Checkout $${subtotalCost + deliveryCost}`}
+        onPress = {this.checkoutPush} />
+        </View>)
 
     return (
       
-      <View style={[css.screen.defaultScreen, {height: "100%"}]}>
-        <SectionList
-          style={css.flatlist.container}
-          renderItem={this.renderExtraInfo}
-          sections={[
-            { title: 'Title1', data: cartItems, renderItem: this.renderItems},
-            { title: 'Title2', data: [subtotalData, deliveryData], },
-          ]}
-        />
+      <View style={{flex: 1}}>
+        <View style={[css.screen.defaultScreen, {height: "100%"}]}>
+          <SectionList
+            style={css.flatlist.container}
+            renderItem={this.renderExtraInfo}
+            sections={[
+              { title: 'Title1', data: cartItems, renderItem: this.renderItems},
+              { title: 'Title2', data: [subtotalData, deliveryData], },
+            ]}
+          />
 
 
-        {cartItems.length > 0 ? placeOrderButton : null}
+
+        </View>
+        {placeOrderButton}
 
       </View>
+      
       )
   }
 }

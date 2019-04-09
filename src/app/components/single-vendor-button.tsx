@@ -46,11 +46,11 @@ class SingleVendorButton extends React.Component<any, any> {
           time: new_day.toLocaleString()
 
         });
-        console.log(this.state.time)
+        // console.log(this.state.time)
         this.setState({week_day: this.getDayOfWeek(new_day)})
-        console.log(this.state.week_day)
+        // console.log(this.state.week_day)
         let arr = this.state.hours.filter((arrItem) => arrItem[0].slice(0, this.state.week_day.length) == this.state.week_day)
-        console.log(arr)     
+        // console.log(arr)     
         let open = arr[1], close=arr[2]
         if (open == -1){
             this.setState({open: false})
@@ -61,8 +61,8 @@ class SingleVendorButton extends React.Component<any, any> {
 
             }
         }
-        console.log(open)
-        console.log(close)
+        // console.log(open)
+        // console.log(close)
         // console.log(this.state.week_day == arr[0][0].splice(0,this.state.week_day.length))
         // if (open < time <  ){
 
@@ -105,7 +105,7 @@ class SingleVendorButton extends React.Component<any, any> {
     render() {
         // Currently, just displaying vendor name from struct
         var vendorName = this.props.vendor.name
-        console.log("\n\n vendor hours: " + this.props.vendor.hours)
+        // console.log("\n\n vendor hours: " + this.props.vendor.hours)
 
         return (
             <TouchableHighlight onPress={this.onVendorPress}>
