@@ -100,6 +100,11 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
 
   render() {
 
+    let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
+
+    console.log("locationOptions");
+    console.log(locationOptions);
+  
 	let products = this.state.products;
   var viewCartButton = <PrimaryButton title ="View Cart" onPress = {this.viewCartPush} />
 

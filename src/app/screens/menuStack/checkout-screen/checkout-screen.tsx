@@ -139,6 +139,9 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 
   let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
 
+  console.log("locationOptions");
+  console.log(locationOptions);
+
   let locationPickerItems = locationOptions.map((s, i) => {
     return <Picker.Item key={i} value={s.name} label={s.name} />
   });
