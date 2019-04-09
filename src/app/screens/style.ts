@@ -123,6 +123,12 @@ export const text = StyleSheet.create({
         paddingTop : 5,
         paddingBottom : 5,
       },
+    menuText: {
+        color: color.storybookTextColor,
+        fontWeight: "800",
+        fontSize:15,
+        paddingTop:15
+      },
 })
 
 export const container = StyleSheet.create({
@@ -253,10 +259,10 @@ export const flatlist = StyleSheet.create({
         flexDirection: 'row',  // main axis
         justifyContent: 'center', // main axis
         alignItems: 'center', // cross axis
-        paddingTop: 70,
+        paddingTop: 10,
         paddingBottom: 10,
-        paddingLeft: 50,
-        paddingRight: 50,
+        paddingLeft: 10,
+        paddingRight: 10,
         marginLeft: 6,
         marginRight: 6,
         marginTop: 5,

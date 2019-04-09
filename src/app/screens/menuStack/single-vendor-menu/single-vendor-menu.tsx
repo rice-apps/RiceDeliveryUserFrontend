@@ -119,12 +119,10 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
                   style={css.flatlist.container}
                   data= {products}
                   keyExtractor={(item, index) => index.toString()}
-                  renderItem={({item}) => 
-					      <BigMenuScreenItem product={item}/>
-				      }
+                  renderItem={({item}) => <BigMenuScreenItem product={item}/>}
                 />
           </View>
-		  { viewCartButton }
+		      { viewCartButton }
         </View>
         )
     }

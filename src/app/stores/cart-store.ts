@@ -80,7 +80,16 @@ mutation payOrder ($data: UpdateOrderInput!, $creditToken: String!) {
   }
  }
  `
- 
+const CHECK_SKU = gql`
+query checkSKU($vendorName: String!, $sku:String!){
+  sku(vendorName: $vendorName, sku: $sku){
+    id
+    inventory{
+      value
+    }
+  }
+}
+`
 
 
 export const SKUAtributesModel = types.model("SKUAttributeModel", {
@@ -113,6 +122,40 @@ export const CartStoreModel = types
 })
 .actions(
     (self) => ({
+        async checkAllCartItems(){
+          let invalidItems = []
+          let cartItemsArr = []
+          self.cart.map((cartItem) => {
+            let status = client.query({
+              query: CHECK_SKU,
+              variables: {
+                "vendorName":"East West Tea",
+                "sku":cartItem.sku
+              }
+            })
+            invalidItems.push(status)
+            cartItemsArr.push(cartItem)
+          })
+          let res = await Promise.all(invalidItems).then(res => {
+            console.log("first: " + JSON.stringify(res))
+            for (let i = 0; i < res.length ; i++){
+              if (res[i].data.sku.inventory.value === "in_stock"){
+                console.log(cartItemsArr.length)
+                cartItemsArr = cartItemsArr.filter(item => item.sku != res[i].data.sku.id)
+                console.log(cartItemsArr.length)
+
+              }
+            }
+          })
+
+          if (cartItemsArr.length > 1)
+
+          console.log("third: " + JSON.stringify(invalidItems))
+
+          cartItemsArr.map(x => console.log(x))
+          console.log("return items: " + cartItemsArr)
+          return cartItemsArr
+        },
         addToCart(CartItemModel) {
             self.cart.push(CartItemModel)
         },
