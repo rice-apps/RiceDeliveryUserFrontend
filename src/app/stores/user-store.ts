@@ -17,6 +17,7 @@ const AUTHENTICATION = gql`
             netID
             firstName
             lastName
+            last4
             phone
             customerIDArray {
                 accountID
@@ -33,6 +34,7 @@ const GET_USER = gql`
             netID
             firstName
             lastName
+            last4
             phone
             customerIDArray {
                 accountID
@@ -67,15 +69,15 @@ export const UserStoreModel = types
 .model("UserStoreModel", {
     user : User,
     authenticated: types.optional(types.boolean, false),
-    curr_deviceToken: types.optional(types.string, "12343"),
+    curr_deviceToken: types.optional(types.string, ""),
     hasAccount: types.optional(types.boolean, false),
     notification_asked: types.optional(types.boolean, false),
     notification_granted: types.optional(types.boolean, false)
 })
 .actions(
     (self) => ({
-        async authenticate(ticket) {
-            let user = await client.mutate({
+        authenticate: flow(function * authenticate(ticket) {
+            let user = yield client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
                     ticket: ticket,
@@ -83,16 +85,18 @@ export const UserStoreModel = types
                     vendorName: ""
                 }
             });
-            self.setAuth(true)
-            if (user.data.authenticator.firstName != null) {
-                self.setUser(user.data.authenticator)
-                self.setAccountState(true)
+            self.authenticated = true
+            if (user.data.authenticator.firstName !== null) {
+                console.log("CHECKING AUTHENTICATOR")
+                console.log(user.data.authenticator)
+                self.user = user.data.authenticator
+                self.hasAccount = true
             } else {
-                self.setUser({ netID: user.data.authenticator.netID })
-                self.setAccountState(false)
+                self.user.netID = user.data.authenticator.netID
+                self.hasAccount = false
             }
 
-        },
+        }),
         async AddTokenToUser(){
             if (self.notification_granted){
                 try {
@@ -131,9 +135,9 @@ export const UserStoreModel = types
         setAuth(authState) {
             self.authenticated = authState;
         },
-        async getUserFromNetID(netID) {
+        getUserFromNetID: flow(function * getUserFromNetID(netID) {
             console.log("Pre netID thing");
-            let data = await client.query({
+            let data = yield client.query({
                 query: GET_USER,
                 variables: {
                     netID: netID
@@ -141,16 +145,15 @@ export const UserStoreModel = types
             });
             
             console.log("Post netID gt");
-            console.log(data.data.user[0]);
-            let user = data.data.user[0];
 
+            let user = data.data.user[0];
             // Set user
-            self.setUser(user);
+            self.user = (user);
             // Set account
-            self.setAccountState(true);
+            self.hasAccount = (true);
             // Set auth
-            self.setAuth(true);
-        },
+            self.authenticated = (true);
+        }),
         updateUser: flow(function * updateUser(infoToUpdate) {
             // update the user.
             const updatedUserInfo = yield client.mutate({
@@ -160,6 +163,7 @@ export const UserStoreModel = types
                     netID
                     firstName
                     lastName
+                    last4
                     phone
                     customerIDArray {
                         accountID
@@ -188,6 +192,7 @@ export const UserStoreModel = types
                     netID
                     firstName
                     lastName
+                    last4
                     phone
                     customerIDArray {
                         accountID

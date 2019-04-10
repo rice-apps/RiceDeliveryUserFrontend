@@ -85,7 +85,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
       (
       <View style={{width: "100%"}}>
         <Button 
-        containerStyle={{width: "100%", color: "blue", padding: 0, margin: 0, borderRadius: 0}}
+        containerStyle={{width: "100%", padding: 0, margin: 0, borderRadius: 0}}
         buttonStyle={{padding: 12}}
         title ={`Checkout $${subtotalCost + deliveryCost}`}
         onPress = {this.checkoutPush} />

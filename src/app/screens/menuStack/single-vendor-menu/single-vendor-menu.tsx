@@ -109,7 +109,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   (
   <View style={{width: "100%"}}>
     <Button 
-    containerStyle={{width: "100%", color: "blue", padding: 0, margin: 0, borderRadius: 0}}
+    containerStyle={{width: "100%", padding: 0, margin: 0, borderRadius: 0}}
     buttonStyle={{padding: 12}}
     title ={`View Cart (${this.props.rootStore.cartStore.cart.length} item${this.props.rootStore.cartStore.cart.length > 1 ? "s" : ""})`} 
     onPress = {this.viewCartPush} />

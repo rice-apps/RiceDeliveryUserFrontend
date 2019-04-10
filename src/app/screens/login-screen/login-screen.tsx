@@ -6,6 +6,7 @@ import AuthModal from '../../components/auth-modal'
 import {NavigationScreenProps} from 'react-navigation'
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../stores/root-store';
+import { toJS } from 'mobx';
  
 
 console.disableYellowBox = true;
@@ -39,6 +40,8 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
             console.log("Has Account " + this.state.rootStore.userStore.hasAccount);
             this.props.navigation.replace("CreateAccount");
         } else { // user account exists
+            console.log("CHECKING ON SUCCESS")
+            console.log(toJS(this.props.rootStore.userStore.user))
             this.setState({modalVisible: false}, () => this.props.navigation.navigate("Menu"));
         }
     }
@@ -67,8 +70,8 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
             this.setModalVisible(!this.state.modalVisible);
         } else { 
             // Get user from authenticated netid
-            console.log("Heellloo");
-            this.state.rootStore.userStore.getUserFromNetID(authenticated);
+            await this.state.rootStore.userStore.getUserFromNetID(authenticated);
+            console.log("login")
             this.props.navigation.navigate("Menu");
         }
     }   

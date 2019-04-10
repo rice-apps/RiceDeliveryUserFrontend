@@ -48,7 +48,7 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     var res = await PushNotificationIOS.requestPermissions()
     if(res.alert || res.badge || res.sound){
       this.props.rootStore.userStore.setNotificationGranted(true)
-      this.props.rootStore.userStore.AddTokenToUser()
+      // this.props.rootStore.userStore.AddTokenToUser()
     } else {
       this.props.rootStore.userStore.setNotificationGranted(false)
     }
@@ -59,14 +59,18 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     console.log('component did mount')
     this.getVendors();
     this.requestPermission()
+    console.log("finished")
   }
 
   render() {
     if (this.state.loading) {
       return (<LoadingScreen />)
     }
+    console.log("rendered")
     this.props.rootStore.vendorStore.initialize();
     var vendors = this.state.vendors
+    console.log("rendering")
+
     return (
       <View style={css.screen.defaultScreen}>
         <View style={css.flatlist.container}>

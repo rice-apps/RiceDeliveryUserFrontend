@@ -44,23 +44,22 @@ export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {
             //TODO: Check if token is valid or no?
             if (this.state.token.tokenId != null) {
                     console.log(this.state.token.tokenId);
-                    this.updateAccount();
-                    this.props.rootStore.userStore.saveCreditInfo(object.card.last4);
-                    console.log(this.props.rootStore.userStore.user.last4)
+                    this.updateAccount(object.card.last4);
                     // save the last 4 digits for the payment submission form.
             }
             this.props.navigation.pop();
 
       }
 
-      async updateAccount() {
+      async updateAccount(creditLast4) {
             const updatedUserInfo = await client.mutate({
               mutation: gql`
-              mutation mutate($data: UpdateUserInput!) {
-                updateUser(data: $data) {
+              mutation mutate($data: UpdateUserInput!, $last4: String) {
+                updateUser(data: $data, last4: $last4) {
                   netID
                   firstName
                   lastName
+                  last4
                   phone
                   creditToken
                 }
@@ -70,11 +69,14 @@ export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {
               variables : {
                 data: {
                   netID: this.state.netID,
-                  creditToken: this.state.token.tokenId
-                  // creditToken: "tok_visa"
-              }
+                  creditToken: this.state.token.tokenId,
+                },
+                last4: creditLast4
             }
             });
+            this.props.rootStore.userStore.saveCreditInfo(creditLast4);
+            console.log(this.props.rootStore.userStore.user.last4)
+
             console.log(updatedUserInfo);
             const user = updatedUserInfo.data.updateUser;
             console.log(user);

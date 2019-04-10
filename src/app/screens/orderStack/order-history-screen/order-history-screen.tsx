@@ -10,6 +10,7 @@ import { client } from "../../../main"
 import LoadingScreen from "../../loading-screen"
 import { getOrderTime } from "../../util"
 import { RootStore } from "../../../stores/root-store";
+import { material } from "react-native-typography";
 
 export const GET_ORDERS = gql`
   query getUserOrder($user_netid: String, $starting_after: String) {
@@ -145,6 +146,16 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
 	  let {orders} = this.state
       return (
         <View style={css.screen.defaultScreen}>
+        {
+          this.state.orders.length === 0 &&
+          <View >
+            <Text style={material.headline}>
+              You have no orders!
+            </Text>
+          </View>
+        }
+        {
+          this.state.orders.length !== 0 &&
           <RefreshListView
             style={css.flatlist.container}
             data={orders}
@@ -155,6 +166,8 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
             onFooterRefresh={this.loadMore}
             ListFooterComponent={this.renderFooter}
           />
+        }
+
         </View>
       )
     }
