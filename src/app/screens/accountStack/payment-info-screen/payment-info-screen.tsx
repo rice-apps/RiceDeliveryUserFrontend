@@ -10,6 +10,7 @@ import { AsyncStorage } from 'react-native'
 import PaymentRequest from '../../../components/payment-request.js'
 import { client } from '../../../main'
 import gql from 'graphql-tag'
+import { material } from 'react-native-typography';
 
 export interface PaymentInfoScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
@@ -93,7 +94,7 @@ export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {
       return (
         <View style={css.screen.paddedScreen}>
         <View style={css.screen.accountScreenContainer}> 
-          <Text style={css.text.bigBodyTextCentered}>Replace your form of payment by adding a new card</Text>
+          <Text style={[material.headline, {textAlign: "center"}]}>Replace your form of payment by adding a new card</Text>
           {/* TODO - need to display this with current credit card information  */}
         </View>
         <PrimaryButton

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ScrollView, View, AsyncStorage, FlatList} from "react-native"
+import { ScrollView, View, AsyncStorage, FlatList, SectionList, Linking} from "react-native"
 import { ListItem, Text, Divider } from "react-native-elements"
 import SecondaryButton from "../../../components/secondary-button"
 import * as css from "../../style"
@@ -43,10 +43,6 @@ export class FAQScreen extends React.Component<CreateAccountScreenProps, any> {
                 {
                     title: "What is your refund policy?",
                     description: "You will receive your refund if you cancel your order while the order status is “Pending.” You will not receive a refund if the order status is “On the way.” We submit refund requests to your bank immediately, but depending on your bank, refunds take approximately 5-10 business days to process.",
-                },
-                {
-                    title: "What is your refund policy?",
-                    description: "You will receive your refund if you cancel your order while the order status is “Pending.” You will not receive a refund if the order status is “On the way.” We submit refund requests to your bank immediately, but depending on your bank, refunds take approximately 5-10 business days to process.",
                 }
             ]
         }
@@ -68,15 +64,46 @@ export class FAQScreen extends React.Component<CreateAccountScreenProps, any> {
 
         </View>
     )
+
+    contactData = (index) => (
+        <View style={{padding: 10}} key={index}>
+            <View style={{paddingBottom: 10}}>
+                <Text style={material.headlineWhite}>
+                    Who can I contact if I have a problem? 
+                </Text>
+            </View>
+            <Divider ></Divider>
+            <View style={{paddingTop: 10}}>
+                <Text style={material.body2White}>
+                    For any issues with your delivery, please reach out to East-West at (EMAIL?) 
+                    For any issues with the app itself, please submit any issues to the following Google Form: {" "} 
+                    <Text 
+                    style={[material.subheading, {color: "orange"}]}
+                    onPress={() => Linking.openURL('https://forms.gle/bbr3GtbuFg4PdGE19')}
+                    >
+                        https://forms.gle/bbr3GtbuFg4PdGE19
+
+                    </Text>
+                </Text>
+            </View>
+        </View>
+    )
     render() {
         console.log(this.state.data)
         return (
             <View style = {[css.screen.paddedScreen, {backgroundColor: "black"}]}>
-                <FlatList
+                <SectionList
                     data={this.state.data}
-                    renderItem={this.renderItem}
+                    renderItem={this.contactData}
                     keyExtractor={(item, index) => index.toString()}
+                    sections={[
+                        {title: "info", data: this.state.data, renderItem: this.renderItem},
+                        {title: "contact", data: ["placeholder"]},
+
+                    ]}
+                    
                  />
+
             </View>
         )
     }
