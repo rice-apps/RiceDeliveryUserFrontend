@@ -38,14 +38,18 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
   }
 
   getVendors = async() => {
+    console.log("making query");
     const vendors = (await client.query({
       query: GET_VENDOR_QUERY
     })).data.vendor;
+    console.log("getVendors is done w query");
     this.setState({vendors: vendors, loading: false})
   }
 
   requestPermission = async() => {
+    console.log("about to request permission ")
     var res = await PushNotificationIOS.requestPermissions()
+    
     if(res.alert || res.badge || res.sound){
       this.props.rootStore.userStore.setNotificationGranted(true)
       // this.props.rootStore.userStore.AddTokenToUser()
@@ -54,15 +58,19 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let { rootStore } = this.props;
     console.log('component did mount')
     this.getVendors();
-    this.requestPermission()
+    await this.requestPermission()
     console.log("finished")
   }
 
+
+
   render() {
+  console.log("lmaoooo");
+
     if (this.state.loading) {
       return (<LoadingScreen />)
     }

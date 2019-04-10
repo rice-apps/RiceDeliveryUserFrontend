@@ -72,7 +72,9 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
   timer
   
   async componentWillMount() {
+    console.log("About to call queries");
     const info = await this.getOrders(null)
+    console.log("About to call DONE");
 	  var orders = info.data.user[0].orders
     await this.setState({ loading: false, orders: orders})
     this.timer = setInterval(()=> this.onRefresh(), 30000);
@@ -143,7 +145,8 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
           </View>
         </View>)
     } else {
-	  let {orders} = this.state
+    let {orders} = this.state
+    if (orders.length > 0) {
       return (
         <View style={css.screen.defaultScreen}>
         {
@@ -170,6 +173,16 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
 
         </View>
       )
+    } else {
+      return (
+        <View style={css.screen.defaultScreen}>
+          <Text style= {css.text.bodyText}>
+          You have yet to place an order! 
+          Go to "Menu" to view a vendor's available products to place an order.
+            </Text>          
+        </View>
+      )
+    }
     }
   }
   

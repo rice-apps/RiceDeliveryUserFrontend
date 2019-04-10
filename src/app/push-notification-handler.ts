@@ -68,7 +68,11 @@ export class PushNotificationHandler extends React.Component<PushNotificationPro
     }
 
   // componentWillUnmount() {
-  //   PushNotificationIOS.removeEventListener('register', (token) => {});
+  //   // PushNotificationIOS.removeEventListener('register', (token) => {});
+
+  //   this.props.rootStore.userStore.setNotificationAsked(false)
+  //   this.props.rootStore.userStore.setNotificationGranted(false)
+
   // }
   render() {
     return null

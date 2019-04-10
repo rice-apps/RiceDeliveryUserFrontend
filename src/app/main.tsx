@@ -24,9 +24,15 @@ import { InMemoryCache } from "apollo-boost";
 // 10.115.179.58
 
 
+// Showing All Messages
+// + IP=10.115.178.24
+
+
+
+
 
 const link = createHttpLink({
-  uri: "http://10.122.178.93:3000/graphql",
+  uri: "http://10.115.178.24:3000/graphql",
 })
 
 // const link = createHttpLink({

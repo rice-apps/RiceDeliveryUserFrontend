@@ -14,6 +14,9 @@ export interface CreateAccountScreenProps {
 @observer
 export class AccountScreen extends React.Component<CreateAccountScreenProps, any> {
 
+  async deleteToken(){
+    await this.props.rootStore.userStore.DeleteToken()
+  }
 
   list = [
     {
@@ -39,6 +42,8 @@ export class AccountScreen extends React.Component<CreateAccountScreenProps, any
     />
   )
 
+
+
   render() {
     console.log(this.props.rootStore.userStore.user)
     return (
@@ -60,6 +65,9 @@ export class AccountScreen extends React.Component<CreateAccountScreenProps, any
           <SecondaryButton
             title ="Logout"
             onPress={() => {
+
+              this.deleteToken()
+
               CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://gizmodo.com/')
                 .then((res) => {console.log('CookieManager.get =>', res);});
               CookieManager.clearAll()

@@ -94,6 +94,15 @@ export const text = StyleSheet.create({
         fontSize: 40,
         textAlign: "center",
     },
+    displayStatusText: {
+        fontSize: 20, 
+        borderRadius : 5,
+        overflow : "hidden",
+        padding : 2,
+        margin : 2,
+        color : "white",
+        textAlign: "center",
+    },
     bodyText: {
         fontSize: 20,
         color: color.storybookTextColor,
@@ -257,18 +266,15 @@ export const flatlist = StyleSheet.create({
       },
       vendorView: {
         backgroundColor: "white",
-        // flex: 1,
-        flexDirection: 'row',  // main axis
-        justifyContent: 'center', // main axis
-        alignItems: 'center', // cross axis
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        marginLeft: 6,
-        marginRight: 6,
-        marginTop: 5,
-        marginBottom: 5,
+        flex: 1,
+        // flexDirection: 'row',  // main axis
+        // justifyContent: 'center', // main axis
+        // alignItems: 'center', // cross axis
+        padding: 10,
+        // marginLeft: 6,
+        // marginRight: 6,
+        // marginTop: 5,
+        // marginBottom: 5,
         borderRadius: 17,
         borderWidth: 1,
         borderColor: "#fff",    

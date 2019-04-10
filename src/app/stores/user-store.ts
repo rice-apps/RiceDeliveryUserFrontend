@@ -11,6 +11,16 @@ mutation AddToken($netID: String!, $token:String! ){
   }
 }
 `
+
+const DELETE_DEVICETOKEN = gql`
+mutation deleteToken($netID: String!, $token:String! ){
+    deleteDeviceToken(netID: $netID, token: $token){
+    netID
+    deviceToken
+    } 
+}
+`
+
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!, $checkVendor: Boolean!, $vendorName: String) {
         authenticator(ticket:$ticket, checkVendor:$checkVendor, vendorName:$vendorName) {
@@ -113,11 +123,24 @@ export const UserStoreModel = types
                 
                 }
             }
-          },
+        },
+        async DeleteToken(){
+            console.log("deleting token: " + self.curr_deviceToken)
+            self.setNotificationAsked(false)
+            self.setNotificationGranted(false)
+            let deletion = await client.mutate({
+                mutation: DELETE_DEVICETOKEN,
+                variables: {
+                    netID: self.user.netID,
+                    token: self.curr_deviceToken
+                }
+            })
+        },
         setDeviceTokenArray(tokenArr){            
             self.user.deviceToken = tokenArr
         },
         setDeviceToken(token){
+            console.log("We are setting the token: " + token)
             self.curr_deviceToken = token
         },
         setUser(user) {
@@ -127,9 +150,12 @@ export const UserStoreModel = types
             self.hasAccount = accountState
         },
         setNotificationAsked(status){
+            console.log("setting notification_asked to : " + status)
             self.notification_asked = status
         },
         setNotificationGranted(status){
+            console.log("setting notification_granted to : " + status)
+
             self.notification_granted = status
         },
         setAuth(authState) {

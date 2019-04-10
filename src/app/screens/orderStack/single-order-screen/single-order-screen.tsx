@@ -10,9 +10,9 @@ import gql from "graphql-tag"
 import { client } from "../../../main"
 
 
-export const CANCEL_ORDER = gql`
+export const CANCEL_ORDER_WITH_REFUND = gql`
 mutation cancelOrder($netID:String!, $vendorName:String!, $orderID:String!) {
-  cancelOrder(data: {
+  cancelWithRefund(data: {
     netID: $netID, 
     vendorName: $vendorName,
     orderID: $orderID
@@ -37,9 +37,9 @@ mutation cancelOrder($netID:String!, $vendorName:String!, $orderID:String!) {
 }
 `
 
-export const REFUND_ORDER = gql`
-mutation refundOrder($netID:String!, $vendorName:String!, $orderID:String!) {
-  refundOrder(data: {
+export const CANCEL_ORDER_WITHOUT_REFUND = gql`
+mutation cancelWithoutRefund($netID:String!, $vendorName:String!, $orderID:String!) {
+  cancelWithoutRefund(data: {
     netID: $netID, 
     vendorName: $vendorName,
     orderID: $orderID
@@ -80,85 +80,78 @@ export class SingleOrderScreen extends React.Component<any, any> {
     }
 
     this.cancelOrderPush = this.cancelOrderPush.bind(this);
-    this.refundOrderPush = this.refundOrderPush.bind(this);
 
   }
 
-  	cancelOrderPush() {
-      Alert.alert(
-        'You\'ve requested to cancel this non-refundable order.',
-        'Would you wish to continue to cancel this order?',
-        [
-          {text: 'Yes', onPress: () => {
-
-            let netID = this.state.user.netID;
-            let vendorName = "East West Tea";
-            let cancelledOrder = client.mutate({
-              mutation: CANCEL_ORDER,
-              variables: {
-                "netID" : netID,
-                "vendorName" : vendorName,
-                "orderID" : this.state.order.id
+  cancelOrderPush() {
+      var { status } = getStatusDisplayColor(this.state.order)
+      if (status == "pending") { // Status is still pending, can refund order
+        Alert.alert(
+          'You\'ve requested to cancel this refundable order.',
+          'Would you wish to continue to cancel this order with a refund?',
+          [
+            {text: 'Yes', onPress: async () => {
+              let netID = this.state.user.netID;
+              let vendorName = "East West Tea";
+              let cancelledOrder = await client.mutate({
+                mutation: CANCEL_ORDER_WITH_REFUND,
+                variables: {
+                  "netID" : netID,
+                  "vendorName" : vendorName,
+                  "orderID" : this.state.order.id
+                }
+              });
+              this.props.navigation.goBack();
+              if (cancelledOrder.data.cancelWithRefund !== null) {
+                console.log("cancel order succeeded")
+              } else {
+                console.log("cancel order failed") 
               }
-            });
-            this.props.navigation.goBack();
-            if (cancelledOrder !== null) { // IS THIS A CORRECT ERROR CHECK????
-              console.log("cancel order failed") 
-            } else {
-              console.log("cancel order succeeded")
-            }
-    
-          }},
-          {
-            text: 'No',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-        ],
-        {cancelable: false},
-      );
-      // this.setState({
-      //   cancelModalVisible : !this.state.cancelModalVisible
-      // })
-	//   Call some query
+      
+            }},
+            {
+              text: 'No',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else { // Status is on the way, cannot refund order
+        Alert.alert( 
+          'You\'ve requested to cancel this non-refundable order.',
+          'Would you wish to continue to cancel this order without a refund?',
+          [
+            {text: 'Yes', onPress: async () => {
+              let netID = this.state.user.netID;
+              let vendorName = "East West Tea";
+              let cancelledOrder = await client.mutate({
+                mutation: CANCEL_ORDER_WITHOUT_REFUND,
+                variables: {
+                  "netID" : netID,
+                  "vendorName" : vendorName,
+                  "orderID" : this.state.order.id
+                }
+              });
+              this.props.navigation.goBack();
+              if (cancelledOrder.data.cancelWithoutRefund !== null) {
+                console.log("cancel order succeeded")
+              } else {
+                console.log("cancel order failed") 
+              }
+      
+            }},
+            {
+              text: 'No',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        );
+      }
 }
 
-	refundOrderPush() {
-    Alert.alert(
-      'You\'ve requested refund this order.',
-      'Would you wish to continue to refund this order?',
-      [
-        {text: 'Yes', onPress: () => {
-
-          let netID = this.state.user.netID;
-          let vendorName = "East West Tea";
-          let cancelledOrder = client.mutate({
-            mutation: REFUND_ORDER,
-            variables: {
-              "netID" : netID,
-              "vendorName" : vendorName,
-              "orderID" : this.state.order.id
-            }
-          });
-          this.props.navigation.goBack();
-          if (cancelledOrder !== null) { // IS THIS A CORRECT ERROR CHECK????
-            console.log("refund order failed") 
-          } else {
-            console.log("refund order succeeded")
-          }
-  
-        }},
-        {
-          text: 'No',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-      ],
-      {cancelable: false},
-    );
-
-	//   Call some query	  
-	}
 
   render() {
     console.log("Rendering the single order screen for the following order:");
@@ -188,18 +181,6 @@ export class SingleOrderScreen extends React.Component<any, any> {
         title ="Cancel Order"
         onPress = {this.cancelOrderPush}
         />
-    </View>
-
-    let refundOrderButton = 
-    <View>
-        <SecondaryButton
-            style= {{
-              borderWidth : 5,
-              borderColor : "red"
-            }}
-            title ="Refund Order"
-            onPress = {this.refundOrderPush}
-            />
     </View>
 
 	var count = 0
@@ -255,37 +236,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
       </View>
           <View>
           {!fulfilled && paymentStatus !== "canceled" ? cancelOrderButton : null}
-          {!onTheWay && paymentStatus !== "returned" ? refundOrderButton : null}
           </View>
-
-
-          {/* <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.cancelModalVisible}>
-            <View style={{
-              backgroundColor : "blue"
-            }}>
-              <Text>
-                You've asked to cancel this order.
-              </Text>
-            </View>
-            
-            </Modal>
-            
-            <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.refundModalVisible}>
-            <View style={{
-              backgroundColor : "blue"
-            }}>
-              <Text>
-                You've asked to cancel this order.
-              </Text>
-            </View>
-            
-            </Modal> */}
 
       </View>
       </View>
