@@ -108,7 +108,7 @@ export const VendorStoreModel = types
             query: GET_VENDORS,
         });
         vendors.data.vendor.filter(
-            (item, idx) => item.name == "East West Tea" // filtering out the Hoot for now..
+            (item, idx) => item.name === "East West Tea" // filtering out the Hoot for now..
         ).map((item, idx) => {
             console.log(item);
             self.addVendor(item);

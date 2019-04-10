@@ -1794,7 +1794,11 @@
 					"-ObjC",
 					"-lc++",
 				);
+<<<<<<< HEAD
 				PRODUCT_BUNDLE_IDENTIFIER = org.riceapps.hedwig;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = org.riceapps.hedwig3;
+>>>>>>> d48cea1ae3d806fea0919e6f42363b4316a53136
 				PRODUCT_NAME = Hedwig;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1830,7 +1834,11 @@
 					"-ObjC",
 					"-lc++",
 				);
+<<<<<<< HEAD
 				PRODUCT_BUNDLE_IDENTIFIER = org.riceapps.hedwig;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = org.riceapps.hedwig3;
+>>>>>>> d48cea1ae3d806fea0919e6f42363b4316a53136
 				PRODUCT_NAME = Hedwig;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";

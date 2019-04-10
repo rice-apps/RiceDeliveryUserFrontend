@@ -34,7 +34,7 @@ export const screen = StyleSheet.create({
     }, 
     accountScreenContainer: {
         alignContent : "center",
-        flex: 1, 
+        // flex: 1, 
         padding: 10,
         backgroundColor: LIGHT_GRAY,
     }, 

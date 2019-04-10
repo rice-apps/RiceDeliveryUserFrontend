@@ -70,7 +70,7 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
       <Provider rootStore={rootStore} userStore = {rootStore.userStore} navigationStore={rootStore.navigationStore} {...otherStores}>
           <View style={{flex: 1, marginTop: StatusBar.currentHeight}}>
             <RootNavigator 
-              // persistenceKey={"NavigationState"}
+              // persistenceKey={"NavigationSta"}
               // renderLoadingExperimental={() => <LoadingScreen />}
             />
             <PushNotificationHandler />

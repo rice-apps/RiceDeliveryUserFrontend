@@ -5,6 +5,7 @@ import { Observer } from 'mobx-react/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { inject, observer } from 'mobx-react'; 
 import { RootStore } from '../stores/root-store';
+import { toJS } from 'mobx';
 
 
 interface CartScreenItemProps {
@@ -38,13 +39,7 @@ export class CartScreenItem extends React.Component<CartScreenItemProps, any> {
             <Icon name="close" size={30} color="black" />
         </TouchableHighlight>
 
-
-        let empty = 
-        <View style={{height : 30, width : 30}}>
-
-        </View>
-
-
+        let empty = (<View style={{height : 30, width : 30}}> </View>)
         var {right, middleBig, middleSmall, middleSmallTwo} = this.props.text;
         return (
             <View style={{

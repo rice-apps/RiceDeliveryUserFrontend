@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { View, Text, Picker, AsyncStorage, Alert, StyleSheet } from 'react-native';
+import { View, Text, Picker, AsyncStorage, Alert, StyleSheet, FlatList } from 'react-native';
 import * as css from "../../style";
 import { Divider } from 'react-native-elements';
 import PrimaryButton from '../../../components/primary-button.js'
-import { inject, observer } from 'mobx-react';
+import { inject, observer, Observer } from 'mobx-react';
 import { NavigationScreenProps } from 'react-navigation'
 import { toJS } from "mobx"
 import { CartStoreModel } from "../../../stores/cart-store"
@@ -164,12 +164,37 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 
   }
 
+  renderItems = ({item, index}) => {
+    var cartItemAttributes = [item.attributes.map((attr) => attr.value)].join(' ')
+    console.log(cartItemAttributes)
+    return (
+      <Observer>
+        {() => (
+          <View>
+            <Text style={material.subheading}>
+              {` ${index + 1}. ${item.productName.toString()}`}
+            </Text>
+            <Text style={[material.body2]}>
+              {"      " + cartItemAttributes.toString()}
+            </Text>
+            {item.description.length > 0 && 
+            <Text style={material.caption}>
+              {"      " + item.description}
+            </Text>
+          }
+          </View>
+
+        )}
+      </Observer>
+    )
+    
+
+  }
+
 
   render() {
-    console.log("USER")
     let { rootStore } = this.props
     let user = rootStore.userStore.user
-    console.log(toJS(user))
     //For Creating Order.
     // Grab cart items from cart store
     let cartItems = rootStore.cartStore.cart;
@@ -186,7 +211,8 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     let netID = rootStore.userStore.user.netID
     let location = this.state.location
     let vendorName = "East West Tea" // Maybe this should not be hardcoded????
-
+    let deliveryCost = 1.50;
+    let subtotalCost = cartItems.reduce((previous, item) => previous + (item.price / 100.0), 0)
     let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
 
     let locationPickerItems = locationOptions.map((s, i) => {
@@ -200,8 +226,8 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       <View style={css.screen.defaultScreen}>          
           <View style={localStyles.flexColumn}>
             <View style={localStyles.flexColumnCenter}>
-            <Text style={[material.display2, {paddingBottom: 10}]}> Delivery details</Text>
-              <Text style={[material.display1, {paddingLeft: 10, color: "black"}]}>Select Location:</Text>
+            <Text style={[material.display2, {paddingBottom: 5}]}> Delivery details</Text>
+              <Text style={[material.display1, {color: "black"}]}>Select Location:</Text>
               <View style={localStyles.flexRow}>
                 <Picker
                     selectedValue={this.state.location}
@@ -216,7 +242,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
                 </View>
             </View>
             <Divider style={css.screen.divider} />
-            <Text style={[css.text.bigBodyText,{paddingTop: 15, paddingBottom: 15, paddingLeft:10}]}>Payment</Text>
+            <Text style={[material.headline,{paddingTop: 5, paddingBottom: 5, paddingLeft:10}]}>Payment</Text>
             <View style={css.container.checkoutScreenContainer}>
               <Text style={material.subheading}>
                 Name : {`${user.firstName} ${user.lastName}`}{"\n"}
@@ -224,6 +250,17 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
                 Phone : {user.phone}{"\n"}
                 Card Ending In: {user.last4}
               </Text>
+            </View>
+            <Divider style={css.screen.divider} />
+            <Text style={[material.headline, {paddingTop: 5, paddingBottom: 5, paddingLeft: 10, color: "black"}]}>Order details:</Text>
+            
+            <View style={{height: "26%", paddingLeft: 15, paddingRight: 15, paddingTop: 5}}>
+              <FlatList
+                    // style={}
+                    data= {cartItems}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={this.renderItems}
+                  />
             </View>
 
             <PrimaryButton
@@ -253,11 +290,10 @@ const localStyles = StyleSheet.create({
     height: 20,
   },
   flexColumnCenter: {
-    flex: 0.45,
+    flex: 0.9,
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems:"center",
     width:"100%",
-    height: 100
   },
 })
