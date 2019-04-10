@@ -126,7 +126,7 @@ class SingleVendorButton extends React.Component<any, any> {
     render() {
         // Currently, just displaying vendor name from struct
         var vendorName = this.props.vendor.name
-        console.log("\n\n vendor hours: " + this.props.vendor.hours)
+        // console.log("\n\n vendor hours: " + this.props.vendor.hours)
 
         return (
             <TouchableHighlight onPress={(this.state.open) ? this.onVendorPress: () => {}}>

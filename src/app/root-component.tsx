@@ -10,7 +10,7 @@ import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
 import { RootNavigator } from "../navigation/root-navigator";
 import LoadingScreen from "./screens/LoadingScreen";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, View, StatusBar } from "react-native";
 
 import {PushNotificationHandler} from "./push-notification-handler"
 
@@ -68,14 +68,13 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
 
     return (
       <Provider rootStore={rootStore} userStore = {rootStore.userStore} navigationStore={rootStore.navigationStore} {...otherStores}>
-        <BackButtonHandler canExit={this.canExit}>
-          <RootNavigator 
-            // persistenceKey={"NavigationState"}
-            // renderLoadingExperimental={() => <LoadingScreen />}
-           />
-          <PushNotificationHandler />
-
-        </BackButtonHandler>
+          <View style={{flex: 1, marginTop: StatusBar.currentHeight}}>
+            <RootNavigator 
+              // persistenceKey={"NavigationState"}
+              // renderLoadingExperimental={() => <LoadingScreen />}
+            />
+            <PushNotificationHandler />
+          </View>
       </Provider>
     )
   }

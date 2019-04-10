@@ -19,6 +19,7 @@ export const GET_ORDERS = gql`
         orderStatus{
           pending
           onTheWay
+          arrived
           fulfilled
           unfulfilled
         }
@@ -72,10 +73,7 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
   async componentWillMount() {
     const info = await this.getOrders(null)
 	  var orders = info.data.user[0].orders
-    this.setState({
-      loading: false,
-      orders: orders
-    })
+    await this.setState({ loading: false, orders: orders})
     this.timer = setInterval(()=> this.onRefresh(), 30000);
   }
 
@@ -86,12 +84,14 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
 
   loadMore = async () => {
     if (!this.state.endReached) {
+      console.log("Loading more data")
       await this.setState({refreshState: RefreshState.FooterRefreshing})
       const orders = (await this.getOrders(this.state.orders[this.state.orders.length - 1].id)).data.user[0].orders
-      if (orders.length == 0) await this.setState({ endReached: true })
+      if (orders.length === 0) {
+        console.log("endReached")
+        await this.setState({ endReached: true, refreshState: RefreshState.NoMoreData})
+      } 
       await this.setState({refreshState: RefreshState.Idle, orders: this.state.orders.concat(orders)})
-    } else {
-      await this.setState({refreshState: RefreshState.NoMoreData})
     }
   }
 
@@ -100,8 +100,9 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
     return null;
   }
 
-  renderFooter = () => 
-      (<View
+  renderFooter = () => {
+    if (!this.state.endReached) {
+      return (<View
         style={{
           paddingVertical: 10,
           borderTopWidth: 1,
@@ -110,24 +111,24 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       >
         <ActivityIndicator animating size="large" />
       </View>
-    )
-
-    renderEnd = () => (
-        <View
-          style={{
-            paddingVertical: 10,
-            borderTopWidth: 1,
-            borderColor: "#CED0CE",
-          }}
-        >
-          <Text>End</Text>
-        </View>
       )
+    }
+    return (
+      <View
+        style={{
+          paddingVertical: 10,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE",
+        }}
+      >
+        <Text>All orders listed</Text>
+      </View>
+    )
+  }
   
   onRefresh = async() => {
-    
     console.log("refreshing order history screen");
-    // await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
+    await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
 	  const orders = (await this.getOrders(null)).data.user[0].orders;
     await this.setState({ refreshState: RefreshState.Idle, orders: orders })
   }
@@ -152,8 +153,7 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
             refreshState={this.state.refreshState}
             onHeaderRefresh={this.onRefresh}
             onFooterRefresh={this.loadMore}
-            footerRefreshingComponent={this.renderFooter}
-            footerNoMoreDataComponent={<Text>All orders listed!</Text>}
+            ListFooterComponent={this.renderFooter}
           />
         </View>
       )

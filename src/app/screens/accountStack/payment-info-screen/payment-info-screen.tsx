@@ -17,7 +17,7 @@ export interface PaymentInfoScreenProps extends NavigationScreenProps<{}> {
 
 @inject("rootStore")
 @observer
-export class PaymentInfoScreen extends React.Component<any, {netID: String, token: String, addCardPressed : Boolean}> {
+export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {netID: String, token: String, addCardPressed : Boolean}> {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,12 +39,15 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
       console.log(this.state.netID);
 }
 
-      onCreditInput(object) {
+      onCreditInput(object: any) {
             this.setState({token : object});
             //TODO: Check if token is valid or no?
             if (this.state.token.tokenId != null) {
                     console.log(this.state.token.tokenId);
                     this.updateAccount();
+                    this.props.rootStore.userStore.saveCreditInfo(object.card.last4);
+                    console.log(this.props.rootStore.userStore.user.last4)
+                    // save the last 4 digits for the payment submission form.
             }
             this.props.navigation.pop();
 

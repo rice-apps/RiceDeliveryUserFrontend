@@ -30,8 +30,8 @@ export function getOrderTime(order) {
 
 export function getStatusDisplayColor(order) {
     let {location, orderStatus} = order
-    console.log("in getStatusDisplayColor");
-    console.log(order);
+    // console.log("in getStatusDisplayColor");
+    // console.log(order);
 
     var statusDisplay = orderStatus.pending ? "pending" : "cancelled"
     statusDisplay = orderStatus.onTheWay ? "on the way" : statusDisplay

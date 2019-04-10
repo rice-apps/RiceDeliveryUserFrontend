@@ -10,6 +10,7 @@ import { observer, inject } from 'mobx-react';
 import { RootStore } from '../../../stores/root-store';
 import { NavigationScreenProp } from 'react-navigation';
 import { BigMenuScreenItem } from '../../../components/big-menu-item';
+import { Button } from 'react-native-elements';
 
 
 
@@ -104,12 +105,21 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   render() {
 
 	let products = this.state.products;
-  var viewCartButton = <PrimaryButton title ="View Cart" onPress = {this.viewCartPush} />
+  var viewCartButton = 
+  (
+  <View style={{width: "100%"}}>
+    <Button 
+    containerStyle={{width: "100%", color: "blue", padding: 0, margin: 0, borderRadius: 0}}
+    buttonStyle={{padding: 12}}
+    title ={`View Cart (${this.props.rootStore.cartStore.cart.length} item${this.props.rootStore.cartStore.cart.length > 1 ? "s" : ""})`} 
+    onPress = {this.viewCartPush} />
+    </View>)
 
 	if (this.state.isLoading) {
       return (<LoadingScreen/>)
     } else {
       return (
+        <View style={{flex:1}}>
         <View style={[css.screen.defaultScreen, this.state.modalVisible ? {backgroundColor: 'rgba(0,0,0,0.5)'} : {}]}>
           <View style={css.flatlist.container}>
             <Text style={css.text.menuHeaderText}>
@@ -122,7 +132,8 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
                   renderItem={({item}) => <BigMenuScreenItem product={item}/>}
                 />
           </View>
-		      { viewCartButton }
+        </View>
+        { this.props.rootStore.cartStore.cart.length !== 0 && viewCartButton }
         </View>
         )
     }

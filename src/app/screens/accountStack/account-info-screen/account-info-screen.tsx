@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AsyncStorage, Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight, TextInput} from "react-native"
+import { AsyncStorage, Text, ScrollView, View, StyleSheet, FlatList, TouchableHighlight, TextInput, Alert} from "react-native"
 import * as css from '../../style';
 import PrimaryButton from '../../../components/primary-button';
 import { client } from '../../../main'
@@ -9,14 +9,23 @@ import { RootStore } from '../../../stores/root-store';
 import { inject, observer } from 'mobx-react';
 import { NavigationScreenProps } from 'react-navigation'
 import Icon from "react-native-vector-icons/MaterialIcons"
+import { toJS } from 'mobx';
 
 export interface AccountInfoScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
 }
 
+interface AccountInfoScreenState {
+  firstName: String
+  lastName: String
+  phone: String
+  netID: String
+  loadingButton: boolean
+}
+
 @inject("rootStore")
 @observer
-export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {firstName: String, lastName: String, phone: String, netID: String}> {
+export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, AccountInfoScreenState > {
 	constructor(props) {
     super(props);
     this.state = {
@@ -24,72 +33,34 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
       lastName: "",
       phone: "",
       netID: "",
+      loadingButton: false
     }
   }
 
-  async componentWillMount() {
+  componentWillMount() {
     // When the component mounts, fetch existing user info from backend using netID
-    const netID = await AsyncStorage.getItem("Authenticated");
-    this.setState({netID: netID});
-    console.log(netID);
-    console.log(this.state.netID);
-    await this.fetchUser();
+    this.fetchUser();
   }
   
   async fetchUser() {
     // Find the user and set the appropriate states
-    const userInfo = await client.query({
-      query: gql`
-      query user($data: String!) {
-        user(netID: $data) {
-          netID
-          firstName
-          lastName
-          phone
-        }
-      }
-      `
-      ,
-      variables: {
-        data: this.state.netID
-      }
-    });
-    console.log(userInfo);
-    const user = userInfo.data.user[0];
-    console.log(user);
-    console.log(this.props.rootStore.userStore.user);
-    // this.setState({firstName: user.firstName, lastName: user.lastName, phone: user.phone})
+    let user = await this.props.rootStore.userStore.getUser(this.props.rootStore.userStore.user.netID)
+    console.log("fetched user")
+    console.log(toJS(user))
+    await this.setState({netID: user.netID, firstName: user.firstName, lastName: user.lastName, phone: user.phone})
   }
 
 	async updateAccount() {
-    let infoToUpdate = {};
-    Object.keys(this.state).map(item => {
-      if (this.state[item] != "") {
-        infoToUpdate[item] = this.state[item];
-      }
-    })
-    const updatedUserInfo = await client.mutate({
-      mutation: gql`
-      mutation mutate($data: UpdateUserInput!) {
-        updateUser(data: $data) {
-          netID
-          firstName
-          lastName
-          phone
-        }
-      }
-      `
-      , 
-      variables : {
-        data: infoToUpdate
-    }
-    });
-    console.log(updatedUserInfo);
-    const user = updatedUserInfo.data.updateUser;
-    this.setState({firstName: user.firstName, lastName: user.lastName, phone: user.phone})
-    console.log(this.state.lastName);
-    await this.props.rootStore.userStore.setUser(user);
-    console.log(this.props.rootStore.userStore.user);
+    await this.setState({loadingButton: true})
+    let infoToUpdate = {
+      netID: this.state.netID,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName, 
+      phone: this.state.phone
+    };
+
+    let user = await this.props.rootStore.userStore.updateUser(infoToUpdate)
+    this.setState({firstName: user.firstName, lastName: user.lastName, phone: user.phone, loadingButton: false})
   }
  
   render() {
@@ -131,7 +102,10 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, {
         </View>
         <PrimaryButton 
             title={"Update Account"}
+            loading={this.state.loadingButton}
+            disabled={this.state.loadingButton}
             onPress={() => this.updateAccount().then(res => {
+              Alert.alert("Account information updated.")
               this.props.navigation.pop();
             })}>
         </PrimaryButton>

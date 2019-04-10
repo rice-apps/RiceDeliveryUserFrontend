@@ -1,7 +1,8 @@
-import { types, destroy } from "mobx-state-tree";
+import { types, destroy, flow } from "mobx-state-tree";
 import { client } from "../main";
 import gql from "graphql-tag";
 import { AsyncStorage } from "react-native";
+import { toJS } from "mobx";
 
 const ADD_DEVICETOKEN = gql`
 mutation AddToken($netID: String!, $token:String! ){
@@ -56,7 +57,8 @@ const CustomerIDPair = types
     lastName: types.optional(types.string, ""),
     phone: types.optional(types.string, ""),
     customerIDArray: types.optional(types.array(CustomerIDPair), []),
-    deviceToken: types.optional(types.array(types.string), [])
+    deviceToken: types.optional(types.array(types.string), []),
+    last4: types.maybe(types.string)
     // defaultLocation: types.optional(Location, {name: ""}),
 })
 
@@ -148,7 +150,61 @@ export const UserStoreModel = types
             self.setAccountState(true);
             // Set auth
             self.setAuth(true);
-        }
+        },
+        updateUser: flow(function * updateUser(infoToUpdate) {
+            // update the user.
+            const updatedUserInfo = yield client.mutate({
+                mutation: gql`
+                mutation mutate($data: UpdateUserInput!) {
+                  updateUser(data: $data) {
+                    netID
+                    firstName
+                    lastName
+                    phone
+                    customerIDArray {
+                        accountID
+                        customerID
+                    }
+                    deviceToken
+                  }
+                }
+                `
+                , 
+                variables : {
+                  data: infoToUpdate
+              }
+              });
+            self.user = (updatedUserInfo.data.updateUser)
+            return self.user
+        }),
+        saveCreditInfo(last4) {
+            self.user.last4 = last4
+        },
+        getUser: flow(function * getUser(netID) {
+            const userInfo = yield client.query({
+                query: gql`
+                query user($data: String!) {
+                  user(netID: $data) {
+                    netID
+                    firstName
+                    lastName
+                    phone
+                    customerIDArray {
+                        accountID
+                        customerID
+                    }
+                    deviceToken
+                  }
+                }
+                `
+                ,
+                variables: {
+                  data: netID
+                }
+              });
+              self.user = userInfo.data.user[0]
+              return self.user
+        })
     })
 )
 
