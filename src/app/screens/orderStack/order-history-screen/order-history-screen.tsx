@@ -70,7 +70,9 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
   timer
   
   async componentWillMount() {
+    console.log("About to call queries");
     const info = await this.getOrders(null)
+    console.log("About to call DONE");
 	  var orders = info.data.user[0].orders
     this.setState({
       loading: false,

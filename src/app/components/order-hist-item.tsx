@@ -33,15 +33,7 @@ class OrderHistItem extends React.Component<any, any> {
                     <Text> {time.toLocaleDateString() + " - " + time.toLocaleTimeString()}</Text>
                 </View>
                 <View>
-                    <Text style={{
-                        fontSize: 20, 
-                        borderRadius : 5,
-                        overflow : "hidden",
-                        padding : 2,
-                        margin : 2,
-                        textAlign: "center",
-                        backgroundColor: statusDisplay.color,
-                    }}>
+                    <Text style={[css.text.displayStatusText, {backgroundColor: statusDisplay.color}]}>
                          {statusDisplay.status} </Text>
                 </View>
 

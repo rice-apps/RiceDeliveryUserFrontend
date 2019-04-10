@@ -38,9 +38,11 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
   }
 
   getVendors = async() => {
+    console.log("making query");
     const vendors = (await client.query({
       query: GET_VENDOR_QUERY
     })).data.vendor;
+    console.log("getVendors is done w query");
     this.setState({vendors: vendors, loading: false})
   }
 
@@ -62,6 +64,8 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
   }
 
   render() {
+  console.log("lmaoooo");
+
     if (this.state.loading) {
       return (<LoadingScreen />)
     }

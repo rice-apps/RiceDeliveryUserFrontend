@@ -94,6 +94,15 @@ export const text = StyleSheet.create({
         fontSize: 40,
         textAlign: "center",
     },
+    displayStatusText: {
+        fontSize: 20, 
+        borderRadius : 5,
+        overflow : "hidden",
+        padding : 2,
+        margin : 2,
+        color : "white",
+        textAlign: "center",
+    },
     bodyText: {
         fontSize: 20,
         color: color.storybookTextColor,

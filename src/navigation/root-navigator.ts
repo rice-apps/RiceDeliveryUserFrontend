@@ -65,25 +65,25 @@ const menuStackNavigator = createStackNavigator({
     Menu: { 
       screen: VendorsScreen,
       navigationOptions: {
-        title: "Vendors",
+        // title: "Vendors",
         },
     },
     SingleVendorMenu: {
         screen: SingleVendorMenu,
         navigationOptions: {
-            title: "Menu",
+            // title: "Menu",
             },
     },
     Cart : {
         screen: CartScreen,
         navigationOptions: {
-            title: "Cart",
+            // title: "Cart",
             },
     },
     Checkout : {
         screen: CheckoutScreen,
         navigationOptions: {
-            title: "Checkout",
+            // title: "Checkout",
             },
     },
     
@@ -94,19 +94,19 @@ const orderStackNavigator = createStackNavigator({
     OrderHistory : {
         screen: OrderHistoryScreen,
         navigationOptions: {
-            title: "Order History",
+            // title: "Order History",
         },
     },
     Order: {
         screen: OrderScreen,
         navigationOptions: {
-          title: "Order",
+        //   title: "Order",
           },
       },
     SingleOrder : {
         screen: SingleOrderScreen,
         navigationOptions: {
-            title: "Single Order",
+            // title: "Single Order",
             },    
     },
 })
@@ -117,21 +117,21 @@ export const TabNavigator = createBottomTabNavigator({
         screen: menuStackNavigator,
         navigationOptions: {
            tabBarIcon: pendingOrdersIcon, 
-           title: "Menu",
+        //    title: "Menu",
          },      
     },
     OrderStack: {
         screen: orderStackNavigator,
         navigationOptions: {
         tabBarIcon: currentBatchesIcon, 
-        title: "Order",
+        // title: "Order",
         },      
     },
     AccountStack: {
         screen: accountStackNavigator,
         navigationOptions: {
         tabBarIcon: accountIcon, 
-        title: "Account",
+        // title: "Account",
         },      
     },
   },

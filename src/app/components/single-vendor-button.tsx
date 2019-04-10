@@ -132,7 +132,22 @@ class SingleVendorButton extends React.Component<any, any> {
             <TouchableHighlight onPress={(this.state.open) ? this.onVendorPress: () => {}}>
                 {/* <View> */}
                 <View style={css.flatlist.vendorView}>
-                    <Text style={css.text.bigBodyText}>{vendorName} {" - "}{(this.state.open == true) ? "Open": this.returnClosed()}</Text>
+                <View style={{
+                    flex : 1,
+                    flexDirection : "row",
+                    justifyContent : "space-between"
+                }}>
+                    <Text style={css.text.bigBodyText}>{vendorName}</Text>
+                    <View style={{
+                        backgroundColor : this.state.open ? "green" : "red",
+                        borderRadius : 7,
+                        padding : 4
+                    }}>
+                    <Text style={css.text.bigBodyText}>
+                        {(this.state.open == true) ? "Open": this.returnClosed()}
+                    </Text>
+                    </View>
+                </View>
                     {this.state.day_hours.map((x,idx) => <Text key={idx}>{x.replace(/\./g, ":")}</Text>)}{"\n\n\n"}
                     
                     {/* <Text>{this.state.day_hours.join("\n")}</Text> */}
