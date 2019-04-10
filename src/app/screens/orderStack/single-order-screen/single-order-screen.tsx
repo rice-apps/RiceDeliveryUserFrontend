@@ -64,6 +64,27 @@ mutation cancelWithoutRefund($netID:String!, $vendorName:String!, $orderID:Strin
 }
 `
 
+export const ORDER_STATUS = gql`
+query order($vendorName: String!,$orderID :String!,
+  $starting_after :String, $status :String, $netID :String!) { 
+  order(vendorName: $vendorName,
+      orderID :$orderID,
+      status :$status, 
+      netID :$netID,
+      starting_after :$starting_after){
+      paymentStatus
+      orderStatus {
+        pending
+        onTheWay
+        arrived
+        fulfilled
+        unfulfilled
+      }
+    }
+}
+`
+
+
 
 
 @inject("rootStore")
@@ -83,8 +104,23 @@ export class SingleOrderScreen extends React.Component<any, any> {
 
   }
 
-  cancelOrderPush() {
-      var { status } = getStatusDisplayColor(this.state.order)
+  async cancelOrderPush() {
+
+    let netID = this.state.user.netID;
+    let orderID = this.state.order.id;;
+      let orderStatus = await client.query({
+        query : ORDER_STATUS,
+        variables : {
+          netID : netID,
+          vendorName : "East West Tea",
+          orderID : orderID
+        }
+      })
+
+      var { status } = getStatusDisplayColor(orderStatus.data.order[0]);
+      console.log("latest queried status :" + status);
+
+
       if (status == "pending") { // Status is still pending, can refund order
         Alert.alert(
           'You\'ve requested to cancel this refundable order.',
