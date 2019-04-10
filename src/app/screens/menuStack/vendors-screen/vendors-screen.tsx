@@ -48,7 +48,7 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     var res = await PushNotificationIOS.requestPermissions()
     if(res.alert || res.badge || res.sound){
       this.props.rootStore.userStore.setNotificationGranted(true)
-      this.props.rootStore.userStore.AddTokenToUser()
+      // this.props.rootStore.userStore.AddTokenToUser()
     } else {
       this.props.rootStore.userStore.setNotificationGranted(false)
     }

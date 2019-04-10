@@ -65,7 +65,7 @@ export const UserStoreModel = types
 .model("UserStoreModel", {
     user : User,
     authenticated: types.optional(types.boolean, false),
-    curr_deviceToken: types.optional(types.string, "12343"),
+    curr_deviceToken: types.optional(types.string, ""),
     hasAccount: types.optional(types.boolean, false),
     notification_asked: types.optional(types.boolean, false),
     notification_granted: types.optional(types.boolean, false)
