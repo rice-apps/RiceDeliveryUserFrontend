@@ -14,7 +14,7 @@ class SingleVendorButton extends React.Component<any, any> {
             open: false, 
             hours_of_operation: "",
             time: new Date().toLocaleString(),
-            hours: [],
+            hours: [[], [], [], [], [], [], []],
             lookup: {
                 0: "Monday  ",
                 1: "Tuesday  ",
@@ -27,46 +27,57 @@ class SingleVendorButton extends React.Component<any, any> {
             week_day:""
         }
     }
+
+    check_open(new_day){
+        let day_idx = new_day.getDay()
+        if (day_idx == 0) {
+            day_idx = 7
+        } else {
+            day_idx -= 1
+        }
+        let checker = false
+        this.state.hours[day_idx].map(x => {
+            
+            if (x[0] < new_day.getHours() < x[1]){
+                console.log(x[0], day_idx, x[1])
+                checker = true
+            }
+        })
+        this.setState({open: checker}) 
+    }
+
     async componentDidMount() {
         // this.updateWeekHours()
         await this.updateWeekHours()
         this.intervalID = setInterval(
             () => this.tick(),
-            1000
+            1000*60
           );
         console.log(this.state.day_hours.join("\n"))
         let mess = this.state.day_hours.join("\n")
         this.setState({hours_of_operation: mess})
+        this.check_open(new Date())
+
         
     }
     
+    returnClosed(){
+        return (<Text key="closed text" style={{color:"red"}}>Closed</Text>)
+    }
+
+    returnOpen(){
+        return (<Text key="closed text" style={{color:"green"}}>Open</Text>)
+    }
+
     tick() {
         let new_day = new Date()
         this.setState({
           time: new_day.toLocaleString()
-
         });
-        console.log(this.state.time)
+        // console.log(this.state.time)
         this.setState({week_day: this.getDayOfWeek(new_day)})
-        console.log(this.state.week_day)
-        let arr = this.state.hours.filter((arrItem) => arrItem[0].slice(0, this.state.week_day.length) == this.state.week_day)
-        console.log(arr)     
-        let open = arr[1], close=arr[2]
-        if (open == -1){
-            this.setState({open: false})
-        } else {
-            if (close > open){
-                this.setState({open: (open < new_day.getHours < close)})
-            } else {
+        this.check_open(new Date())
 
-            }
-        }
-        console.log(open)
-        console.log(close)
-        // console.log(this.state.week_day == arr[0][0].splice(0,this.state.week_day.length))
-        // if (open < time <  ){
-
-        // }
       }
 
     getDayOfWeek(date) {
@@ -80,8 +91,18 @@ class SingleVendorButton extends React.Component<any, any> {
         this.props.vendor.hours.map(([open, close], index) => {
             // this.state.hours[this.state.lookup[index]].push(open)
             // this.state.hours[this.state.lookup[index]].push(close)
-            
-            this.state.hours.push([this.state.lookup[index],open,close])
+            if (open > close) {
+                this.state.hours[index].push([open,24])
+                if (index === 6){
+                    this.state.hours[0].push([0, close])
+                } else {
+                    this.state.hours[index+1].push([0, close])
+                }
+            } else {
+                this.state.hours[index].push([open, close])
+            }
+
+            // this.state.hours.push([this.state.lookup[index],open,close])
             if (open === -1 || close === -1) {
                 this.state.day_hours.push(this.state.lookup[index] + "\t\t" + "closed")
             } else {
@@ -108,14 +129,15 @@ class SingleVendorButton extends React.Component<any, any> {
         console.log("\n\n vendor hours: " + this.props.vendor.hours)
 
         return (
-            <TouchableHighlight onPress={this.onVendorPress}>
-                <View>
-                {/* <View style={css.flatlist.vendorView}> */}
-                    <Text style={css.text.bigBodyTextCentered}>{vendorName}</Text>
+            <TouchableHighlight onPress={(this.state.open) ? this.onVendorPress: () => {}}>
+                {/* <View> */}
+                <View style={css.flatlist.vendorView}>
+                    <Text style={css.text.bigBodyText}>{vendorName} {" - "}{(this.state.open == true) ? "Open": this.returnClosed()}</Text>
                     {this.state.day_hours.map((x,idx) => <Text key={idx}>{x.replace(/\./g, ":")}</Text>)}{"\n\n\n"}
+                    
                     {/* <Text>{this.state.day_hours.join("\n")}</Text> */}
-                {/* </View> */}
                 </View>
+                {/* </View> */}
             </TouchableHighlight>
         )
     }
