@@ -141,7 +141,8 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
           </View>
         </View>)
     } else {
-	  let {orders} = this.state
+    let {orders} = this.state
+    if (orders.length > 0) {
       return (
         <View style={css.screen.defaultScreen}>
           <RefreshListView
@@ -157,6 +158,16 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
           />
         </View>
       )
+    } else {
+      return (
+        <View style={css.screen.defaultScreen}>
+          <Text style= {css.text.bodyText}>
+          You have yet to place an order! 
+          Go to "Menu" to view a vendor's available products to place an order.
+            </Text>          
+        </View>
+      )
+    }
     }
   }
   
