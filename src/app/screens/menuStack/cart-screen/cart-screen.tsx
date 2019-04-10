@@ -9,6 +9,7 @@ import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../stores/root-store"
 import { NavigationScreenProp } from "react-navigation"
 import { Observer } from "mobx-react/native"
+import { toJS } from "mobx";
 
 interface CartScreenState {
   cart : CartItem[],
@@ -34,13 +35,13 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
       this.props.navigation.navigate("Checkout")
     }
     
-  renderItems = ({item}) => {
+  renderItems = ({item, index}) => {
     var cartItemAttributes = this.parseCartItemAttributes(item);
     return (
     <Observer>
       {() => 
         <CartScreenItem 
-        rootStore = {this.props.rootStore}
+          rootStore = {this.props.rootStore}
           cartItem={item}
           text={{
             middleSmallTwo : item.description,
@@ -59,18 +60,18 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
       return [cartItem.attributes.map((attr) => attr.value)];
   }
 
-  renderExtraInfo = ({ item, index, section }) => (
+  renderExtraInfo = ({ item, index }) => (
     <CartScreenItem rootStore={this.props.rootStore} cartItem={null} key={index} text={item} />
   )
   
   render() {
-
     let { rootStore } = this.props;
     // let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
-    let cartItems = rootStore.cartStore.cart;
+    let cartItems = toJS(rootStore.cartStore.cart);
     let deliveryCost = 1.50;
     let subtotalCost = cartItems.reduce((previous, item) => previous + (item.price / 100.0), 0)
     let subtotalData = {
+
       middleBig: "Subtotal",
       middleSmall: "",
       right: "$" + subtotalCost
@@ -90,9 +91,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
         title ={`Checkout $${subtotalCost + deliveryCost}`}
         onPress = {this.checkoutPush} />
         </View>)
-
     return (
-      
       <View style={{flex: 1}}>
         <View style={[css.screen.defaultScreen, {height: "100%"}]}>
           <SectionList
@@ -107,7 +106,7 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
 
 
         </View>
-        {placeOrderButton}
+        {toJS(cartItems.length) > 0 && placeOrderButton}
 
       </View>
       
