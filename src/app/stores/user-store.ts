@@ -77,6 +77,7 @@ export const UserStoreModel = types
 .actions(
     (self) => ({
         authenticate: flow(function * authenticate(ticket) {
+            console.log("I'm here baby")
             let user = yield client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
@@ -86,18 +87,20 @@ export const UserStoreModel = types
                 }
             });
             self.authenticated = true
-            if (user.data.authenticator.firstName !== null) {
+            console.log("NULL" + user.data.authenticator)
+            if (user.data.authenticator !== null && user.data.authenticator.firstName !== null) {
                 console.log("CHECKING AUTHENTICATOR")
                 console.log(user.data.authenticator)
                 self.user = user.data.authenticator
                 self.hasAccount = true
             } else {
-                self.user.netID = user.data.authenticator.netID
+                if (self.user !== null && user.data.authenticator !== null) self.user.netID = user.data.authenticator.netID
                 self.hasAccount = false
             }
 
         }),
         async AddTokenToUser(){
+            console.log("add token")
             if (self.notification_granted){
                 try {
                     let addToken = await client.mutate({
