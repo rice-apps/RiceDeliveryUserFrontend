@@ -14,8 +14,23 @@ import { InMemoryCache } from "apollo-boost";
 /**
 * Initializing Apollo Client. We'll use this to make 
 */
+// const link = createHttpLink({
+//   uri: "http://localhost:3000/graphql",
+// })
+
+// Showing All Messages
+// + IP=192.168.1.70
+
+// 10.115.179.58
+
+
+
+// const link = createHttpLink({
+//   uri: "http://10.115.176.197:3000/graphql",
+// })
+
 const link = createHttpLink({
-  uri: "http://localhost:3000/graphql",
+  uri:"https://hedwig-233703.appspot.com/graphql"
 })
  export const client = new ApolloClient({
    link: link,
@@ -31,7 +46,7 @@ const link = createHttpLink({
 /**
  * This needs to match what's found in your app_delegate.m and MainActivity.java.
  */
-const APP_NAME = "testIgniteProject"
+const APP_NAME = "Hedwig"
 
 // Should we show storybook instead of our app?
 //

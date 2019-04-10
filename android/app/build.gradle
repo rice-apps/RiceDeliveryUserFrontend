@@ -98,7 +98,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.testigniteproject"
+        applicationId "com.hedwig"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':tipsi-stripe')
     compile project(':react-native-cookies')
     compile project(':react-native-vector-icons')
     compile project(':react-native-splash-screen')

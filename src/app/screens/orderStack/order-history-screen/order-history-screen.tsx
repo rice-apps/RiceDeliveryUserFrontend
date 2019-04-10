@@ -125,6 +125,7 @@ export class OrderHistoryScreen extends React.Component<OrderHistryScreenprops, 
       )
   
   onRefresh = async() => {
+    
     console.log("refreshing order history screen");
     // await this.setState({ refreshState: RefreshState.HeaderRefreshing, endReached: false})
 	  const orders = (await this.getOrders(null)).data.user[0].orders;

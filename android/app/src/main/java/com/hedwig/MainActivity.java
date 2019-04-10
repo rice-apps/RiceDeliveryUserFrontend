@@ -1,4 +1,4 @@
-package com.testigniteproject;
+package com.hedwig;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
@@ -18,6 +18,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "testIgniteProject";
+        return "Hedwig";
     }
 }

@@ -4,6 +4,9 @@ import * as css from '../screens/style';
 import { inject, observer } from 'mobx-react';
 import { client } from '../main';
 import PrimaryButton from './primary-button.js';
+import SecondaryButton from './secondary-button.js';
+import { Divider } from 'react-native-elements';
+
 import { RootStore } from '../stores/root-store';
 import { CartItemModel , SKUAtributesModel } from '../stores/cart-store';
 
@@ -45,7 +48,6 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             size: "",
             topping: "",
             description: "",
-            missingOptions: false,
         }
         this.onTouchablePress = this.onTouchablePress.bind(this);
     }
@@ -125,11 +127,6 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
         let toppings = this.getPossibleAttributeValues("topping", this.props.product)
         let sizePickerItems = sizes.map((size, i) => <Picker.Item key={i} value={size} label= {size} />);
         let toppingPickerItems = toppings.map((topping, i) => <Picker.Item key={i} value={topping} label= {topping}/>);
-
-        let missingOptionsDisplay = 
-        <Text>
-            Please select both size and topping options.
-        </Text>
         return (
             <View>
                 <TouchableHighlight onPress= {() => {
@@ -149,14 +146,22 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                         >
                     <TouchableWithoutFeedback>
                     <View style={{
-                        marginTop: 80,
-                        marginLeft: 20,
-                        marginRight: 20, 
+                        marginTop: 90,
+                        marginLeft: 25,
+                        marginRight: 25, 
                         padding: 20,
                         backgroundColor: "white",
                         borderRadius: 14,
                     }}>
-                    <Text>
+
+                    <Text style={css.text.headerText}>
+                        {this.props.product.name}
+                    </Text>
+                    <Divider style={css.screen.divider} />
+
+
+                    <Text style={css.text.menuText}>
+                        {"\n"}
                         Size:
                     </Text>
                     <SegmentedControlIOS
@@ -164,10 +169,11 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                     values ={sizes}
                     onValueChange={(itemValue) => {
                         this.setState({size: itemValue})
+                        this.setState({size_flag: false})
                     }}
                     />
-
-                    <Text>
+                    {"\n}"}
+                    <Text style={css.text.menuText}>
                         Topping:
                     </Text>
 
@@ -177,15 +183,16 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                     selectedIndex = {this.state.selectedIndex}
                     onValueChange = {(itemValue) => {
                         this.setState({topping: itemValue});
+                        this.setState({topping_flag: false})
                     }}
                     />
 
-                    <Text>
+                    <Text style={css.text.menuText}>
                         Additional note:
                     </Text>
 
                         <TextInput
-                        style={{margin : 4, padding : 2, height: 40, borderColor: 'gray', borderWidth: 1}}
+                        style={{margin : 4, padding : 5, height: 70, borderColor: 'gray', borderWidth: 1}}
                         onChangeText={(text) => this.setState({description : text})}
                         value={this.state.text}
                         />
@@ -194,18 +201,22 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
 
                     <PrimaryButton
                         title ="Add to Cart"
+                        disabled={this.state.size_flag === true || this.state.topping_flag === true}
                         onPress = {() => {
-                            if (this.addToCart(this.state.size, this.state.topping)) {
-                                this.setModalVisible(!this.state.modalVisible);
-                            } else {
-                                console.log("Add to cart failed");
-                            }
+                            this.setModalVisible(!this.state.modalVisible);
+                            this.addToCart(this.state.size, this.state.topping)
+                            this.setState({topping_flag: true})
+                            this.setState({size_flag: true})
+
                         }}
                     />
                     <PrimaryButton
                         title="Cancel"
                         onPress={() => {
                             this.setModalVisible(false)
+                            this.setState({topping_flag: true})
+                            this.setState({size_flag: true})
+
                         }}
                     />
 

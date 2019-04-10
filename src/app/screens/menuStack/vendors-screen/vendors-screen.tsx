@@ -7,6 +7,7 @@ import gql from "graphql-tag"
 import { observer, inject } from 'mobx-react';
 import { RootStore } from '../../../stores/root-store';
 import LoadingScreen from "../../LoadingScreen";
+import { PushNotificationIOS, Alert } from 'react-native'
 
 const GET_VENDOR_QUERY = gql`
   query {
@@ -42,8 +43,22 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     })).data.vendor;
     this.setState({vendors: vendors, loading: false})
   }
+
+  requestPermission = async() => {
+    var res = await PushNotificationIOS.requestPermissions()
+    if(res.alert || res.badge || res.sound){
+      this.props.rootStore.userStore.setNotificationGranted(true)
+      this.props.rootStore.userStore.AddTokenToUser()
+    } else {
+      this.props.rootStore.userStore.setNotificationGranted(false)
+    }
+  }
+
   componentDidMount() {
+    let { rootStore } = this.props;
+    console.log('component did mount')
     this.getVendors();
+    this.requestPermission()
   }
 
   render() {
