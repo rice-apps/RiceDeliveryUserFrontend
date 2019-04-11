@@ -113,21 +113,21 @@ const orderStackNavigator = createStackNavigator({
 
 // Tab Navigator for App
 export const TabNavigator = createBottomTabNavigator({
-    MenuStack: {
+    Menu: {
         screen: menuStackNavigator,
         navigationOptions: {
            tabBarIcon: pendingOrdersIcon, 
         //    title: "Menu",
          },      
     },
-    OrderStack: {
+    Order: {
         screen: orderStackNavigator,
         navigationOptions: {
         tabBarIcon: currentBatchesIcon, 
         // title: "Order History",
         },      
     },
-    AccountStack: {
+    Account: {
         screen: accountStackNavigator,
         navigationOptions: {
         tabBarIcon: accountIcon, 
@@ -135,7 +135,7 @@ export const TabNavigator = createBottomTabNavigator({
         },      
     },
   },
-  {initialRouteName: "OrderStack"},
+  {initialRouteName: "Order"},
   )
 
 
