@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
 import * as css from "../screens/style"
-import Order from "../components/temporary-mock-order"
 import { withNavigation } from "react-navigation"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { getStatusDisplayColor, getOrderTime } from "../screens/util"

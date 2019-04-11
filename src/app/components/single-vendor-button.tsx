@@ -2,7 +2,6 @@ import * as React from "react"
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
 import { withNavigation } from "react-navigation"
 import * as css from "../screens/style"
-import { Button } from 'react-native';
 
 // Should we always define the input props/state for components instead of <any, any>???
 class SingleVendorButton extends React.Component<any, any> {
@@ -37,13 +36,15 @@ class SingleVendorButton extends React.Component<any, any> {
         }
         let checker = false
         this.state.hours[day_idx].map(x => {
-            
-            if (x[0] < new_day.getHours() < x[1]){
-                console.log(x[0], day_idx, x[1])
+            console.log(typeof new_day.getHours())
+            console.log(typeof x[0])
+            if (x[0] < new_day.getHours() && new_day.getHours() < x[1]){
+                console.log(x[0], new_day.getHours(), x[1])
                 checker = true
             }
         })
-        this.setState({open: checker}) 
+        console.log("THIS IS THE STATE: " + checker)
+        this.setState({open: true}) 
     }
 
     async componentDidMount() {
@@ -62,11 +63,11 @@ class SingleVendorButton extends React.Component<any, any> {
     }
     
     returnClosed(){
-        return (<Text key="closed text" style={{color:"red"}}>Closed</Text>)
+        return (<Text key="closed text" style={{color:"white"}}>Closed</Text>)
     }
 
     returnOpen(){
-        return (<Text key="closed text" style={{color:"green"}}>Open</Text>)
+        return (<Text key="open text" style={{color:"white"}}>Open</Text>)
     }
 
     tick() {
@@ -144,7 +145,7 @@ class SingleVendorButton extends React.Component<any, any> {
                         padding : 4
                     }}>
                     <Text style={css.text.bigBodyText}>
-                        {(this.state.open == true) ? "Open": this.returnClosed()}
+                        {(this.state.open == true) ? this.returnOpen(): this.returnClosed()}
                     </Text>
                     </View>
                 </View>

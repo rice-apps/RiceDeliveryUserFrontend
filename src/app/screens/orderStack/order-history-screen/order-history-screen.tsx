@@ -2,7 +2,6 @@ import * as React from "react"
 import { Text, Button, View, FlatList, ActivityIndicator } from "react-native"
 import RefreshListView, { RefreshState } from "react-native-refresh-list-view"
 import * as css from "../../style"
-// import Order, { mock_orders } from '../../../components/temporary-mock-order';
 import OrderHistItem from "../../../components/order-hist-item"
 import gql from "graphql-tag"
 import { inject, observer } from "mobx-react"

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, Text, FlatList, TouchableHighlight } from 'react-native';
 import * as css from "../../style";
 import PrimaryButton from '../../../components/primary-button.js'
-import { Vendor, EastWestTea, EastWestTeaWithoutProducts } from '../../../components/temporary-mock-order';
+import { Vendor } from '../../../components/temporary-mock-order';
 import gql from 'graphql-tag'
 import { client } from '../../../main';
 import LoadingScreen from '../../LoadingScreen';
@@ -78,7 +78,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
   // Query and set state when component mounts
   // Initializes the menu in the vendor store
   async componentDidMount() {
-    this.props.rootStore.vendorStore.addVendor(EastWestTeaWithoutProducts)
+    await this.props.rootStore.vendorStore.initialize()
     // this.getProductMapping(products)
     const menu = await client.query({
       query: GET_MENU, 
@@ -90,7 +90,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
       products : menu.data.vendor[0].products, isLoading: false
     })
     this.props.rootStore.vendorStore.initializeMenu(menu.data.vendor[0])
-
+    console.log(JSON.stringify(this.props.rootStore.vendorStore.vendors))
 
   }
   
@@ -102,11 +102,10 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
 	}
 
   render() {
+  // let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
 
-    let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
-
-    console.log("locationOptions");
-    console.log(locationOptions);
+  // console.log("locationOptions");
+  // console.log(locationOptions);
   
 	let products = this.state.products;
   var viewCartButton = <PrimaryButton title ="View Cart" onPress = {this.viewCartPush} />

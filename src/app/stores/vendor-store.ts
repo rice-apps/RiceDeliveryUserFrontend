@@ -110,8 +110,9 @@ export const VendorStoreModel = types
         vendors.data.vendor.filter(
             (item, idx) => item.name == "East West Tea" // filtering out the Hoot for now..
         ).map((item, idx) => {
-            console.log(item);
+            console.log("initializing vendor: " + JSON.stringify(item))
             self.addVendor(item);
+            
             // self.vendors.push(item);
         })
     },

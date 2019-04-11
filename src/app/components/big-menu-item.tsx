@@ -48,6 +48,8 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             size: "",
             topping: "",
             description: "",
+            size_flag: true,
+            topping_flag: true
         }
         this.onTouchablePress = this.onTouchablePress.bind(this);
     }
