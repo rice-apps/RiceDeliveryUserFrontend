@@ -28,12 +28,14 @@ class SingleVendorButton extends React.Component<any, any> {
             },
         }
     }
-    async componentDidMount() {
+    async componentWillMount() {
         // this.updateWeekHours()
-        await this.updateWeekHours()
-        this.props.rootStore.vendorStore.setHourTransformed(this.state.hours)
-        console.log("\n\n\n\n\n we are setting this after we await \n\n\n\n")
-        this.props.rootStore.vendorStore.check_open(new Date())
+        await this.updateWeekHours().then(x => {
+            this.props.rootStore.vendorStore.setHourTransformed(this.state.hours)
+            this.props.rootStore.vendorStore.check_open(new Date())
+        })
+
+        console.log("this is after update: " + this.state.hours.join("\n"))
         this.intervalID = setInterval(
             () => this.tick(),
             1000*60
@@ -66,28 +68,31 @@ class SingleVendorButton extends React.Component<any, any> {
         clearInterval(this.intervalID);
       }
     async updateWeekHours(){
+        let arr = [[], [], [], [], [], [], []]
         this.props.vendor.hours.map(([open, close], index) => {
             if (open > close) {
-                this.state.hours[index].push([open,24])
+                arr[index].push([open,24])
                 if (index === 6){
-                    this.state.hours[0].push([0, close])
+                    arr[0].push([0, close])
                 } else {
-                    this.state.hours[index+1].push([0, close])
+                    arr[index+1].push([0, close])
                 }
             } else {
-                this.state.hours[index].push([open, close])
+                arr[index].push([open, close])
             }
 
             // this.state.hours.push([this.state.lookup[index],open,close])
             if (open === -1 || close === -1) {
                 this.state.day_hours.push(this.state.lookup[index] + "\t\t" + "closed")
             } else {
-                let first = (open > 12) ? (open-12).toString() + "pm" : open.toString()+"am"
-                let second = (close > 12) ? (close-12).toString() + "pm" : close.toString()+"am"
+                let first = (open > 11) ? (open-12).toFixed(2).toString() + "pm" : open.toString()+"am"
+                let second = (close > 11) ? (close-12).toFixed(2).toString() + "pm" : close.toString()+"am"
                 this.state.day_hours.push(this.state.lookup[index]+"\t\t"+first + " - " + second)
             }
         })
+        this.setState({hours: arr})
         console.log('\n\n\n\n\n UPDATE FINISHED \n\n\n\n\n\n')
+        // console.log(this.state.day_hours.join("\n"))
     }
 
     onVendorPress() {
@@ -122,7 +127,7 @@ class SingleVendorButton extends React.Component<any, any> {
                     </View>
                 </View>
                     {this.state.day_hours.map((x,idx) => <Text key={idx}>{x.replace(/\./g, ":")}</Text>)}{"\n\n\n"}
-                    
+                    {console.log(this.state.day_hours.join("\n"))}
                     {/* <Text>{this.state.day_hours.join("\n")}</Text> */}
                 </View>
                 {/* </View> */}

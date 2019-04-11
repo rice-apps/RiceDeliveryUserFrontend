@@ -127,40 +127,80 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 
   };
 
-  async checkStatuses() {
-    let items = await this.props.rootStore.cartStore.checkAllCartItems().then((results) => {
-      if (results.length > 0) {
-        let message = []
+  async updateWeekHours(){
+    let hours = [[],[],[],[],[],[],[]]
+    // transforms the hours array. 
 
-        results.map(item => {
-          message.push(item.productName)
-          this.props.rootStore.cartStore.removeFromCart(item)
-        })
-        var messageUnique = message.filter((item, index) => {
-          return message.indexOf(item) >= index
-        })
-        Alert.alert("We are currently out of the following flavors: \n"
-          + messageUnique.join(", ") + "\n. Please try another one of our flavors! ")
-
-        this.props.navigation.navigate("Cart")
-
-      } else {
-        let vendorName = "East West Tea" // Maybe this should not be hardcoded????
-        //For Creating Order.
-        // Grab cart items from cart store
-        let cartItems = this.props.rootStore.cartStore.cart;
-        // turn cart items to order items in preparation to create order.
-        let orderItems = cartItems.map((item, index) => {
-          return {
-            SKU: item.sku,
-            quantity: 1,
-            description: item.description,
-          }
-        })
-        this.createOrder(this.props.rootStore.userStore.user.netID, this.state.location, vendorName, orderItems);
-        this.props.navigation.navigate("OrderHistory")
-      }
+    this.props.rootStore.vendorStore.vendors[0].hours.map(([open, close], index) => {
+        if (open > close) {
+            hours[index].push([open,24])
+            if (index === 6){
+                hours[0].push([0, close])
+            } else {
+                hours[index+1].push([0, close])
+            }
+        } else {
+            hours[index].push([open, close])
+        }
     })
+    this.props.rootStore.vendorStore.setHourTransformed(hours)
+}
+
+  async checkStatuses() {
+    // get the hours 
+    await this.props.rootStore.vendorStore.getHours()
+    console.log("finished grabbing hours from backend")
+    // transform the hours array 
+    await this.updateWeekHours()
+    console.log("finish transforming the hours arr")
+
+    // check if our current time is within opening hours
+    await this.props.rootStore.vendorStore.check_open(new Date())
+    console.log('finishing checking open status: ' + this.props.rootStore.vendorStore.check_open)
+
+    // // 
+    if (this.props.rootStore.vendorStore.open){
+
+      await this.props.rootStore.cartStore.checkAllCartItems().then((results) => {
+        if (results.length > 0) {
+          let message = []
+  
+          results.map(item => {
+            message.push(item.productName)
+            this.props.rootStore.cartStore.removeFromCart(item)
+          })
+          var messageUnique = message.filter((item, index) => {
+            return message.indexOf(item) >= index
+          })
+          Alert.alert("We are currently out of the following flavors: \n"
+            + messageUnique.join(", ") + "\n. Please try another one of our flavors! ")
+  
+          this.props.navigation.navigate("Cart")
+  
+        } else {
+          let vendorName = "East West Tea" // Maybe this should not be hardcoded????
+          //For Creating Order.
+          // Grab cart items from cart store
+          let cartItems = this.props.rootStore.cartStore.cart;
+          // turn cart items to order items in preparation to create order.
+          let orderItems = cartItems.map((item, index) => {
+            return {
+              SKU: item.sku,
+              quantity: 1,
+              description: item.description,
+            }
+          })
+          this.createOrder(this.props.rootStore.userStore.user.netID, this.state.location, vendorName, orderItems);
+          this.props.navigation.navigate("OrderHistory")
+        }
+      })
+    } else {
+      Alert.alert("Unfortunately, East West Tea has closed and we cannot place your order. Please come back when we are open!")
+      this.props.rootStore.cartStore.removeAllItems()
+      this.props.navigation.navigate("Vendors")
+    }
+
+    
 
   }
 
