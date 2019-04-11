@@ -47,7 +47,9 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
   }
 
   requestPermission = async() => {
+    console.log("requesting permission1 ")
     var res = await PushNotificationIOS.requestPermissions()
+    console.log("requesting permission")
     if(res.alert || res.badge || res.sound){
       this.props.rootStore.userStore.setNotificationGranted(true)
       // this.props.rootStore.userStore.AddTokenToUser()
@@ -71,8 +73,11 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     if (this.state.loading) {
       return (<LoadingScreen />)
     }
+    console.log("rendered")
     this.props.rootStore.vendorStore.initialize();
     var vendors = this.state.vendors
+    console.log("rendering")
+
     return (
       <View style={css.screen.defaultScreen}>
         <View style={css.flatlist.container}>

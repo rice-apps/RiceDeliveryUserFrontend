@@ -10,6 +10,7 @@ import { AsyncStorage } from 'react-native'
 import PaymentRequest from '../../../components/payment-request.js'
 import { client } from '../../../main'
 import gql from 'graphql-tag'
+import { material } from 'react-native-typography';
 
 export interface PaymentInfoScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
@@ -17,7 +18,7 @@ export interface PaymentInfoScreenProps extends NavigationScreenProps<{}> {
 
 @inject("rootStore")
 @observer
-export class PaymentInfoScreen extends React.Component<any, {netID: String, token: String, addCardPressed : Boolean}> {
+export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {netID: String, token: String, addCardPressed : Boolean}> {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,25 +40,27 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
       console.log(this.state.netID);
 }
 
-      onCreditInput(object) {
+      onCreditInput(object: any) {
             this.setState({token : object});
             //TODO: Check if token is valid or no?
             if (this.state.token.tokenId != null) {
                     console.log(this.state.token.tokenId);
-                    this.updateAccount();
+                    this.updateAccount(object.card.last4);
+                    // save the last 4 digits for the payment submission form.
             }
             this.props.navigation.pop();
 
       }
 
-      async updateAccount() {
+      async updateAccount(creditLast4) {
             const updatedUserInfo = await client.mutate({
               mutation: gql`
-              mutation mutate($data: UpdateUserInput!) {
-                updateUser(data: $data) {
+              mutation mutate($data: UpdateUserInput!, $last4: String) {
+                updateUser(data: $data, last4: $last4) {
                   netID
                   firstName
                   lastName
+                  last4
                   phone
                   creditToken
                 }
@@ -67,11 +70,14 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
               variables : {
                 data: {
                   netID: this.state.netID,
-                  creditToken: this.state.token.tokenId
-                  // creditToken: "tok_visa"
-              }
+                  creditToken: this.state.token.tokenId,
+                },
+                last4: creditLast4
             }
             });
+            this.props.rootStore.userStore.saveCreditInfo(creditLast4);
+            console.log(this.props.rootStore.userStore.user.last4)
+
             console.log(updatedUserInfo);
             const user = updatedUserInfo.data.updateUser;
             console.log(user);
@@ -88,7 +94,7 @@ export class PaymentInfoScreen extends React.Component<any, {netID: String, toke
       return (
         <View style={css.screen.paddedScreen}>
         <View style={css.screen.accountScreenContainer}> 
-          <Text style={css.text.bigBodyTextCentered}>Replace your form of payment by adding a new card</Text>
+          <Text style={[material.headline, {textAlign: "center"}]}>Replace your form of payment by adding a new card</Text>
           {/* TODO - need to display this with current credit card information  */}
         </View>
         <PrimaryButton

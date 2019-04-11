@@ -6,9 +6,11 @@ import * as css from "../../style"
 import CookieManager from "react-native-cookies" 
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../stores/root-store"
+import { NavigationScreenProp } from "react-navigation";
 
 export interface CreateAccountScreenProps {
   rootStore?: RootStore
+  navigation: NavigationScreenProp<any, any>
 }
 @inject("rootStore")
 @observer
@@ -26,9 +28,14 @@ export class AccountScreen extends React.Component<CreateAccountScreenProps, any
       subtitle: 'Add a credit or debit card',
       navigateTo: 'PaymentInfo'
     },
+    {
+      name: 'FAQ',
+      subtitle: 'Find out more about the app',
+      navigateTo: 'FAQ'
+    },
   ]
 
-  keyExtractor = (item, index) => index
+  keyExtractor = (item, index) => index.toString()
 
   renderItem = ({ item }) => (
     <ListItem

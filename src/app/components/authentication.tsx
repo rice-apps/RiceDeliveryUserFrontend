@@ -38,6 +38,7 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
   }
 
   queryGetPost = (name) => {
+    console.log("HERE CHECK")
     api
       .post(
         "",
@@ -66,6 +67,7 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
 
 
   authenticate = (ticket) => {
+    console.log("authenticating")
     api
       .post(
         "",
@@ -91,6 +93,7 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
   }
 
   async _onNavigationStateChange(webViewState) {
+    console.log("on navigation state change")
     console.log(webViewState.url)
 
     CookieManager.get(webViewState.url).then((res) => {console.log("CookieManager.get =>", res)

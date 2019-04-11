@@ -28,6 +28,7 @@ export class PushNotificationHandler extends React.Component<PushNotificationPro
 
     PushNotificationIOS.addEventListener('register', token => {
       console.log("\n\n\n\n\n\n\THIS IS THE TOKEN: "+token+"\n\n");
+      console.log(token.toString())
       this.props.rootStore.userStore.setDeviceToken(token)
       this.props.rootStore.userStore.setNotificationAsked(true)
       this.props.rootStore.userStore.AddTokenToUser()

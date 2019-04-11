@@ -60,13 +60,18 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                 console.log("About to create user in createUserHandler")
                 const user = await client.mutate({
                         mutation: gql`
-                        mutation mutate($data: CreateUserInput!) {
-                                createUser(data: $data) {
-                                  netID
-                                  firstName
-                                  lastName
-                                  phone
-                                  creditToken
+                        mutation mutate($data: CreateUserInput!, $last4: String) {
+                                createUser(data: $data, last4: $last4) {
+                                        netID
+                                        firstName
+                                        lastName
+                                        last4
+                                        phone
+                                        customerIDArray {
+                                                accountID
+                                                customerID
+                                        }
+                                        deviceToken
                                 }
                               }
                         `
@@ -80,9 +85,12 @@ export class CreateAccountScreen extends React.Component<CreateAccountScreenProp
                                         // creditToken: "tok_mastercard" // TODO change this because doesn't actually accept token
                                         creditToken: this.state.token.tokenId,
                                 },
+                                last4: this.state.token.card.last4
                         },
                 })
-                console.log(user);
+                console.log("user created!")
+                console.log(user.data.createUser)
+                this.props.rootStore.userStore.setUser(user.data.createUser)
         }
         render() {
                 if (this.state.display) {

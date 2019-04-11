@@ -24,6 +24,7 @@ import { CreateAccountScreen } from "../app/screens/login-screen/create-account-
 import { OrderHistoryScreen } from "../app/screens/orderStack/order-history-screen/order-history-screen"
 import { SingleOrderScreen } from "../app/screens/orderStack/single-order-screen/single-order-screen"
 import { OrderScreen } from "../app/screens/orderStack/current-order-screen/current-order-screen"
+import { FAQScreen } from "../app/screens/accountStack/faq-screen/faq-screen";
 
 
 // Stack Navigator for Account Stack
@@ -56,6 +57,12 @@ const accountStackNavigator = createStackNavigator({
         screen: ChangePasswordScreen,
         navigationOptions: {
             title: "Password",
+        },
+    },
+    FAQ : {
+        screen: FAQScreen,
+        navigationOptions: {
+            title: "FAQ",
         },
     },
 });
@@ -94,7 +101,7 @@ const orderStackNavigator = createStackNavigator({
     OrderHistory : {
         screen: OrderHistoryScreen,
         navigationOptions: {
-            // title: "Order History",
+            title: "Order History",
         },
     },
     Order: {
@@ -113,21 +120,21 @@ const orderStackNavigator = createStackNavigator({
 
 // Tab Navigator for App
 export const TabNavigator = createBottomTabNavigator({
-    MenuStack: {
+    Menu: {
         screen: menuStackNavigator,
         navigationOptions: {
            tabBarIcon: pendingOrdersIcon, 
         //    title: "Menu",
          },      
     },
-    OrderStack: {
+    Order: {
         screen: orderStackNavigator,
         navigationOptions: {
         tabBarIcon: currentBatchesIcon, 
-        // title: "Order",
+        // title: "Order History",
         },      
     },
-    AccountStack: {
+    Account: {
         screen: accountStackNavigator,
         navigationOptions: {
         tabBarIcon: accountIcon, 
@@ -135,7 +142,7 @@ export const TabNavigator = createBottomTabNavigator({
         },      
     },
   },
-  {initialRouteName: "OrderStack"},
+  {initialRouteName: "Order"},
   )
 
 

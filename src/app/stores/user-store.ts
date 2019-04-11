@@ -1,7 +1,8 @@
-import { types, destroy } from "mobx-state-tree";
+import { types, destroy, flow } from "mobx-state-tree";
 import { client } from "../main";
 import gql from "graphql-tag";
 import { AsyncStorage } from "react-native";
+import { toJS } from "mobx";
 
 const ADD_DEVICETOKEN = gql`
 mutation AddToken($netID: String!, $token:String! ){
@@ -16,6 +17,7 @@ const AUTHENTICATION = gql`
             netID
             firstName
             lastName
+            last4
             phone
             customerIDArray {
                 accountID
@@ -32,6 +34,7 @@ const GET_USER = gql`
             netID
             firstName
             lastName
+            last4
             phone
             customerIDArray {
                 accountID
@@ -56,7 +59,8 @@ const CustomerIDPair = types
     lastName: types.optional(types.string, ""),
     phone: types.optional(types.string, ""),
     customerIDArray: types.optional(types.array(CustomerIDPair), []),
-    deviceToken: types.optional(types.array(types.string), [])
+    deviceToken: types.optional(types.array(types.string), []),
+    last4: types.maybe(types.string)
     // defaultLocation: types.optional(Location, {name: ""}),
 })
 
@@ -72,8 +76,9 @@ export const UserStoreModel = types
 })
 .actions(
     (self) => ({
-        async authenticate(ticket) {
-            let user = await client.mutate({
+        authenticate: flow(function * authenticate(ticket) {
+            console.log("I'm here baby")
+            let user = yield client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
                     ticket: ticket,
@@ -81,17 +86,17 @@ export const UserStoreModel = types
                     vendorName: ""
                 }
             });
-            self.setAuth(true)
-            if (user.data.authenticator.firstName != null) {
-                self.setUser(user.data.authenticator)
-                self.setAccountState(true)
-            } else {
-                self.setUser({ netID: user.data.authenticator.netID })
-                self.setAccountState(false)
+            self.authenticated = true
+            console.log("NULL" + user.data.authenticator)
+            if (user.data.authenticator !== null && user.data.authenticator.firstName !== null) {
+                console.log("CHECKING AUTHENTICATOR")
+                console.log(user.data.authenticator)
+                self.user = user.data.authenticator
+                self.hasAccount = true
             }
-
-        },
+        }),
         async AddTokenToUser(){
+            console.log("add token")
             if (self.notification_granted){
                 try {
                     let addToken = await client.mutate({
@@ -129,9 +134,9 @@ export const UserStoreModel = types
         setAuth(authState) {
             self.authenticated = authState;
         },
-        async getUserFromNetID(netID) {
+        getUserFromNetID: flow(function * getUserFromNetID(netID) {
             console.log("Pre netID thing");
-            let data = await client.query({
+            let data = yield client.query({
                 query: GET_USER,
                 variables: {
                     netID: netID
@@ -139,16 +144,71 @@ export const UserStoreModel = types
             });
             
             console.log("Post netID gt");
-            console.log(data.data.user[0]);
-            let user = data.data.user[0];
 
+            let user = data.data.user[0];
             // Set user
-            self.setUser(user);
+            self.user = (user);
             // Set account
-            self.setAccountState(true);
+            self.hasAccount = (true);
             // Set auth
-            self.setAuth(true);
-        }
+            self.authenticated = (true);
+        }),
+        updateUser: flow(function * updateUser(infoToUpdate) {
+            // update the user.
+            const updatedUserInfo = yield client.mutate({
+                mutation: gql`
+                mutation mutate($data: UpdateUserInput!) {
+                  updateUser(data: $data) {
+                    netID
+                    firstName
+                    lastName
+                    last4
+                    phone
+                    customerIDArray {
+                        accountID
+                        customerID
+                    }
+                    deviceToken
+                  }
+                }
+                `
+                , 
+                variables : {
+                  data: infoToUpdate
+              }
+              });
+            self.user = (updatedUserInfo.data.updateUser)
+            return self.user
+        }),
+        saveCreditInfo(last4) {
+            self.user.last4 = last4
+        },
+        getUser: flow(function * getUser(netID) {
+            const userInfo = yield client.query({
+                query: gql`
+                query user($data: String!) {
+                  user(netID: $data) {
+                    netID
+                    firstName
+                    lastName
+                    last4
+                    phone
+                    customerIDArray {
+                        accountID
+                        customerID
+                    }
+                    deviceToken
+                  }
+                }
+                `
+                ,
+                variables: {
+                  data: netID
+                }
+              });
+              self.user = userInfo.data.user[0]
+              return self.user
+        })
     })
 )
 

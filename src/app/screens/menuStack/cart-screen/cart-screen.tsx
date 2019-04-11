@@ -3,12 +3,13 @@ import { View, Text, FlatList, SectionList } from "react-native"
 import * as css from "../../style"
 import PrimaryButton from "../../../components/primary-button.js"
 import { CartItem } from "../../../components/temporary-mock-order"
-import { Divider } from "react-native-elements"
+import { Divider, Button } from "react-native-elements"
 import { CartScreenItem } from "../../../components/cart-item"
 import { inject, observer } from "mobx-react" 
 import { RootStore } from "../../../stores/root-store"
 import { NavigationScreenProp } from "react-navigation"
 import { Observer } from "mobx-react/native"
+import { toJS } from "mobx";
 
 interface CartScreenState {
   cart : CartItem[],
@@ -34,13 +35,13 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
       this.props.navigation.navigate("Checkout")
     }
     
-  renderItems = ({item}) => {
+  renderItems = ({item, index}) => {
     var cartItemAttributes = this.parseCartItemAttributes(item);
     return (
     <Observer>
       {() => 
         <CartScreenItem 
-        rootStore = {this.props.rootStore}
+          rootStore = {this.props.rootStore}
           cartItem={item}
           text={{
             middleSmallTwo : item.description,
@@ -59,18 +60,18 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
       return [cartItem.attributes.map((attr) => attr.value)];
   }
 
-  renderExtraInfo = ({ item, index, section }) => (
+  renderExtraInfo = ({ item, index }) => (
     <CartScreenItem rootStore={this.props.rootStore} cartItem={null} key={index} text={item} />
   )
   
   render() {
-
     let { rootStore } = this.props;
     // let arr = Array.from(rootStore.cartStore.cartMap.toJS().entries()).filter(pair => pair[1].quantity > 0)
-    let cartItems = rootStore.cartStore.cart;
+    let cartItems = toJS(rootStore.cartStore.cart);
     let deliveryCost = 1.50;
     let subtotalCost = cartItems.reduce((previous, item) => previous + (item.price / 100.0), 0)
     let subtotalData = {
+
       middleBig: "Subtotal",
       middleSmall: "",
       right: "$" + subtotalCost
@@ -81,28 +82,34 @@ export class CartScreen extends React.Component<CartScreenProps, CartScreenState
         right: "$" + deliveryCost
       }
 
-      let placeOrderButton = 
-      <PrimaryButton
-            title ={`Checkout $${subtotalCost + deliveryCost}`}
-            onPress = {this.checkoutPush}
+      var placeOrderButton = 
+      (
+      <View style={{width: "100%"}}>
+        <Button 
+        containerStyle={{width: "100%", padding: 0, margin: 0, borderRadius: 0}}
+        buttonStyle={{padding: 12}}
+        title ={`Checkout $${subtotalCost + deliveryCost}`}
+        onPress = {this.checkoutPush} />
+        </View>)
+    return (
+      <View style={{flex: 1}}>
+        <View style={[css.screen.defaultScreen, {height: "100%"}]}>
+          <SectionList
+            style={css.flatlist.container}
+            renderItem={this.renderExtraInfo}
+            sections={[
+              { title: 'Title1', data: cartItems, renderItem: this.renderItems},
+              { title: 'Title2', data: [subtotalData, deliveryData], },
+            ]}
           />
 
-    return (
-      
-      <View style={[css.screen.defaultScreen, {height: "100%"}]}>
-        <SectionList
-          style={css.flatlist.container}
-          renderItem={this.renderExtraInfo}
-          sections={[
-            { title: 'Title1', data: cartItems, renderItem: this.renderItems},
-            { title: 'Title2', data: [subtotalData, deliveryData], },
-          ]}
-        />
 
 
-        {cartItems.length > 0 ? placeOrderButton : null}
+        </View>
+        {toJS(cartItems.length) > 0 && placeOrderButton}
 
       </View>
+      
       )
   }
 }

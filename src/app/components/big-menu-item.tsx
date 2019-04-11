@@ -12,7 +12,7 @@ import { CartItemModel , SKUAtributesModel } from '../stores/cart-store';
 
 
 const flatMap = (f,xs) =>
-  xs.map(f).reduce(concat, [])
+  xs.map(f).reduce((x, y) => x.concat(y), [])
 
 function eliminateDuplicates(arr) {
 var i,
@@ -116,10 +116,10 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
 
 
     getPossibleAttributeValues(keyAttribute, product) {
-        let list = product.skuItems.flatMap((skuItem=> 
+        let list =flatMap((skuItem=> 
             skuItem.attributes.filter((attribute) => attribute.key == keyAttribute)
             .map((attribute) => attribute.value)
-        ));
+        ),  product.skuItems);
         return(eliminateDuplicates(list));
     }
 
