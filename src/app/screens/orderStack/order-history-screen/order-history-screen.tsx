@@ -18,6 +18,7 @@ export const GET_ORDERS = gql`
         orderStatus{
           pending
           onTheWay
+          arrived
           fulfilled
           unfulfilled
         }

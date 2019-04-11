@@ -98,6 +98,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
       user: props.rootStore.userStore.user,
       cancelModalVisible : false,
       refundModalVisible : false,
+      cancelDisable : false,
     }
 
     this.cancelOrderPush = this.cancelOrderPush.bind(this);
@@ -117,14 +118,39 @@ export class SingleOrderScreen extends React.Component<any, any> {
         }
       })
 
+      console.log(orderStatus);
+      console.log(orderStatus.data.order[0]);
+
       var { status } = getStatusDisplayColor(orderStatus.data.order[0]);
       console.log("latest queried status :" + status);
+
+      /* Don't allow cancellation in these statuses */
+      if (status !== "pending" && status !== "on the way") {
+        this.setState({
+          cancelDisable : true,
+        });
+        Alert.alert(
+          'Sorry you cannot cancel your order at this moment.',
+          '',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        );
+
+        console.log("order is not actually pending or on the way, cannot cancel!")
+        return;
+      }
 
 
       if (status == "pending") { // Status is still pending, can refund order
         Alert.alert(
           'You\'ve requested to cancel this refundable order.',
-          'Would you wish to continue to cancel this order with a refund?',
+          'Are you sure?',
           [
             {text: 'Yes', onPress: async () => {
               let netID = this.state.user.netID;
@@ -153,10 +179,10 @@ export class SingleOrderScreen extends React.Component<any, any> {
           ],
           {cancelable: false},
         );
-      } else { // Status is on the way, cannot refund order
+      } else if (status == "on the way") { // Status is on the way, cannot refund order
         Alert.alert( 
           'You\'ve requested to cancel this non-refundable order.',
-          'Would you wish to continue to cancel this order without a refund?',
+          'Are you sure?',
           [
             {text: 'Yes', onPress: async () => {
               let netID = this.state.user.netID;
@@ -185,6 +211,8 @@ export class SingleOrderScreen extends React.Component<any, any> {
           ],
           {cancelable: false},
         );
+      } else {
+        console.log("Cannot actually cancel this order. not pending or on the way after second check");
       }
 }
 
@@ -216,6 +244,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
         <PrimaryButton
         title ="Cancel Order"
         onPress = {this.cancelOrderPush}
+        disabled = {this.state.cancelDisable}
         />
     </View>
 

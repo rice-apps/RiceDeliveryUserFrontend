@@ -94,7 +94,7 @@ const orderStackNavigator = createStackNavigator({
     OrderHistory : {
         screen: OrderHistoryScreen,
         navigationOptions: {
-            // title: "Order History",
+            title: "Order History",
         },
     },
     Order: {
@@ -124,7 +124,7 @@ export const TabNavigator = createBottomTabNavigator({
         screen: orderStackNavigator,
         navigationOptions: {
         tabBarIcon: currentBatchesIcon, 
-        // title: "Order",
+        // title: "Order History",
         },      
     },
     AccountStack: {

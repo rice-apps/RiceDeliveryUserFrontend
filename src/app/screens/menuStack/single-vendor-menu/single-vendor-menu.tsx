@@ -90,7 +90,7 @@ export class SingleVendorMenu extends React.Component<SingleVendorMenuProps, Sin
       products : menu.data.vendor[0].products, isLoading: false
     })
     this.props.rootStore.vendorStore.initializeMenu(menu.data.vendor[0])
-    console.log(JSON.stringify(this.props.rootStore.vendorStore.vendors))
+    // console.log(JSON.stringify(this.props.rootStore.vendorStore.vendors))
 
   }
   
