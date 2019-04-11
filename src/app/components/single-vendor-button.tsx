@@ -44,7 +44,7 @@ class SingleVendorButton extends React.Component<any, any> {
             }
         })
         console.log("THIS IS THE STATE: " + checker)
-        this.setState({open: true}) 
+        this.setState({open: checker}) 
     }
 
     async componentDidMount() {
