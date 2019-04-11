@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
 import * as css from "../screens/style"
-import Order from "../components/temporary-mock-order"
 import { withNavigation } from "react-navigation"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { getStatusDisplayColor, getOrderTime } from "../screens/util"
@@ -33,17 +32,7 @@ class OrderHistItem extends React.Component<any, any> {
                     <Text> {time.toLocaleDateString() + " - " + time.toLocaleTimeString()}</Text>
                 </View>
                 <View>
-                    <Text style={{
-                        fontSize: 20, 
-                        borderRadius : 5,
-                        overflow : "hidden",
-                        color: "white",
-                        padding : 2,
-                        width: 100,
-                        margin : 2,
-                        textAlign: "center",
-                        backgroundColor: statusDisplay.color,
-                    }}>
+                    <Text style={[css.text.displayStatusText, {backgroundColor: statusDisplay.color}]}>
                          {statusDisplay.status} </Text>
                 </View>
 

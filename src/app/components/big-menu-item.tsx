@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Modal, Text, View, TextInput, TouchableHighlight, Picker, TouchableOpacity, SegmentedControlIOS, TouchableWithoutFeedback, Dimensions} from 'react-native';
+import { Modal, Text, View, TextInput, TouchableHighlight, Picker, TouchableOpacity, SegmentedControlIOS, TouchableWithoutFeedback, Dimensions, Alert} from 'react-native';
 import * as css from '../screens/style';
 import { inject, observer } from 'mobx-react';
 import { client } from '../main';
@@ -67,9 +67,14 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
     }
 
     addToCart(size, topping) {
-        console.log("I'm trying to purchase");
-        console.log(size);
-        console.log(topping);
+
+        if (!size || !topping) {
+            this.setState({
+                missingOptions : true
+            })
+            return false;
+        }
+
         let prod = this.findSKU(size, topping, this.props.product.caption);
         let { attributes } = prod;
         let attrOne = SKUAtributesModel.create({
@@ -90,6 +95,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
             description : this.state.description ? this.state.description : "",
         });
         this.props.rootStore.cartStore.addToCart(cartItem);
+        return true;
     }
 
     findSKU(size, topping, productName) {
@@ -121,11 +127,8 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
         let {cartItems} = this.props.product;
         let sizes = this.getPossibleAttributeValues("size", this.props.product)
         let toppings = this.getPossibleAttributeValues("topping", this.props.product)
-
         let sizePickerItems = sizes.map((size, i) => <Picker.Item key={i} value={size} label= {size} />);
-
         let toppingPickerItems = toppings.map((topping, i) => <Picker.Item key={i} value={topping} label= {topping}/>);
-
         return (
             <View>
                 <TouchableHighlight onPress= {() => {
@@ -196,6 +199,8 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                         value={this.state.text}
                         />
 
+                        {this.state.missingOptions ? missingOptionsDisplay : null}
+
                     <PrimaryButton
                         title ="Add to Cart"
                         disabled={this.state.size_flag === true || this.state.topping_flag === true}
@@ -204,6 +209,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                             this.addToCart(this.state.size, this.state.topping)
                             this.setState({topping_flag: true})
                             this.setState({size_flag: true})
+
                         }}
                     />
                     <PrimaryButton

@@ -219,7 +219,8 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       return <Picker.Item key={i} value={s.name} label={s.name} />
     });
 
-
+  console.log("locationOptions");
+  console.log(locationOptions);
 
     return (
       <View style={css.screen.defaultScreen}>          
