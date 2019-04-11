@@ -77,7 +77,8 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       netID: "",
       phone: "",
       customerID: "",
-      rootStore: props.rootStore
+      rootStore: props.rootStore,
+      orderDisabled: false,
     }
   }
 
@@ -124,10 +125,17 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       console.log("create order failed");
     }
 
-
+    this.setState({
+      orderDisabled : true
+    })
   };
 
   async checkStatuses() {
+
+    this.setState({
+      orderDisabled : true
+    });
+
     let items = await this.props.rootStore.cartStore.checkAllCartItems().then((results) => {
       if (results.length > 0) {
         let message = []
@@ -265,7 +273,13 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
 
             <PrimaryButton
               title="Place Order"
-              onPress={() => this.checkStatuses()}
+              onPress={() => {
+                this.setState({
+                  orderDisabled : true
+                })
+                this.checkStatuses();
+              }}
+              disabled = {this.state.orderDisabled}
             />
             <View>
           </View>

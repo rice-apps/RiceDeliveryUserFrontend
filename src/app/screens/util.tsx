@@ -30,9 +30,11 @@ export function getOrderTime(order) {
 
 export function getStatusDisplayColor(order) {
     let { orderStatus } = order
+    console.log(order);
 
     var statusDisplay = orderStatus.pending ? "pending" : "cancelled"
     statusDisplay = orderStatus.onTheWay ? "on the way" : statusDisplay
+    statusDisplay = orderStatus.arrived ? "arrived" : statusDisplay
     statusDisplay = orderStatus.fulfilled ? "fulfilled" : statusDisplay
     statusDisplay = orderStatus.unfulfilled ? "unfulfilled" : statusDisplay
     statusDisplay = order.paymentStatus == "canceled" ? "refunded" : statusDisplay
@@ -40,6 +42,9 @@ export function getStatusDisplayColor(order) {
 
     var statusColor 
     switch(statusDisplay) {
+        case "arrived":
+            statusColor = "green"
+            break;
         case "pending":
             statusColor = "orange"
             break
@@ -53,10 +58,7 @@ export function getStatusDisplayColor(order) {
             statusColor = "red"
             break
         case "refunded":
-            statusColor = "lightgreen"
-            break
-        case "refunded":
-            statusColor = "#d3d3d3"
+            statusColor = "grey"
             break
         default:
             statusColor = "grey"
