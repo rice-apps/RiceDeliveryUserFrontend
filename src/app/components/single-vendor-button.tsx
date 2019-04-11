@@ -2,8 +2,13 @@ import * as React from "react"
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
 import { withNavigation } from "react-navigation"
 import * as css from "../screens/style"
+import { RootStore } from "../../../stores/root-store";
+import { inject, observer } from "mobx-react"
+
 
 // Should we always define the input props/state for components instead of <any, any>???
+@inject("rootStore")
+@observer
 class SingleVendorButton extends React.Component<any, any> {
     constructor(props) {
         super(props)
@@ -11,8 +16,6 @@ class SingleVendorButton extends React.Component<any, any> {
         this.state = {
             day_hours:[],
             open: false, 
-            hours_of_operation: "",
-            time: new Date().toLocaleString(),
             hours: [[], [], [], [], [], [], []],
             lookup: {
                 0: "Monday  ",
@@ -23,41 +26,18 @@ class SingleVendorButton extends React.Component<any, any> {
                 5: "Saturday  ",
                 6: "Sunday   "
             },
-            week_day:""
         }
     }
-
-    check_open(new_day){
-        let day_idx = new_day.getDay()
-        if (day_idx == 0) {
-            day_idx = 7
-        } else {
-            day_idx -= 1
-        }
-        let checker = false
-        this.state.hours[day_idx].map(x => {
-            console.log(typeof new_day.getHours())
-            console.log(typeof x[0])
-            if (x[0] < new_day.getHours() && new_day.getHours() < x[1]){
-                console.log(x[0], new_day.getHours(), x[1])
-                checker = true
-            }
-        })
-        console.log("THIS IS THE STATE: " + checker)
-        this.setState({open: checker}) 
-    }
-
     async componentDidMount() {
         // this.updateWeekHours()
         await this.updateWeekHours()
+        this.props.rootStore.vendorStore.setHourTransformed(this.state.hours)
+        console.log("\n\n\n\n\n we are setting this after we await \n\n\n\n")
+        this.props.rootStore.vendorStore.check_open(new Date())
         this.intervalID = setInterval(
             () => this.tick(),
             1000*60
           );
-        console.log(this.state.day_hours.join("\n"))
-        let mess = this.state.day_hours.join("\n")
-        this.setState({hours_of_operation: mess})
-        this.check_open(new Date())
 
         
     }
@@ -72,13 +52,10 @@ class SingleVendorButton extends React.Component<any, any> {
 
     tick() {
         let new_day = new Date()
-        this.setState({
-          time: new_day.toLocaleString()
-        });
         // console.log(this.state.time)
-        this.setState({week_day: this.getDayOfWeek(new_day)})
-        this.check_open(new Date())
-
+        this.props.rootStore.vendorStore.check_open(new Date())
+        console.log("calling from TCIK \n\n\n\n")
+        this.props.rootStore.vendorStore.setHourTransformed(this.state.hours)
       }
 
     getDayOfWeek(date) {
@@ -90,8 +67,6 @@ class SingleVendorButton extends React.Component<any, any> {
       }
     async updateWeekHours(){
         this.props.vendor.hours.map(([open, close], index) => {
-            // this.state.hours[this.state.lookup[index]].push(open)
-            // this.state.hours[this.state.lookup[index]].push(close)
             if (open > close) {
                 this.state.hours[index].push([open,24])
                 if (index === 6){
@@ -110,10 +85,9 @@ class SingleVendorButton extends React.Component<any, any> {
                 let first = (open > 12) ? (open-12).toString() + "pm" : open.toString()+"am"
                 let second = (close > 12) ? (close-12).toString() + "pm" : close.toString()+"am"
                 this.state.day_hours.push(this.state.lookup[index]+"\t\t"+first + " - " + second)
-                
             }
         })
-        
+        console.log('\n\n\n\n\n UPDATE FINISHED \n\n\n\n\n\n')
     }
 
     onVendorPress() {
@@ -127,10 +101,8 @@ class SingleVendorButton extends React.Component<any, any> {
     render() {
         // Currently, just displaying vendor name from struct
         var vendorName = this.props.vendor.name
-        console.log("\n\n vendor hours: " + this.props.vendor.hours)
-
         return (
-            <TouchableHighlight onPress={(this.state.open) ? this.onVendorPress: () => {}}>
+            <TouchableHighlight onPress={(this.props.rootStore.vendorStore.open) ? this.onVendorPress: () => {}}>
                 {/* <View> */}
                 <View style={css.flatlist.vendorView}>
                 <View style={{
@@ -140,12 +112,12 @@ class SingleVendorButton extends React.Component<any, any> {
                 }}>
                     <Text style={css.text.bigBodyText}>{vendorName}</Text>
                     <View style={{
-                        backgroundColor : this.state.open ? "green" : "red",
+                        backgroundColor : this.props.rootStore.vendorStore.open ? "green" : "red",
                         borderRadius : 7,
                         padding : 4
                     }}>
                     <Text style={css.text.bigBodyText}>
-                        {(this.state.open == true) ? this.returnOpen(): this.returnClosed()}
+                        {(this.props.rootStore.vendorStore.open == true) ? this.returnOpen(): this.returnClosed()}
                     </Text>
                     </View>
                 </View>

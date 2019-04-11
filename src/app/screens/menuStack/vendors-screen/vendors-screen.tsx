@@ -56,8 +56,9 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let { rootStore } = this.props;
+    await this.props.rootStore.vendorStore.initialize()
     console.log('component did mount')
     this.getVendors();
     this.requestPermission()
