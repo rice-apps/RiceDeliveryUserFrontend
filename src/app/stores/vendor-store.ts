@@ -1,6 +1,7 @@
 import {types, destroy, getSnapshot, flow} from "mobx-state-tree"
 import { client } from "../main"
 import gql from "graphql-tag"
+import { nullType } from "mobx-state-tree/dist/internal";
 
 const GET_VENDORS = gql`
 query vendor{
@@ -85,13 +86,14 @@ export const Location = types
 })
 
 
+
 const Vendor = types
 .model("Vendor", {
     name: types.string,
     phone: types.string,
     hours: types.array(types.optional(types.array(types.number), [])),
     locationOptions: types.array(Location),
-    products: types.optional(types.array(Product),[]),
+    products: types.optional(types.array(Product),[])
 }).actions(self => ({
     initializeProducts(products) {
         self.products = products
@@ -102,6 +104,8 @@ export const VendorStoreModel = types
 .model("VendorStoreModel", {
     vendors: types.array(Vendor), 
     activeVendor: "",
+    hours_transformed: types.array(types.optional(types.array(types.array(types.number)), [])),
+    open: false,
 }).actions(self => ({
     async initialize() {
         let vendors = await client.query({
@@ -112,12 +116,35 @@ export const VendorStoreModel = types
         ).map((item, idx) => {
             console.log("initializing vendor: " + JSON.stringify(item))
             self.addVendor(item);
-            
-            // self.vendors.push(item);
+
         })
+    },
+    setHourTransformed(transformedArr){
+        console.log("HERE: " + transformedArr)
+        self.hours_transformed = transformedArr;
     },
     addVendor(vendor) {
         self.vendors.push(vendor)
+    },
+    check_open(new_day){
+        let day_idx = new_day.getDay()
+        if (day_idx == 0) {
+            day_idx = 7
+        } else {
+            day_idx -= 1
+        }
+        let checker = false
+        self.hours_transformed[day_idx].map(x => {
+            if (x[0] < new_day.getHours() && new_day.getHours() < x[1]){
+                console.log(x[0], new_day.getHours(), x[1])
+                checker = true
+            }
+        })
+        console.log("THIS IS THE STATE: " + checker)
+        self.setOpen(checker)
+    },
+    setOpen(status){
+        self.open = status
     },
     setActiveVendor(vendor) {
         self.activeVendor = vendor
