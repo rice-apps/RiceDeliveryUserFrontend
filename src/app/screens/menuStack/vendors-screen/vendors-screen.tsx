@@ -64,7 +64,7 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     console.log('component did mount')
     this.getVendors();
     this.requestPermission()
-    console.log("finished")
+    this.props.rootStore.vendorStore.getHours()
   }
 
   render() {

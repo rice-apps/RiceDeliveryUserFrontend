@@ -3,6 +3,16 @@ import { client } from "../main"
 import gql from "graphql-tag"
 import { nullType } from "mobx-state-tree/dist/internal";
 
+
+const GET_HOURS = gql`
+query vendor($name: String){
+    vendor(name:$name){
+        hours
+    }
+}
+`
+
+
 const GET_VENDORS = gql`
 query vendor{
     vendor {
@@ -114,19 +124,18 @@ export const VendorStoreModel = types
         vendors.data.vendor.filter(
             (item, idx) => item.name === "East West Tea" // filtering out the Hoot for now..
         ).map((item, idx) => {
-            console.log("initializing vendor: " + JSON.stringify(item))
             self.addVendor(item);
-
         })
     },
     setHourTransformed(transformedArr){
-        console.log("HERE: " + transformedArr)
+        console.log("we are setting this transformed arr: " + transformedArr)
         self.hours_transformed = transformedArr;
     },
     addVendor(vendor) {
         self.vendors.push(vendor)
     },
     check_open(new_day){
+        console.log("check_open")
         let day_idx = new_day.getDay()
         if (day_idx == 0) {
             day_idx = 7
@@ -134,20 +143,41 @@ export const VendorStoreModel = types
             day_idx -= 1
         }
         let checker = false
+        console.log(JSON.stringify(self.hours_transformed))
         self.hours_transformed[day_idx].map(x => {
+            console.log(x[0], new_day.getHours(), x[1])
             if (x[0] < new_day.getHours() && new_day.getHours() < x[1]){
                 console.log(x[0], new_day.getHours(), x[1])
                 checker = true
             }
         })
+
         console.log("THIS IS THE STATE: " + checker)
         self.setOpen(checker)
     },
     setOpen(status){
         self.open = status
     },
+
+    updateHours(hours){
+        self.vendors[0].hours = hours
+    },
+    async getHours(){
+        let vendor_hours = await client.query({
+            query: GET_HOURS,
+            variables:{
+                name: "East West Tea"
+            }
+        })        
+        self.setHours(vendor_hours.data.vendor[0].hours)
+        
+    },
     setActiveVendor(vendor) {
         self.activeVendor = vendor
+    },
+    setHours(new_hours){
+        self.vendors[0].hours = new_hours
+        // self.vendors[0].hours.map(x => console.log(x))
     },
     initializeMenu(menuData) {
         const vendor = self.vendors.filter(vendor => vendor.name === menuData.name)
