@@ -66,7 +66,7 @@ export class AccountInfoScreen extends React.Component<AccountInfoScreenProps, A
   render() {
     return (
       <View style={css.screen.paddedScreen}>
-        <View style={css.screen.accountScreenContainer}>
+        <View style={css.screen.accountInfoContainer}>
           <View style={{
             flex : 0.3,
             flexDirection : "column",

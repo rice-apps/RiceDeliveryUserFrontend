@@ -38,6 +38,12 @@ export const screen = StyleSheet.create({
         padding: 10,
         backgroundColor: LIGHT_GRAY,
     }, 
+    accountInfoContainer: {
+        alignContent : "center",
+        flex: 1, 
+        padding: 10,
+        backgroundColor: LIGHT_GRAY,
+    }, 
     divider : {
         backgroundColor : SILVER,
         height : 1,

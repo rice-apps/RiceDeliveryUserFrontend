@@ -93,11 +93,7 @@ export const UserStoreModel = types
                 console.log(user.data.authenticator)
                 self.user = user.data.authenticator
                 self.hasAccount = true
-            } else {
-                if (self.user !== null && user.data.authenticator !== null) self.user.netID = user.data.authenticator.netID
-                self.hasAccount = false
             }
-
         }),
         async AddTokenToUser(){
             console.log("add token")
