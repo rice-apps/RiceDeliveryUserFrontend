@@ -304,7 +304,12 @@ export const touchableopacity = StyleSheet.create({
 export const picker = StyleSheet.create({
     pickerContainer : {
         height: 50, 
-        width: 250
+        width: 200,
+        marginTop : 0,
+        paddingLeft : 5,
+        margin : 0,
+        padding : 0,
+
     },
     locationPicker: {
         height: 50, 
