@@ -104,17 +104,22 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     if (orderID !== null) {
       /* Clearing the cart store */
       this.props.rootStore.cartStore.removeAllItems();
+      // /* Paying for the order */
+      // let payment = await client.mutate({
+      //   mutation: PAY_ORDER,
+      //   variables: {
+      //     "netID": netID,
+      //     "vendorName": vendorName,
+      //     "orderID": orderID
+      //   }
+      // });
+      // console.log(payment);
+      console.log("create order was success");
+      this.props.rootStore.cartStore.removeAllItems()
+      await this.props.rootStore.orderStore.getOrders(netID, null);
+      await this.props.navigation.popToTop()
+      this.props.navigation.navigate("OrderHistory")
 
-      /* Paying for the order */
-      let payment = await client.mutate({
-        mutation: PAY_ORDER,
-        variables: {
-          "netID": netID,
-          "vendorName": vendorName,
-          "orderID": orderID
-        }
-      });
-      console.log(payment);
     } else {
       console.log("create order failed");
     }
@@ -122,13 +127,6 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     this.setState({
       orderDisabled : true
     })
-
-    console.log("create order was success");
-    this.props.rootStore.cartStore.removeAllItems()
-    await this.props.rootStore.orderStore.getOrders(netID, null);
-    // await this.props.navigation.popToTop()
-    this.props.navigation.navigate("OrderHistory")
-
   };
 
   async updateWeekHours(){
