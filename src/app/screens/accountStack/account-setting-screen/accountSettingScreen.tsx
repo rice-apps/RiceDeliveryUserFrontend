@@ -71,6 +71,7 @@ export class AccountScreen extends React.Component<CreateAccountScreenProps, any
                 .then((res) => {console.log('CookieManager.get =>', res);});
               CookieManager.clearAll()
                 .then((res) => console.log("CookieManager.clearAll =>", res))
+              this.props.rootStore.userStore.resetUser()
               AsyncStorage.removeItem("Authenticated")
               this.props.navigation.reset({ index: 0, actions: [this.props.navigation.navigate("Login")]})
             }}

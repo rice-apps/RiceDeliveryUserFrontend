@@ -37,66 +37,16 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
     }
   }
 
-  queryGetPost = (name) => {
-    console.log("HERE CHECK")
-    api
-      .post(
-        "",
-        {
-          query: `
-          query Author($firstName: String!) {
-          author(filter:$firstName){
-            lastName
-          }
-        }
-        `,
-          variables: {
-            firstName: name,
-          },
-        },
-      ).then(
-        (res: any) => {
-          return this.setState({ author: res.data.data.author[0] })
-        },
-      )
-  }
-
   toggleBrowser() {
     this.setState({ displayBrowser: !this.state.displayBrowser })
-  }
-
-
-  authenticate = (ticket) => {
-    console.log("authenticating")
-    api
-      .post(
-        "",
-        {
-          query: `
-          mutation Authenticate($ticket: String!) {
-            authenticator(ticket:$ticket) {
-              netID
-            }
-          }
-        `,
-          variables: {
-            ticket: ticket,
-          },
-        },
-      )
-      .then((res) => {
-        let user = res.data.data.authenticator
-
-        console.log(user)
-        console.log(res)
-      })
   }
 
   async _onNavigationStateChange(webViewState) {
     console.log("on navigation state change")
     console.log(webViewState.url)
 
-    CookieManager.get(webViewState.url).then((res) => {console.log("CookieManager.get =>", res)
+    CookieManager.get(webViewState.url).then((res) => {
+      console.log("CookieManager.get =>", res)
     })
 
     var equalSignIndex = webViewState.url.indexOf("ticket=") + 1
@@ -114,6 +64,10 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
         this.props.onSuccess()
       } else {
         console.log("Auth failed")
+        CookieManager.clearAll()
+        .then((res) => {
+          console.log('CookieManager.clearAll =>', res);
+          });
         this.props.onFailure()
       }
     }
@@ -130,11 +84,68 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
       <View style={FULL}>
         <StatusBar barStyle="light-content" />
         <WebView
-              // source={{uri: 'https://idp.rice.edu/idp/profile/cas/login?service=hedwig://localhost:8080/auth'}}
               source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://www.gizmodo.com' }}
               onNavigationStateChange={this._onNavigationStateChange.bind(this)}
               style={{ marginTop: 20, display: this.state.displayBrowser ? "flex" : "none" }}
             />
+      </View>
+    )
+  }
+}
+
+export default AuthenticationComponent
+
+
+// queryGetPost = (name) => {
+//   api
+//     .post(
+//       "",
+//       {
+//         query: `
+//         query Author($firstName: String!) {
+//         author(filter:$firstName){
+//           lastName
+//         }
+//       }
+//       `,
+//         variables: {
+//           firstName: name,
+//         },
+//       },
+//     ).then(
+//       (res: any) => {
+//         return this.setState({ author: res.data.data.author[0] })
+//       },
+//     )
+// }
+
+
+// authenticate = (ticket) => {
+//   console.log("authenticating")
+//   api
+//     .post(
+//       "",
+//       {
+//         query: `
+//         mutation Authenticate($ticket: String!) {
+//           authenticator(ticket:$ticket) {
+//             netID
+//           }
+//         }
+//       `,
+//         variables: {
+//           ticket: ticket,
+//         },
+//       },
+//     )
+//     .then((res) => {
+//       let user = res.data.data.authenticator
+
+//       console.log(user)
+//       console.log(res)
+//     })
+// }
+
         {/* {
           this.state.userStore.loggedIn() ?
         //   this.props.navigation.navigate("Menu") :
@@ -183,9 +194,3 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
             />
           </Screen>
         </SafeAreaView> */}
-      </View>
-    )
-  }
-}
-
-export default AuthenticationComponent

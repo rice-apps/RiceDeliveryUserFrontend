@@ -1,13 +1,14 @@
-import { types } from "mobx-state-tree"
+import { types, flow} from "mobx-state-tree"
 import { Location } from "./vendor-store"
 import gql from "graphql-tag";
 import { getOrderTime } from '../screens/util';
 import { client } from '../main';
+import { toJS } from "mobx";
 
 const GET_ORDERS = gql`
-  query getUserOrder($user_netid: String) {
+  query getUserOrder($user_netid: String, $starting_after: String) {
     user(netID: $user_netid){
-      orders{
+      orders(starting_after: $starting_after){
         id
         amount
         created
@@ -16,6 +17,7 @@ const GET_ORDERS = gql`
         paymentStatus
         orderStatus{
           pending
+          arrived
           onTheWay
           fulfilled
           unfulfilled
@@ -66,22 +68,20 @@ export const OrderModel = types.model("OrderModel", {
 })
 .actions(
   (self) => ({
-    async getOrders(netid) {
-      let data = await client.query({
+    getOrders: flow(function *  getOrders(netid, starting_after) {
+      const variables = {"user_netid": netid}
+      console.log(toJS(self.pending))
+      console.log(starting_after)
+      if (starting_after !== null) variables.starting_after = starting_after;
+      let data = yield client.query({
         query: GET_ORDERS,
-        // variables: {$user_netid: this.props.rootStore.userStore.user.netID}
-        variables: {
-          "user_netid": netid
-        }
+        variables
       });
-      var orders = data.data.user[0].orders;
-      orders.sort((o1, o2) => {
-        return getOrderTime(o2).getTime() - getOrderTime(o1).getTime();
-      });
-      console.log(orders);
-      self.setActiveOrders(orders.filter(item => !item.orderStatus.fulfilled));
-      self.setPreviousOrders(orders.filter(item => item.orderStatus.fulfilled));
-    },
+      console.log(data.data)
+      if (data.data.user[0].orders.length === 0) return []
+      self.pending = (starting_after === null) ? data.data.user[0].orders : self.pending.concat(data.data.user[0].orders)
+      return self.pending
+    }),
     setActiveOrders(orders) {
       self.active = orders;
     },

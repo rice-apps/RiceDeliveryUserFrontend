@@ -54,12 +54,12 @@ const CustomerIDPair = types
  const User = types
 .model("User", {
     // _id: types.string,
-    netID: types.optional(types.string, ""),
-    firstName: types.optional(types.string, ""),
-    lastName: types.optional(types.string, ""),
-    phone: types.optional(types.string, ""),
-    customerIDArray: types.optional(types.array(CustomerIDPair), []),
-    deviceToken: types.optional(types.array(types.string), []),
+    netID: types.maybe(types.string),
+    firstName: types.maybe(types.string),
+    lastName: types.maybe(types.string),
+    phone: types.maybe(types.string),
+    customerIDArray: types.maybe(types.array(CustomerIDPair)),
+    deviceToken: types.maybe(types.array(types.string)),
     last4: types.maybe(types.string)
     // defaultLocation: types.optional(Location, {name: ""}),
 })
@@ -76,24 +76,43 @@ export const UserStoreModel = types
 })
 .actions(
     (self) => ({
+        resetUser() {
+            self.authenticated = false
+            self.hasAccount = false
+        },
         authenticate: flow(function * authenticate(ticket) {
-            console.log("I'm here baby")
-            let user = yield client.mutate({
-                mutation: AUTHENTICATION,
-                variables: {
-                    ticket: ticket,
-                    checkVendor: false,
-                    vendorName: ""
+            try {
+                let user = yield client.mutate({
+                    mutation: AUTHENTICATION,
+                    variables: {
+                        ticket: ticket,
+                        checkVendor: false,
+                        vendorName: ""
+                    }
+                });
+                console.log("in authenticate")
+                console.log(user)
+                console.log(self.hasAccount)
+                // detect error
+                if (user.data.authenticator.netID === null) {
+                    console.log("authentication error")
+                    return;
                 }
-            });
-            self.authenticated = true
-            console.log("NULL" + user.data.authenticator)
-            if (user.data.authenticator !== null && user.data.authenticator.firstName !== null) {
-                console.log("CHECKING AUTHENTICATOR")
-                console.log(user.data.authenticator)
-                self.user = user.data.authenticator
-                self.hasAccount = true
+                self.authenticated = true
+                if (user.data.authenticator !== null && user.data.authenticator.firstName !== null) {
+                    console.log("user has account")
+                    console.log(user.data.authenticator)
+                    self.user = user.data.authenticator
+                    self.hasAccount = true
+                } else if (user.data.authenticator !== null) {
+                    console.log("user does not have account")
+                    self.user = user.data.authenticator
+                }
+            } catch (error) {
+                console.log("ERROR: " + error)
+                return;
             }
+
         }),
         async AddTokenToUser(){
             console.log("add token")
@@ -142,8 +161,10 @@ export const UserStoreModel = types
                     netID: netID
                 }
             });
-            
-            console.log("Post netID gt");
+            if (data.data.user.length == 0) {
+                return -1
+            }
+            console.log("Post netID gt: " + data.data);
 
             let user = data.data.user[0];
             // Set user
@@ -152,6 +173,7 @@ export const UserStoreModel = types
             self.hasAccount = (true);
             // Set auth
             self.authenticated = (true);
+            return user
         }),
         updateUser: flow(function * updateUser(infoToUpdate) {
             // update the user.

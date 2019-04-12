@@ -1,13 +1,13 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import { Input } from 'react-native-elements';
 import * as css from '../screens/style';
 import PrimaryButton from "./primary-button";
+import { material } from 'react-native-typography';
 
  export default class Registration extends React.Component {
         render() {
-                const {onTextChanged, continueHandler, netID} = this.props;
-                console.log(netID);
+                const {onTextChanged, continueHandler, netID, displayError} = this.props;
                 return (
                         <View style={css.screen.defaultScreen}>
                                         <Input placeholder="netID" editable={false}>
@@ -27,6 +27,10 @@ import PrimaryButton from "./primary-button";
                                         title="Continue"
                                         onPress={continueHandler}
                                 />
+                                {
+                                        displayError && 
+                                        <Text style={[material.caption, {color: "red"}]}>Something went wrong with your credit card. Please try again.</Text>
+                                }
                         </View>
                 )
         }
