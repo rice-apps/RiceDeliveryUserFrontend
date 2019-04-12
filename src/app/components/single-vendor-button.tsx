@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
+import { Text, View, StyleSheet, TouchableHighlight, TouchableOpacity } from "react-native"
 import { withNavigation } from "react-navigation"
 import * as css from "../screens/style"
 import { RootStore } from "../../../stores/root-store";
@@ -102,7 +102,7 @@ class SingleVendorButton extends React.Component<any, any> {
         // Currently, just displaying vendor name from struct
         var vendorName = this.props.vendor.name
         return (
-            <TouchableHighlight onPress={(this.props.rootStore.vendorStore.open) ? this.onVendorPress: () => {}}>
+            <TouchableOpacity onPress={(this.props.rootStore.vendorStore.open) ? this.onVendorPress: () => {}}>
                 {/* <View> */}
                 <View style={css.flatlist.vendorView}>
                 <View style={{
@@ -126,7 +126,7 @@ class SingleVendorButton extends React.Component<any, any> {
                     {/* <Text>{this.state.day_hours.join("\n")}</Text> */}
                 </View>
                 {/* </View> */}
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
 }

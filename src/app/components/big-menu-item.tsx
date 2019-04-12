@@ -131,13 +131,13 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
         let toppingPickerItems = toppings.map((topping, i) => <Picker.Item key={i} value={topping} label= {topping}/>);
         return (
             <View>
-                <TouchableHighlight onPress= {() => {
+                <TouchableOpacity onPress= {() => {
                     this.setModalVisible(!this.state.modalVisible)
                 }}>
                     <View style={css.container.bigMenuItem}>
                         <Text style={css.text.bodyText}> {this.props.product.name} </Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
                 <Modal
                 animationType="fade"
                 transparent={true}
