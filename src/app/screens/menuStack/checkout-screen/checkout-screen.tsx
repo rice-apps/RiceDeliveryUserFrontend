@@ -62,6 +62,19 @@ query checkSKU($vendorName: String!, $sku:String!){
 }
 `
 
+
+export const GET_LOCATION_OPTIONS = gql`
+query vendor($vendorName :String) {
+  vendor(name :$vendorName) {
+      locationOptions{
+          _id
+        name
+      }
+    }
+  }
+`
+
+
 export interface CheckoutScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
 }
@@ -150,7 +163,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     this.props.rootStore.vendorStore.setHourTransformed(hours)
 }
 
-  async checkStatuses() {
+  checkStatuses = async () => {
     // get the hours 
     await this.props.rootStore.vendorStore.getHours()
     console.log("finished grabbing hours from backend")
@@ -165,7 +178,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     // // 
     if (this.props.rootStore.vendorStore.open){
 
-      await this.props.rootStore.cartStore.checkAllCartItems().then((results) => {
+      await this.props.rootStore.cartStore.checkAllCartItems().then(async (results) => {
         if (results.length > 0) {
           let message = []
   
@@ -180,9 +193,31 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
             + messageUnique.join(", ") + "\n. Please try another one of our flavors! ")
   
           this.props.navigation.navigate("Cart")
-  
+          
         } else {
           let vendorName = "East West Tea" // Maybe this should not be hardcoded????
+          
+          /* Query all of the location options */
+          let optsQuery = await client.query({
+            query: GET_LOCATION_OPTIONS,
+            variables: {
+              "vendorName": vendorName,
+            }
+          });
+          let validLocations = optsQuery.data.vendor[0].locationOptions;
+          if ((validLocations.filter((location) => {
+            return location.name == this.state.location;
+          })).length > 0) {
+            console.log("location " + this.state.location + " is valid");
+          } else {
+            console.log("location " + this.state.location + " is not valid");
+            Alert.alert("Unfortunately, East West Tea is not delivering to  " + this.state.location + " currently. Try to select another location!");
+            this.setState({
+               orderDisabled : false
+            });
+            return;
+          }
+
           //For Creating Order.
           // Grab cart items from cart store
           let cartItems = this.props.rootStore.cartStore.cart;
@@ -259,10 +294,6 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     let deliveryCost = 1.50;
     let subtotalCost = cartItems.reduce((previous, item) => previous + (item.price / 100.0), 0)
     let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
-
-    let locationPickerItems = locationOptions.map((s, i) => {
-      return <Picker.Item key={i} value={s.name} label={s.name} />
-    });
 
     let locationData = locationOptions.map((s, i) => {
       return {
