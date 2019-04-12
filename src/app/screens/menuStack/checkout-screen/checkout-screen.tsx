@@ -9,6 +9,7 @@ import { toJS } from "mobx"
 import { CartStoreModel } from "../../../stores/cart-store"
 import { RootStore } from '../../../stores/root-store';
 import { PushNotificationIOS, Alert } from 'react-native'
+import { Dropdown } from 'react-native-material-dropdown';
 
 
 
@@ -201,6 +202,12 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
       return <Picker.Item key={i} value={s.name} label={s.name} />
     });
 
+    let locationData = locationOptions.map((s, i) => {
+      return {
+        value : s.name
+      }
+    })
+
   console.log("locationOptions");
   console.log(locationOptions);
 
@@ -237,7 +244,24 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
           </Text>
 
               <View style={css.picker.pickerContainer}>
-                <Picker
+              <Dropdown
+                dropdownOffset = {{
+                  top : 17,
+                  left : 10,
+                }}
+                value = {this.state.location}
+                label='Select a Location'
+                onChangeText={(value, index, data) => {
+                  console.log(value);
+                  console.log(data);
+                  this.setState({
+                    location : value
+                  })
+                  console.log(this.state);
+                }}
+                data={locationData}
+              />
+                {/* <Picker
                   selectedValue={this.state.location}
                   style={css.picker.locationPicker}
                   itemStyle={css.picker.locationPickerItem}
@@ -246,7 +270,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
                   }>
                   {locationPickerItems}
 
-                </Picker>
+                </Picker> */}
               </View>
             </View>
 
