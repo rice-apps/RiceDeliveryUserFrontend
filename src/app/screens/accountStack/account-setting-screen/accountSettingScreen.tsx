@@ -67,6 +67,10 @@ export class AccountScreen extends React.Component<CreateAccountScreenProps, any
           <SecondaryButton
             title ="Logout"
             onPress={() => {
+              this.props.rootStore.cartStore.removeAllItems()
+              this.props.rootStore.userStore.setNotificationAsked(false)
+              this.props.rootStore.userStore.setNotificationGranted(false)
+
               CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://gizmodo.com/')
                 .then((res) => {console.log('CookieManager.get =>', res);});
               CookieManager.clearAll()

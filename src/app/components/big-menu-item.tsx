@@ -146,7 +146,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                     <TouchableOpacity 
                             activeOpacity={1} 
                         >
-                    <TouchableWithoutFeedback>
+                    {/* <TouchableWithoutFeedback> */}
                     <View style={{
                         marginTop: 90,
                         marginLeft: 25,
@@ -223,7 +223,7 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
                     />
 
                     </View>
-                    </TouchableWithoutFeedback>
+                    {/* </TouchableWithoutFeedback> */}
                     </TouchableOpacity>     
                 </Modal>
             </View>
