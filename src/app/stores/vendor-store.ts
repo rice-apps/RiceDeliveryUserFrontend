@@ -170,7 +170,7 @@ export const VendorStoreModel = types
             }
         })        
         self.setHours(vendor_hours.data.vendor[0].hours)
-        
+        console.log("We have set new hours \n\n")
     },
     setActiveVendor(vendor) {
         self.activeVendor = vendor

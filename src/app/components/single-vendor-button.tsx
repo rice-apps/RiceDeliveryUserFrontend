@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
+import { Text, View, StyleSheet, TouchableHighlight, Alert } from "react-native"
 import { withNavigation } from "react-navigation"
 import * as css from "../screens/style"
 import { RootStore } from "../../../stores/root-store";
@@ -12,6 +12,7 @@ import { inject, observer } from "mobx-react"
 class SingleVendorButton extends React.Component<any, any> {
     constructor(props) {
         super(props)
+        console.log("THIS IS THE PROPS: " + props)
         this.onVendorPress = this.onVendorPress.bind(this)
         this.state = {
             day_hours:[],
@@ -30,6 +31,7 @@ class SingleVendorButton extends React.Component<any, any> {
     }
     async componentWillMount() {
         // this.updateWeekHours()
+        
         await this.updateWeekHours().then(x => {
             this.props.rootStore.vendorStore.setHourTransformed(this.state.hours)
             this.props.rootStore.vendorStore.check_open(new Date())
@@ -64,12 +66,56 @@ class SingleVendorButton extends React.Component<any, any> {
         var dayOfWeek = new Date(date).getDay();    
         return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
       }
+
     componentWillUnmount() {
         clearInterval(this.intervalID);
       }
+
+
+    check_hours = async () => {
+            // get the hours 
+        // console.log(this.props.rootStore)
+        await this.props.rootStore.vendorStore.getHours()
+        console.log("finished grabbing hours from backend")
+
+        this.setState({day_hours: []})
+        // transform the hours array 
+        await this.updateWeekHours()
+        console.log("finish transforming the hours arr")
+        // check if our current time is within opening hours
+        await this.props.rootStore.vendorStore.check_open(new Date())
+        console.log('finishing checking open status: ' + this.props.rootStore.vendorStore.open)
+        if (this.props.rootStore.vendorStore.open){
+            this.props.navigation.navigate("SingleVendorMenu", {
+                vendor : this.props.vendor,
+            }) 
+        } else {
+            Alert.alert("Vendor is currently closed! Please try again!")
+        }
+    }
+
+    transform24(hour){
+        let temp = Math.floor(hour)
+        if (temp > 11){
+            if (temp == 24){
+                return (hour-12).toFixed(2).toString() + "am"
+            } else if (temp === 12){
+                return (hour).toString() + "pm"
+            } else {
+                return (hour-12).toFixed(2).toString() + "pm"
+            }
+        } else {
+            return hour.toString()+"am"
+        }
+        
+    }
+
     async updateWeekHours(){
         let arr = [[], [], [], [], [], [], []]
-        this.props.vendor.hours.map(([open, close], index) => {
+        this.props.rootStore.vendorStore.vendors[0].hours.map(([open, close], index) => {
+            open = Math.round(open * 100) / 100
+            close = Math.round(close * 100) / 100
+            console.log(open, close)
             if (open > close) {
                 arr[index].push([open,24])
                 if (index === 6){
@@ -80,16 +126,18 @@ class SingleVendorButton extends React.Component<any, any> {
             } else {
                 arr[index].push([open, close])
             }
-
             // this.state.hours.push([this.state.lookup[index],open,close])
             if (open === -1 || close === -1) {
                 this.state.day_hours.push(this.state.lookup[index] + "\t\t" + "closed")
             } else {
-                let first = (open > 11) ? (open-12).toFixed(2).toString() + "pm" : open.toString()+"am"
-                let second = (close > 11) ? (close-12).toFixed(2).toString() + "pm" : close.toString()+"am"
+                // let first = (open > 11) ? (open-12).toFixed(2).toString() + "pm" : open.toString()+"am"
+                let first = this.transform24(open)
+                // let second = (close > 11) ? (close-12).toFixed(2).toString() + "pm" : close.toString()+"am"
+                let second = this.transform24(close)
                 this.state.day_hours.push(this.state.lookup[index]+"\t\t"+first + " - " + second)
             }
         })
+        this.props.rootStore.vendorStore.setHourTransformed(arr)
         this.setState({hours: arr})
         console.log('\n\n\n\n\n UPDATE FINISHED \n\n\n\n\n\n')
         // console.log(this.state.day_hours.join("\n"))
@@ -99,6 +147,7 @@ class SingleVendorButton extends React.Component<any, any> {
         this.props.navigation.navigate("SingleVendorMenu", {
             vendor : this.props.vendor,
         }) 
+
     }
 
     
@@ -107,7 +156,7 @@ class SingleVendorButton extends React.Component<any, any> {
         // Currently, just displaying vendor name from struct
         var vendorName = this.props.vendor.name
         return (
-            <TouchableHighlight onPress={(this.props.rootStore.vendorStore.open) ? this.onVendorPress: () => {}}>
+            <TouchableHighlight onPress={this.check_hours}>
                 {/* <View> */}
                 <View style={css.flatlist.vendorView}>
                 <View style={{
@@ -127,7 +176,7 @@ class SingleVendorButton extends React.Component<any, any> {
                     </View>
                 </View>
                     {this.state.day_hours.map((x,idx) => <Text key={idx}>{x.replace(/\./g, ":")}</Text>)}{"\n\n\n"}
-                    {console.log(this.state.day_hours.join("\n"))}
+                    {/* {console.log(this.state.day_hours.join("\n"))} */}
                     {/* <Text>{this.state.day_hours.join("\n")}</Text> */}
                 </View>
                 {/* </View> */}
