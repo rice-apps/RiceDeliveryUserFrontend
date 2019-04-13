@@ -53,7 +53,7 @@ export class PushNotificationHandler extends React.Component<PushNotificationPro
       const event = data.event
       const message = data.message
       console.log("\n\n\n\n this is the message: " + message + "\n\n\n")
-      rootStore.orderStore.getOrders(rootStore.userStore.user.netID)
+      rootStore.orderStore.getOrders(rootStore.userStore.user.netID, null)
       Alert.alert(message)
     })
 

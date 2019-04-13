@@ -13,7 +13,6 @@ import {material} from "react-native-typography"
 import { Dropdown } from 'react-native-material-dropdown';
 
 
-
 import { client } from "../../../main"
 import gql from "graphql-tag"
 console.disableYellowBox = true;
@@ -117,24 +116,24 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     /* Creating the order */
     let orderID = await this.props.rootStore.cartStore.createOrder(netID, locationName, vendorName, data);
     if (orderID !== null) {
-
-      console.log("create order was success");
-      this.props.navigation.popToTop();
-      this.props.navigation.navigate("OrderHistory");
-
       /* Clearing the cart store */
       this.props.rootStore.cartStore.removeAllItems();
+      // /* Paying for the order */
+      // let payment = await client.mutate({
+      //   mutation: PAY_ORDER,
+      //   variables: {
+      //     "netID": netID,
+      //     "vendorName": vendorName,
+      //     "orderID": orderID
+      //   }
+      // });
+      // console.log(payment);
+      console.log("create order was success");
+      this.props.rootStore.cartStore.removeAllItems()
+      await this.props.rootStore.orderStore.getOrders(netID, null);
+      await this.props.navigation.popToTop()
+      this.props.navigation.navigate("OrderHistory")
 
-      /* Paying for the order */
-      let payment = client.mutate({
-        mutation: PAY_ORDER,
-        variables: {
-          "netID": netID,
-          "vendorName": vendorName,
-          "orderID": orderID
-        }
-      });
-      console.log(payment);
     } else {
       console.log("create order failed");
     }
@@ -178,10 +177,9 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     // // 
     if (this.props.rootStore.vendorStore.open){
 
-      await this.props.rootStore.cartStore.checkAllCartItems().then(async (results) => {
+      let results = await this.props.rootStore.cartStore.checkAllCartItems()
         if (results.length > 0) {
           let message = []
-  
           results.map(item => {
             message.push(item.productName)
             this.props.rootStore.cartStore.removeFromCart(item)
@@ -230,10 +228,8 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
             }
           })
           this.createOrder(this.props.rootStore.userStore.user.netID, this.state.location, vendorName, orderItems);
-          this.props.rootStore.cartStore.removeAllItems()
-          this.props.navigation.navigate("OrderHistory")
+
         }
-      })
     } else {
       Alert.alert("Unfortunately, East West Tea has closed and we cannot place your order. Please come back when we are open!")
       this.props.rootStore.cartStore.removeAllItems()

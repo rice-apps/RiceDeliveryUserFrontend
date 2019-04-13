@@ -15,10 +15,14 @@ export default class PaymentRequest extends React.Component {
 
         async pullUpForm() {
                 const {onCreditInput} = this.props;
-                const token = await stripe.paymentRequestWithCardForm();
-                this.setState({isFirstTime: false})
-                console.log(token);
-                onCreditInput(token);
+                const token = stripe.paymentRequestWithCardForm().then((token) => {
+                        this.setState({isFirstTime: false})
+                        onCreditInput(token);
+                }).catch(e => {
+                        console.log("error token")
+                        console.log(token);
+                        onCreditInput(null);
+                })
         }
 
         render() {
