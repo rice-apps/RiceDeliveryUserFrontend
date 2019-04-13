@@ -73,10 +73,19 @@ export const text = StyleSheet.create({
             backgroundColor: "grey",
     },
     logo: {
-        fontSize: 30,
+        fontSize: 35,
         fontFamily: FONT_FAMILY,
         color: GRAY,
-        paddingBottom: 180,
+        paddingTop: 200,
+        paddingBottom: 5,
+        textAlign: "center",
+    },
+    sublogo: {
+        fontSize: 11,
+        paddingBottom: 15,
+        fontFamily: FONT_FAMILY,
+        color: GRAY,
+        textAlign: "center",
     },
     regularText: {
         fontSize: 15,
@@ -335,7 +344,9 @@ export const datepickerios = StyleSheet.create({
 //IMAGE
 export const image = StyleSheet.create({
     logo : {
-        width: 45, 
-        height: 45,
+        width: 195,
+        height: 80,
+        // alignSelf: "center",
+        // resizeMode: "contain"
     },
 })
