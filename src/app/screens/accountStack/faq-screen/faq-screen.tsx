@@ -20,6 +20,11 @@ export class FAQScreen extends React.Component<CreateAccountScreenProps, any> {
         this.state = {
             data: [
                 {
+                    title: "Brought to you by",
+                    description:"Rice Apps Team Hedwig (Johnny Cai, Justin Fan, Amy Huyen, Will Mundy, Will Su, Jamie Tan, and Jeffrey Wang)"
+                    
+                },
+                {
                     title: "What payment methods do you accept?",
                     description: "We accept all credit cards. Cash and check are not accepted.",
                 },
@@ -67,6 +72,7 @@ export class FAQScreen extends React.Component<CreateAccountScreenProps, any> {
 
     contactData = (index) => (
         <View style={{padding: 10}} key={index}>
+
             <View style={{paddingBottom: 10}}>
                 <Text style={material.headlineWhite}>
                     Who can I contact if I have a problem? 

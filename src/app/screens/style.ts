@@ -73,11 +73,18 @@ export const text = StyleSheet.create({
             backgroundColor: "grey",
     },
     logo: {
-        fontSize: 30,
+        fontSize: 35,
         fontFamily: FONT_FAMILY,
         color: GRAY,
-        paddingBottom: 20,
         paddingTop: 200,
+        paddingBottom: 5,
+        textAlign: "center",
+    },
+    sublogo: {
+        fontSize: 11,
+        paddingBottom: 15,
+        fontFamily: FONT_FAMILY,
+        color: GRAY,
         textAlign: "center",
     },
     regularText: {

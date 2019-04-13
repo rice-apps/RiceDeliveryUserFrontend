@@ -102,6 +102,9 @@ export class LoginScreen extends React.Component<LoginScreenProps, {displayError
                     <Text style={[css.text.logo, {color:"gray"}]}>
                     hedwig.
                     </Text>
+                    <Text style={[css.text.sublogo, {color:"gray"}]}>
+                    "it's like uber but for east west"
+                    </Text>
                 </View>
                     <PrimaryButton title="Sign In" onPress={this.loginHandler.bind(this)} />
                 <View style={{flex : 0.7, flexDirection: "column", justifyContent: "flex-end"}}>.
