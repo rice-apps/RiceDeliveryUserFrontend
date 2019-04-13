@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text, FlatList, TouchableHighlight } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import * as css from "../../style";
 import PrimaryButton from '../../../components/primary-button.js'
 import { Vendor } from '../../../components/temporary-mock-order';

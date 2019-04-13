@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Modal, Text, View, TextInput, TouchableHighlight, Picker, TouchableOpacity, SegmentedControlIOS, TouchableWithoutFeedback, Dimensions, Alert} from 'react-native';
+import { Modal, Text, View, TextInput, Picker, TouchableOpacity, SegmentedControlIOS, TouchableWithoutFeedback, Dimensions, Alert} from 'react-native';
 import * as css from '../screens/style';
 import { inject, observer } from 'mobx-react';
 import { client } from '../main';
@@ -131,13 +131,13 @@ export class BigMenuScreenItem extends React.Component<BigMenuScreenItemProps, a
         let toppingPickerItems = toppings.map((topping, i) => <Picker.Item key={i} value={topping} label= {topping}/>);
         return (
             <View>
-                <TouchableHighlight onPress= {() => {
+                <TouchableOpacity onPress= {() => {
                     this.setModalVisible(!this.state.modalVisible)
                 }}>
                     <View style={css.container.bigMenuItem}>
                         <Text style={css.text.bodyText}> {this.props.product.name} </Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
                 <Modal
                 animationType="fade"
                 transparent={true}

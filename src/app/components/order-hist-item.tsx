@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native"
 import * as css from "../screens/style"
 import { withNavigation } from "react-navigation"
 import Icon from "react-native-vector-icons/MaterialIcons"
@@ -23,7 +23,7 @@ class OrderHistItem extends React.Component<any, any> {
         var time = getOrderTime(this.props.order);
 
         return (
-                <TouchableHighlight
+                <TouchableOpacity
                     onPress={this.checkoutOrderPress}>
             <View style={css.container.orderHistItem}>
 
@@ -39,7 +39,7 @@ class OrderHistItem extends React.Component<any, any> {
                         <Icon name="chevron-right" size={30} color="black" />
 
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
 }

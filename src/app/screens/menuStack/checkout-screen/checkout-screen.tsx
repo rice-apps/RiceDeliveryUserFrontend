@@ -10,7 +10,8 @@ import { CartStoreModel } from "../../../stores/cart-store"
 import { RootStore } from '../../../stores/root-store';
 import { PushNotificationIOS, Alert } from 'react-native'
 import {material} from "react-native-typography"
-import { StackActions, NavigationActions } from 'react-navigation';
+import { Dropdown } from 'react-native-material-dropdown';
+
 
 import { client } from "../../../main"
 import gql from "graphql-tag"
@@ -59,6 +60,19 @@ query checkSKU($vendorName: String!, $sku:String!){
   }
 }
 `
+
+
+export const GET_LOCATION_OPTIONS = gql`
+query vendor($vendorName :String) {
+  vendor(name :$vendorName) {
+      locationOptions{
+          _id
+        name
+      }
+    }
+  }
+`
+
 
 export interface CheckoutScreenProps extends NavigationScreenProps<{}> {
   rootStore?: RootStore
@@ -148,7 +162,7 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     this.props.rootStore.vendorStore.setHourTransformed(hours)
 }
 
-  async checkStatuses() {
+  checkStatuses = async () => {
     // get the hours 
     await this.props.rootStore.vendorStore.getHours()
     console.log("finished grabbing hours from backend")
@@ -177,9 +191,31 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
             + messageUnique.join(", ") + "\n. Please try another one of our flavors! ")
   
           this.props.navigation.navigate("Cart")
-  
+          
         } else {
           let vendorName = "East West Tea" // Maybe this should not be hardcoded????
+          
+          /* Query all of the location options */
+          let optsQuery = await client.query({
+            query: GET_LOCATION_OPTIONS,
+            variables: {
+              "vendorName": vendorName,
+            }
+          });
+          let validLocations = optsQuery.data.vendor[0].locationOptions;
+          if ((validLocations.filter((location) => {
+            return location.name == this.state.location;
+          })).length > 0) {
+            console.log("location " + this.state.location + " is valid");
+          } else {
+            console.log("location " + this.state.location + " is not valid");
+            Alert.alert("Unfortunately, East West Tea is not delivering to  " + this.state.location + " currently. Try to select another location!");
+            this.setState({
+               orderDisabled : false
+            });
+            return;
+          }
+
           //For Creating Order.
           // Grab cart items from cart store
           let cartItems = this.props.rootStore.cartStore.cart;
@@ -255,12 +291,11 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
     let subtotalCost = cartItems.reduce((previous, item) => previous + (item.price / 100.0), 0)
     let locationOptions = this.props.rootStore.vendorStore.vendors[0].locationOptions
 
-    let locationPickerItems = locationOptions.map((s, i) => {
-      return <Picker.Item key={i} value={s.name} label={s.name} />
-    });
-
-  console.log("locationOptions");
-  console.log(locationOptions);
+    let locationData = locationOptions.map((s, i) => {
+      return {
+        value : s.name
+      }
+    })
 
     return (
       <View style={css.screen.defaultScreen}>          
@@ -269,16 +304,29 @@ export class CheckoutScreen extends React.Component<CheckoutScreenProps, any> {
             <Text style={[material.display2, {paddingBottom: 5}]}> Delivery details</Text>
               <Text style={[material.display1, {color: "black"}]}>Select Location:</Text>
               <View style={localStyles.flexRow}>
-                <Picker
-                    selectedValue={this.state.location}
-                    style={{height: 50}}
-                    itemStyle={css.picker.locationPickerItem}
-                    onValueChange={(itemValue, itemIndex) =>
-                      this.setState({ location: itemValue })
-                    }>
-                    {locationPickerItems}
+              <View style={css.picker.pickerContainer}>
 
-                  </Picker>
+                  <Dropdown
+                    dropdownOffset = {{
+                      top : 17,
+                      left : 10,
+                    }}
+                    value = {this.state.location}
+                    itemTextStyle	= {{
+                      fontWeight : "bold"
+                    }}
+                    // label='Select a Location'
+                    onChangeText={(value, index, data) => {
+                      console.log(value);
+                      console.log(data);
+                      this.setState({
+                        location : value
+                      })
+                      console.log(this.state);
+                    }}
+                    data={locationData}
+                  />
+                  </View>
                 </View>
             </View>
             <Divider style={css.screen.divider} />
