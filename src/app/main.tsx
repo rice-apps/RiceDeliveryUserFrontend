@@ -46,7 +46,8 @@ const authLink = setContext(async (_, { headers }) => {
 // })
 
 const link = createHttpLink({
-  uri: "https://hedwig-233703.appspot.com/graphql",
+  // uri: "https://hedwig-233703.appspot.com/graphql",
+  uri: "http://localhost:3000/graphql"
 });
 
 // const link = createHttpLink({

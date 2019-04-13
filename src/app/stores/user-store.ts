@@ -93,14 +93,20 @@ export const UserStoreModel = types
                     vendorName: ""
                 }
             });
+            console.log(data);
             let { user, token } = data.authenticator;
             self.authenticated = true
+            console.log(user);
+            console.log(token);
             if (user && user.firstName !== null) {
                 AsyncStorage.setItem('token', token);
                 console.log("CHECKING AUTHENTICATOR")
-                console.log(user.data.authenticator)
-                self.user = user.data.authenticator
+                self.user = user;
                 self.hasAccount = true
+            } else if(user && user.netID !== null) {
+                AsyncStorage.setItem('token', token);
+                console.log("need to register");
+                self.user = user;
             }
 
         }),
