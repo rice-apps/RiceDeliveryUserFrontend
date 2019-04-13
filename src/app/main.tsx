@@ -14,9 +14,16 @@ import { InMemoryCache } from "apollo-boost";
 /**
 * Initializing Apollo Client. We'll use this to make 
 */
-// const link = createHttpLink({
-//   uri: "http://localhost:3000/graphql",
-// })
+const link = createHttpLink({
+  uri: "http://10.115.178.41:3000/graphql",
+})
+
+
+// Showing All Messages
+// + IP=10.115.178.41
+
+
+
 
 // Showing All Messages
 // + IP=192.168.1.70
@@ -34,9 +41,9 @@ import { InMemoryCache } from "apollo-boost";
 //   uri: "localhost:3000/graphql",
 // })
 
-const link = createHttpLink({
-  uri:"https://hedwig-233703.appspot.com/graphql"
-})
+// const link = createHttpLink({
+//   uri:"https://hedwig-233703.appspot.com/graphql"
+// })
  export const client = new ApolloClient({
    link: link,
    cache: new InMemoryCache(),
