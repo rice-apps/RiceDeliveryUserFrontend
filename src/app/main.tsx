@@ -2,7 +2,7 @@
 //
 // In this file, we'll be kicking off our app or storybook.
 
-import { AppRegistry } from "react-native"
+import { AppRegistry, AsyncStorage } from "react-native"
 import { RootComponent } from "./root-component"
 import { StorybookUIRoot } from "../../storybook"
 
@@ -10,6 +10,7 @@ import { StorybookUIRoot } from "../../storybook"
 import {ApolloClient} from "apollo-client"
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-boost";
+import { setContext } from 'apollo-link-context';
 
 /**
 * Initializing Apollo Client. We'll use this to make 
@@ -28,18 +29,31 @@ import { InMemoryCache } from "apollo-boost";
 // Showing All Messages
 // + IP=10.70.56.136
 
-
+const authLink = setContext(async (_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = await AsyncStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `${token}` : "",
+    }
+  }
+});
 
 // const link = createHttpLink({
 //   uri: "localhost:3000/graphql",
 // })
 
 const link = createHttpLink({
-  uri:"https://hedwig-233703.appspot.com/graphql"
-})
+  uri: "https://hedwig-233703.appspot.com/graphql",
+});
 
-export const client = new ApolloClient({
-   link: link,
+// const link = createHttpLink({
+//   uri:"https://hedwig-233703.appspot.com/graphql"
+// })
+ export const client = new ApolloClient({
+   link: authLink.concat(link),
    cache: new InMemoryCache(),
    defaultOptions: {
     query: {
