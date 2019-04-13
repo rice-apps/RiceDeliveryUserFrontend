@@ -14,16 +14,19 @@ mutation AddToken($netID: String!, $token:String! ){
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!, $checkVendor: Boolean!, $vendorName: String) {
         authenticator(ticket:$ticket, checkVendor:$checkVendor, vendorName:$vendorName) {
-            netID
-            firstName
-            lastName
-            last4
-            phone
-            customerIDArray {
-                accountID
-                customerID
+            user {
+                netID
+                firstName
+                lastName
+                last4
+                phone
+                customerIDArray {
+                    accountID
+                    customerID
+                }
+                deviceToken
             }
-            deviceToken
+            token
         }
     }    
 `
@@ -78,7 +81,7 @@ export const UserStoreModel = types
     (self) => ({
         authenticate: flow(function * authenticate(ticket) {
             console.log("I'm here baby")
-            let user = yield client.mutate({
+            let { data } = yield client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
                     ticket: ticket,
@@ -86,9 +89,10 @@ export const UserStoreModel = types
                     vendorName: ""
                 }
             });
+            let { user, token } = data.authenticator;
             self.authenticated = true
-            console.log("NULL" + user.data.authenticator)
-            if (user.data.authenticator !== null && user.data.authenticator.firstName !== null) {
+            if (user && user.firstName !== null) {
+                AsyncStorage.setItem('token', token);
                 console.log("CHECKING AUTHENTICATOR")
                 console.log(user.data.authenticator)
                 self.user = user.data.authenticator
