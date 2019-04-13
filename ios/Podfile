@@ -1,3 +1,5 @@
+project './Hedwig.xcodeproj'
+
 # Use iOS 9 and above
 platform :ios, '9.0'
 

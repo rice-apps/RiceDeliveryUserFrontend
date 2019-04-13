@@ -14,16 +14,19 @@ mutation AddToken($netID: String!, $token:String! ){
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!, $checkVendor: Boolean!, $vendorName: String) {
         authenticator(ticket:$ticket, checkVendor:$checkVendor, vendorName:$vendorName) {
-            netID
-            firstName
-            lastName
-            last4
-            phone
-            customerIDArray {
-                accountID
-                customerID
+            user {
+                netID
+                firstName
+                lastName
+                last4
+                phone
+                customerIDArray {
+                    accountID
+                    customerID
+                }
+                deviceToken
             }
-            deviceToken
+            token
         }
     }    
 `
@@ -81,36 +84,29 @@ export const UserStoreModel = types
             self.hasAccount = false
         },
         authenticate: flow(function * authenticate(ticket) {
-            try {
-                let user = yield client.mutate({
-                    mutation: AUTHENTICATION,
-                    variables: {
-                        ticket: ticket,
-                        checkVendor: false,
-                        vendorName: ""
-                    }
-                });
-                console.log("in authenticate")
-                console.log(user)
-                console.log(self.hasAccount)
-                // detect error
-                if (user.data.authenticator.netID === null) {
-                    console.log("authentication error")
-                    return;
+            console.log("I'm here baby")
+            let { data } = yield client.mutate({
+                mutation: AUTHENTICATION,
+                variables: {
+                    ticket: ticket,
+                    checkVendor: false,
+                    vendorName: ""
                 }
-                self.authenticated = true
-                if (user.data.authenticator !== null && user.data.authenticator.firstName !== null) {
-                    console.log("user has account")
-                    console.log(user.data.authenticator)
-                    self.user = user.data.authenticator
-                    self.hasAccount = true
-                } else if (user.data.authenticator !== null) {
-                    console.log("user does not have account")
-                    self.user = user.data.authenticator
-                }
-            } catch (error) {
-                console.log("ERROR: " + error)
-                return;
+            });
+            console.log(data);
+            let { user, token } = data.authenticator;
+            self.authenticated = true
+            console.log(user);
+            console.log(token);
+            if (user && user.firstName !== null) {
+                AsyncStorage.setItem('token', token);
+                console.log("CHECKING AUTHENTICATOR")
+                self.user = user;
+                self.hasAccount = true
+            } else if(user && user.netID !== null) {
+                AsyncStorage.setItem('token', token);
+                console.log("need to register");
+                self.user = user;
             }
 
         }),
