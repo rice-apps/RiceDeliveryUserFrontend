@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Alert, AsyncStorage, Text} from 'react-native'
+import {View, Alert, AsyncStorage, Text, Image} from 'react-native'
 import PrimaryButton from '../../components/primary-button.js'
 import * as css from '../style';
 import AuthModal from '../../components/auth-modal'
@@ -94,18 +94,27 @@ export class LoginScreen extends React.Component<LoginScreenProps, {displayError
     render() {
         console.log("Console!");
         return (
-            <View style={css.screen.defaultScreen}>
-                <View style={{flex : 1, flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                    <PrimaryButton
-                        title ="Sign In"
-                        onPress={this.loginHandler.bind(this)}
-                    />
-                    {this.state.displayError && <Text style={[material.caption, {color: "red"}]}>Login failed. Please try again.</Text>}
-                </View>
-                <AuthModal visible={this.state.modalVisible} setVisible={this.setModalVisible.bind(this)} onSuccess={this.onSuccess.bind(this)} onFailure={this.onFailure.bind(this)}>
-                </AuthModal>
+            <View style={[css.screen.defaultScreen, {backgroundColor: "light-gray"}]}>
 
-            </View>
+            <View style={{alignContent: "center"}}>
+
+                <View>
+                    <Text style={[css.text.logo, {color:"gray"}]}>
+                    hedwig.
+                    </Text>
+                </View>
+                    <PrimaryButton title="Sign In" onPress={this.loginHandler.bind(this)} />
+                <View style={{flex : 0.7, flexDirection: "column", justifyContent: "flex-end"}}>.
+                    <Image source={require("../../img/logo.png")} style={css.image.logo} />
+                </View>
+                </View>
+                <AuthModal
+                visible={this.state.modalVisible}
+                setVisible={this.setModalVisible.bind(this)}
+                onSuccess={this.onSuccess.bind(this)}
+                onFailure={this.onFailure.bind(this)}
+            />
+        </View>
         )
     }
 }
