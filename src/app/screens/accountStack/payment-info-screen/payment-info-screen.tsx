@@ -18,13 +18,14 @@ export interface PaymentInfoScreenProps extends NavigationScreenProps<{}> {
 
 @inject("rootStore")
 @observer
-export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {netID: String, token: String, addCardPressed : Boolean}> {
+export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {displayError: boolean, netID: String, token: String, addCardPressed : Boolean}> {
     constructor(props) {
         super(props);
         this.state = {
           netID: "",
           token: null,
-          addCardPressed: false
+          addCardPressed: false,
+          displayError: false
         }
         console.log("Stripe Object " + stripe);
           stripe.setOptions({
@@ -44,7 +45,6 @@ export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {
             this.setState({token : object});
             //TODO: Check if token is valid or no?
             if (this.state.token.tokenId != null) {
-                    console.log(this.state.token.tokenId);
                     this.updateAccount(object.card.last4);
                     // save the last 4 digits for the payment submission form.
             }
@@ -52,6 +52,9 @@ export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {
 
       }
 
+      displayError() {
+        this.setState({displayError: true})
+      }
       async updateAccount(creditLast4) {
             const updatedUserInfo = await client.mutate({
               mutation: gql`
@@ -75,9 +78,12 @@ export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {
                 last4: creditLast4
             }
             });
+            if (updatedUserInfo.data.updateUser.firstName === null) {
+              Alert.alert('Something went wrong with updating your card. Please try again.');
+              return;
+            }
             this.props.rootStore.userStore.saveCreditInfo(creditLast4);
             console.log(this.props.rootStore.userStore.user.last4)
-
             console.log(updatedUserInfo);
             const user = updatedUserInfo.data.updateUser;
             console.log(user);
@@ -101,7 +107,12 @@ export class PaymentInfoScreen extends React.Component<PaymentInfoScreenProps, {
           title ="Add a New Card"
           onPress={() => this.setState({addCardPressed: true})}
         />
+         {
+          this.state.displayError && 
+            <Text style={[material.caption, {color: "red"}]}>Something went wrong with updating your credit card. Please try again.</Text>
+          }
         </View>
+       
       )
     }
   }
