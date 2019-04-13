@@ -71,7 +71,7 @@ export class AccountScreen extends React.Component<CreateAccountScreenProps, any
               this.props.rootStore.userStore.setNotificationAsked(false)
               this.props.rootStore.userStore.setNotificationGranted(false)
 
-              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://gizmodo.com/')
+              CookieManager.get('https://idp.rice.edu/idp/profile/cas/login?service=https://www.riceapps.org')
                 .then((res) => {console.log('CookieManager.get =>', res);});
               CookieManager.clearAll()
                 .then((res) => console.log("CookieManager.clearAll =>", res))

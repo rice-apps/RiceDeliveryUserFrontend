@@ -84,7 +84,7 @@ export class AuthenticationComponent extends React.Component<AuthenticationCompo
       <View style={FULL}>
         <StatusBar barStyle="light-content" />
         <WebView
-              source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://www.gizmodo.com' }}
+              source={{ uri: 'https://idp.rice.edu/idp/profile/cas/login?service=https://www.riceapps.org' }}
               onNavigationStateChange={this._onNavigationStateChange.bind(this)}
               style={{ marginTop: 20, display: this.state.displayBrowser ? "flex" : "none" }}
             />
