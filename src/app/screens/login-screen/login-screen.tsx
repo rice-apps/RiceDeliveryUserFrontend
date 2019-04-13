@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Alert, AsyncStorage} from 'react-native'
+import {View, Alert, AsyncStorage, Image, Text} from 'react-native'
 import PrimaryButton from '../../components/primary-button.js'
 import * as css from '../style';
 import AuthModal from '../../components/auth-modal'
@@ -83,21 +83,22 @@ export class LoginScreen extends React.Component<LoginScreenProps, { modalVisibl
     render() {
         console.log("Console!");
         return (
-            <View style={css.screen.defaultScreen}>
-                <View style={{flex : 1, flexDirection: "column"}}>
-
-                    <View style={{width: "50%", height: 300}}>
-
-                    </View>
-                    <PrimaryButton
-                        title ="Sign In"
-                        onPress={this.loginHandler.bind(this)}
-                    />
-                </View>
-                <AuthModal visible={this.state.modalVisible} setVisible={this.setModalVisible.bind(this)} onSuccess={this.onSuccess.bind(this)} onFailure={this.onFailure.bind(this)}>
-                </AuthModal>
-
+        <View style={[css.screen.defaultScreen, {backgroundColor: "light-gray"}]}>
+            <View style={{ flex: 1, flexDirection: "column" }}>
+            <View style={{ width: "50%", height: 300 }} />
+            <Text style={[css.text.logo, {color:"gray"}]}>
+            hedwig.
+            <Image source={require("../../../img/hedwig.png")} style={css.image.logo} />
+            </Text>
+            <PrimaryButton title="Sign In" onPress={this.loginHandler.bind(this)} />
             </View>
+            <AuthModal
+            visible={this.state.modalVisible}
+            setVisible={this.setModalVisible.bind(this)}
+            onSuccess={this.onSuccess.bind(this)}
+            onFailure={this.onFailure.bind(this)}
+            />
+      </View>
         )
     }
 }
