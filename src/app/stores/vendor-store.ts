@@ -128,14 +128,12 @@ export const VendorStoreModel = types
         })
     },
     setHourTransformed(transformedArr){
-        console.log("we are setting this transformed arr: " + transformedArr)
         self.hours_transformed = transformedArr;
     },
     addVendor(vendor) {
         self.vendors.push(vendor)
     },
     check_open(new_day){
-        console.log("check_open")
         let day_idx = new_day.getDay()
         if (day_idx == 0) {
             day_idx = 7
@@ -143,16 +141,16 @@ export const VendorStoreModel = types
             day_idx -= 1
         }
         let checker = false
-        console.log(JSON.stringify(self.hours_transformed))
+        var hours = new_day.getHours()
+        var min = new_day.getMinutes()
+        var curr_time = hours + (min / 100)
+        curr_time = Math.round(curr_time * 100) / 100
         self.hours_transformed[day_idx].map(x => {
-            console.log(x[0], new_day.getHours(), x[1])
-            if (x[0] < new_day.getHours() && new_day.getHours() < x[1]){
-                console.log(x[0], new_day.getHours(), x[1])
+            if (x[0] < curr_time && curr_time < x[1]){
                 checker = true
             }
         })
 
-        console.log("THIS IS THE STATE: " + checker)
         self.setOpen(checker)
     },
     setOpen(status){
@@ -170,14 +168,12 @@ export const VendorStoreModel = types
             }
         })        
         self.setHours(vendor_hours.data.vendor[0].hours)
-        
     },
     setActiveVendor(vendor) {
         self.activeVendor = vendor
     },
     setHours(new_hours){
         self.vendors[0].hours = new_hours
-        // self.vendors[0].hours.map(x => console.log(x))
     },
     initializeMenu(menuData) {
         const vendor = self.vendors.filter(vendor => vendor.name === menuData.name)

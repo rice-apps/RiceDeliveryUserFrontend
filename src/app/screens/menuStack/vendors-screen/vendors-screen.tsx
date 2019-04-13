@@ -58,7 +58,7 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     }
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     let { rootStore } = this.props;
     await this.props.rootStore.vendorStore.initialize()
     console.log('component did mount')
@@ -76,7 +76,7 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
     console.log("rendered")
     this.props.rootStore.vendorStore.initialize();
     var vendors = this.state.vendors
-    console.log("rendering")
+    console.log("rendering ")
 
     return (
       <View style={css.screen.defaultScreen}>
@@ -86,9 +86,10 @@ export class VendorsScreen extends React.Component<VendorsScreenProps, any> {
                 // style={css.orderList.flatList}
                 data= { vendors }
                 keyExtractor={(item, index) => item.name}
-                renderItem={({item}) => 
-                    <SingleVendorButton vendor={item}></SingleVendorButton>
-                }
+                renderItem={({item}) => {
+                  this.props.rootStore.vendorStore.setHours(item.hours)
+                  return <SingleVendorButton vendor={item}></SingleVendorButton>
+                }}
               />
           </View>
       </View>

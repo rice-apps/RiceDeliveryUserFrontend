@@ -183,6 +183,7 @@ export const CartStoreModel = types
         removeAllItems() {
           while (self.cart.length > 0) {
             self.cart.pop()
+            
           }
         },
         async payOrder(data, creditToken) {
